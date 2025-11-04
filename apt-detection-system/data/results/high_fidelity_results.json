@@ -1,0 +1,41 @@
+{
+  "test_info": {
+    "dataset": "/Users/truckx/PycharmProjects/bloomin/apt-detection-system/data/test_logs/medium_dataset.json",
+    "dataset_size_gb": 0.03558633662760258,
+    "logs_processed": 50000,
+    "duration_seconds": 1.6449849605560303,
+    "timestamp": "2025-11-04 11:10:00"
+  },
+  "performance": {
+    "throughput_logs_per_sec": 30395.414668775593,
+    "avg_latency_us": 13.64259629859589,
+    "max_memory_mb": 30.6875,
+    "avg_memory_mb": 29.921875
+  },
+  "detection": {
+    "ground_truth_malicious": 30,
+    "detected_malicious": 10,
+    "total_alerts": 10,
+    "tier1_alerts": 7,
+    "tier2_alerts": 3,
+    "tier3_alerts": 0,
+    "apt_campaigns_detected": 0
+  },
+  "bloom_filters": {
+    "pattern_bloom": {
+      "total_checks": 50000,
+      "total_matches": 15,
+      "match_rate": 0.0003,
+      "avg_time_us": 13.293244569795206,
+      "throughput_per_sec": 75226.1793386538
+    },
+    "event_bloom": {
+      "events_processed": 16,
+      "new_campaigns": 8,
+      "multi_stage_detected": 5,
+      "apt_campaigns_detected": 0,
+      "avg_time_us": 43.72143666842021,
+      "throughput_per_sec": 22872.075489740146
+    }
+  }
+}

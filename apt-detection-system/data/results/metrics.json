@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-11-04T05:08:37.990565",
+  "elapsed_time_sec": 0.08423304557800293,
+  "logs_processed": 25,
+  "pattern_matches": 25,
+  "correlations_found": 39,
+  "alerts_generated": 70,
+  "throughput_logs_per_sec": 296.7922717893706,
+  "avg_processing_time_us": 3270.1599632855505,
+  "pattern_match_rate": 1.0,
+  "correlation_rate": 1.56,
+  "alert_rate": 2.8,
+  "current_memory_mb": 31.171875,
+  "max_memory_mb": 0.0,
+  "avg_memory_mb": 0.0
+}

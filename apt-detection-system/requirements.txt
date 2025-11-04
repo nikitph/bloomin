@@ -1,0 +1,18 @@
+# Core dependencies
+pybloom-live==4.0.0          # Optimized Bloom filter implementation
+mmh3==4.0.1                   # MurmurHash3 for fast hashing
+numpy==1.24.3
+pandas==2.0.3
+
+# Optional enhancements
+sentence-transformers==2.2.2  # For Vector Quantization (Phase 2)
+scikit-learn==1.3.0           # For clustering (VQ)
+
+# Utilities
+pyyaml==6.0.1
+python-dateutil==2.8.2
+tqdm==4.66.1
+
+# Testing
+pytest==7.4.0
+pytest-benchmark==4.0.0

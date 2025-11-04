@@ -1,0 +1,487 @@
+[
+  {
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2021-44228",
+    "num_events": 8,
+    "stages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "time_span_days": 31.104166666666668,
+    "first_seen": "2024-10-01T10:00:00Z",
+    "last_seen": "2024-11-01T12:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2019-0708",
+    "num_events": 2,
+    "stages": [
+      2
+    ],
+    "time_span_days": 31.104166666666668,
+    "first_seen": "2024-10-01T10:00:00Z",
+    "last_seen": "2024-11-01T12:30:00Z"
+  },
+  {
+    "correlation_key": "192.168.50.100:apache:2.4.51:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-01T11:30:00Z",
+    "last_seen": "2024-10-01T11:30:00Z"
+  },
+  {
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      4
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-02T15:20:00Z",
+    "last_seen": "2024-10-02T15:20:00Z"
+  },
+  {
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-02T15:20:00Z",
+    "last_seen": "2024-10-02T15:20:00Z"
+  },
+  {
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2020-1472",
+    "num_events": 1,
+    "stages": [
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-02T15:20:00Z",
+    "last_seen": "2024-10-02T15:20:00Z"
+  },
+  {
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2018-13379",
+    "num_events": 2,
+    "stages": [
+      1,
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-02T15:20:00Z",
+    "last_seen": "2024-10-02T15:20:00Z"
+  },
+  {
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-44228",
+    "num_events": 5,
+    "stages": [
+      2,
+      3,
+      4
+    ],
+    "time_span_days": 20.4375,
+    "first_seen": "2024-10-05T08:45:00Z",
+    "last_seen": "2024-10-25T19:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2017-0144",
+    "num_events": 3,
+    "stages": [
+      1,
+      2
+    ],
+    "time_span_days": 20.4375,
+    "first_seen": "2024-10-05T08:45:00Z",
+    "last_seen": "2024-10-25T19:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-26855",
+    "num_events": 5,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 20.4375,
+    "first_seen": "2024-10-05T08:45:00Z",
+    "last_seen": "2024-10-25T19:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2018-13379",
+    "num_events": 2,
+    "stages": [
+      2,
+      3
+    ],
+    "time_span_days": 23.92222222222222,
+    "first_seen": "2024-10-08T14:22:00Z",
+    "last_seen": "2024-11-01T12:30:00Z"
+  },
+  {
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-10T09:15:00Z",
+    "last_seen": "2024-10-10T09:15:00Z"
+  },
+  {
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2019-0708",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-10T09:15:00Z",
+    "last_seen": "2024-10-10T09:15:00Z"
+  },
+  {
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2021-26855",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-10T09:15:00Z",
+    "last_seen": "2024-10-10T09:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2017-0144",
+    "num_events": 4,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 20.45138888888889,
+    "first_seen": "2024-10-15T03:30:00Z",
+    "last_seen": "2024-11-04T14:20:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2019-0708",
+    "num_events": 2,
+    "stages": [
+      2
+    ],
+    "time_span_days": 7.166666666666667,
+    "first_seen": "2024-10-15T03:30:00Z",
+    "last_seen": "2024-10-22T07:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2020-1472",
+    "num_events": 2,
+    "stages": [
+      1
+    ],
+    "time_span_days": 7.166666666666667,
+    "first_seen": "2024-10-15T03:30:00Z",
+    "last_seen": "2024-10-22T07:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2018-13379",
+    "num_events": 2,
+    "stages": [
+      2,
+      3
+    ],
+    "time_span_days": 7.166666666666667,
+    "first_seen": "2024-10-15T03:30:00Z",
+    "last_seen": "2024-10-22T07:30:00Z"
+  },
+  {
+    "correlation_key": "172.16.5.10:db-server-01:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-20T14:00:00Z",
+    "last_seen": "2024-10-20T14:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2021-44228",
+    "num_events": 2,
+    "stages": [
+      2,
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-22T07:30:00Z",
+    "last_seen": "2024-10-22T07:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2021-26855",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-22T07:30:00Z",
+    "last_seen": "2024-10-22T07:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2019-0708",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-25T19:15:00Z",
+    "last_seen": "2024-10-25T19:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2020-1472",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-25T19:15:00Z",
+    "last_seen": "2024-10-25T19:15:00Z"
+  },
+  {
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      1
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-28T05:00:00Z",
+    "last_seen": "2024-10-28T05:00:00Z"
+  },
+  {
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2019-0708",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-28T05:00:00Z",
+    "last_seen": "2024-10-28T05:00:00Z"
+  },
+  {
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2018-13379",
+    "num_events": 1,
+    "stages": [
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-10-28T05:00:00Z",
+    "last_seen": "2024-10-28T05:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      1
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-01T12:30:00Z",
+    "last_seen": "2024-11-01T12:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-02T10:00:00Z",
+    "last_seen": "2024-11-02T10:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2019-0708",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-02T10:00:00Z",
+    "last_seen": "2024-11-02T10:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2021-26855",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-02T10:00:00Z",
+    "last_seen": "2024-11-02T10:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2018-13379",
+    "num_events": 5,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 3.0416666666666665,
+    "first_seen": "2024-11-02T10:00:00Z",
+    "last_seen": "2024-11-05T11:00:00Z"
+  },
+  {
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2017-0144",
+    "num_events": 3,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 5.208333333333333,
+    "first_seen": "2024-11-03T08:45:00Z",
+    "last_seen": "2024-11-08T13:45:00Z"
+  },
+  {
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2019-0708",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-03T08:45:00Z",
+    "last_seen": "2024-11-03T08:45:00Z"
+  },
+  {
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2020-1472",
+    "num_events": 4,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 5.208333333333333,
+    "first_seen": "2024-11-03T08:45:00Z",
+    "last_seen": "2024-11-08T13:45:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-05T11:00:00Z",
+    "last_seen": "2024-11-05T11:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2020-1472",
+    "num_events": 1,
+    "stages": [
+      3
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-05T11:00:00Z",
+    "last_seen": "2024-11-05T11:00:00Z"
+  },
+  {
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      4
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-06T16:30:00Z",
+    "last_seen": "2024-11-06T16:30:00Z"
+  },
+  {
+    "correlation_key": "192.168.20.30:app-server-03:CVE-2017-0144",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-07T09:00:00Z",
+    "last_seen": "2024-11-07T09:00:00Z"
+  },
+  {
+    "correlation_key": "192.168.20.30:app-server-03:CVE-2018-13379",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-07T09:00:00Z",
+    "last_seen": "2024-11-07T09:00:00Z"
+  },
+  {
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2021-44228",
+    "num_events": 3,
+    "stages": [
+      2,
+      3
+    ],
+    "time_span_days": 2.1215277777777777,
+    "first_seen": "2024-11-09T07:20:00Z",
+    "last_seen": "2024-11-11T10:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2017-0144",
+    "num_events": 3,
+    "stages": [
+      1,
+      2
+    ],
+    "time_span_days": 2.1215277777777777,
+    "first_seen": "2024-11-09T07:20:00Z",
+    "last_seen": "2024-11-11T10:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2019-0708",
+    "num_events": 3,
+    "stages": [
+      1,
+      2
+    ],
+    "time_span_days": 2.1215277777777777,
+    "first_seen": "2024-11-09T07:20:00Z",
+    "last_seen": "2024-11-11T10:15:00Z"
+  },
+  {
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2018-13379",
+    "num_events": 3,
+    "stages": [
+      1,
+      2,
+      3
+    ],
+    "time_span_days": 2.1215277777777777,
+    "first_seen": "2024-11-09T07:20:00Z",
+    "last_seen": "2024-11-11T10:15:00Z"
+  },
+  {
+    "correlation_key": "192.168.50.200:web-app-04:CVE-2021-44228",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-10T15:30:00Z",
+    "last_seen": "2024-11-10T15:30:00Z"
+  },
+  {
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2021-26855",
+    "num_events": 1,
+    "stages": [
+      2
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-11T10:15:00Z",
+    "last_seen": "2024-11-11T10:15:00Z"
+  },
+  {
+    "correlation_key": "172.16.20.15:backup-server:CVE-2021-26855",
+    "num_events": 1,
+    "stages": [
+      1
+    ],
+    "time_span_days": 0.0,
+    "first_seen": "2024-11-12T06:00:00Z",
+    "last_seen": "2024-11-12T06:00:00Z"
+  }
+]

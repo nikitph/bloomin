@@ -1,0 +1,1911 @@
+[
+  {
+    "alert_id": "APT-20251104-C8344780",
+    "timestamp": "2025-11-04T05:08:37.911009",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-132510F2",
+    "timestamp": "2025-11-04T05:08:37.911053",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2021-44228",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-EA0816BF",
+    "timestamp": "2025-11-04T05:08:37.911235",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-721F0C84",
+    "timestamp": "2025-11-04T05:08:37.912708",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-01T11:30:00Z",
+        "source_ip": "192.168.50.100",
+        "target": "apache:2.4.51"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.50.100:apache:2.4.51:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-F24C05BD",
+    "timestamp": "2025-11-04T05:08:37.914879",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 4,
+        "technique": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-0BCEA028",
+    "timestamp": "2025-11-04T05:08:37.915087",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-54AEBC3D",
+    "timestamp": "2025-11-04T05:08:37.915205",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1078.002",
+        "technique_name": "Domain Accounts",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2020-1472",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-C93E0B6C",
+    "timestamp": "2025-11-04T05:08:37.915321",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-FA348BE6",
+    "timestamp": "2025-11-04T05:08:37.915356",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-02T15:20:00Z",
+        "source_ip": "172.16.0.25",
+        "target": "tomcat:9.0"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.0.25:tomcat:9.0:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-575DC28A",
+    "timestamp": "2025-11-04T05:08:37.919567",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-62002711",
+    "timestamp": "2025-11-04T05:08:37.919595",
+    "tier": 2,
+    "severity": "HIGH",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-44228",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-FD4D813D",
+    "timestamp": "2025-11-04T05:08:37.919615",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-576D61EB",
+    "timestamp": "2025-11-04T05:08:37.919639",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2017-0144",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-590C54AA",
+    "timestamp": "2025-11-04T05:08:37.919759",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-11DA902C",
+    "timestamp": "2025-11-04T05:08:37.923688",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-01T10:00:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-08T14:22:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      },
+      {
+        "stage": 4,
+        "technique": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "timestamp": "2024-10-08T14:22:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 7.18,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2021-44228",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-EB9AEC84",
+    "timestamp": "2025-11-04T05:08:37.923717",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-10-08T14:22:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-9407426D",
+    "timestamp": "2025-11-04T05:08:37.926183",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-10T09:15:00Z",
+        "source_ip": "192.168.1.100",
+        "target": "app-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-4C346C78",
+    "timestamp": "2025-11-04T05:08:37.926213",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-10T09:15:00Z",
+        "source_ip": "192.168.1.100",
+        "target": "app-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-22A2B568",
+    "timestamp": "2025-11-04T05:08:37.926237",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-10T09:15:00Z",
+        "source_ip": "192.168.1.100",
+        "target": "app-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.1.100:app-server-01:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-3D1A7C48",
+    "timestamp": "2025-11-04T05:08:37.929637",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 4,
+        "technique": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 7.3,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-44228",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-2AA68619",
+    "timestamp": "2025-11-04T05:08:37.929674",
+    "tier": 2,
+    "severity": "HIGH",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 7.3,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-26855",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-01A330C1",
+    "timestamp": "2025-11-04T05:08:37.932644",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-78CCF6BB",
+    "timestamp": "2025-11-04T05:08:37.932671",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-21243E0F",
+    "timestamp": "2025-11-04T05:08:37.932690",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1068",
+        "technique_name": "Exploitation for Privilege Escalation",
+        "tactic": "Privilege Escalation",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2020-1472",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-AC30E1DA",
+    "timestamp": "2025-11-04T05:08:37.932713",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-5788B6DD",
+    "timestamp": "2025-11-04T05:08:37.936915",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-20T14:00:00Z",
+        "source_ip": "172.16.5.10",
+        "target": "db-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.5.10:db-server-01:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-24E3B78F",
+    "timestamp": "2025-11-04T05:08:37.941329",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-2D357447",
+    "timestamp": "2025-11-04T05:08:37.941357",
+    "tier": 2,
+    "severity": "HIGH",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2021-44228",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-8661490D",
+    "timestamp": "2025-11-04T05:08:37.941392",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 7.17,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2017-0144",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-23B27CD8",
+    "timestamp": "2025-11-04T05:08:37.941431",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-10CE4D99",
+    "timestamp": "2025-11-04T05:08:37.941453",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 7.17,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-43271499",
+    "timestamp": "2025-11-04T05:08:37.944249",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-25T19:15:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-4A61AF8E",
+    "timestamp": "2025-11-04T05:08:37.944270",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1003.006",
+        "technique_name": "DCSync",
+        "tactic": "Credential Access",
+        "timestamp": "2024-10-25T19:15:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2020-1472",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-62FB58C8",
+    "timestamp": "2025-11-04T05:08:37.944310",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-05T08:45:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-12T16:00:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-10-25T19:15:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      },
+      {
+        "stage": 3,
+        "technique": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "tactic": "Credential Access",
+        "timestamp": "2024-10-25T19:15:00Z",
+        "source_ip": "10.0.2.15",
+        "target": "exchange:2019"
+      }
+    ],
+    "time_span_days": 20.44,
+    "correlation_key": "10.0.2.15:exchange:2019:CVE-2021-26855",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-2A2F63F6",
+    "timestamp": "2025-11-04T05:08:37.946785",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-28T05:00:00Z",
+        "source_ip": "192.168.100.50",
+        "target": "web-app-02"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-8062943A",
+    "timestamp": "2025-11-04T05:08:37.946813",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-28T05:00:00Z",
+        "source_ip": "192.168.100.50",
+        "target": "web-app-02"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-DE8E2DF2",
+    "timestamp": "2025-11-04T05:08:37.946838",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-10-28T05:00:00Z",
+        "source_ip": "192.168.100.50",
+        "target": "web-app-02"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.100.50:web-app-02:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-76DC1594",
+    "timestamp": "2025-11-04T05:08:37.951104",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-01T12:30:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-F3795448",
+    "timestamp": "2025-11-04T05:08:37.951156",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-10-08T14:22:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-01T12:30:00Z",
+        "source_ip": "10.0.1.5",
+        "target": "nginx:1.19"
+      }
+    ],
+    "time_span_days": 23.92,
+    "correlation_key": "10.0.1.5:nginx:1.19:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-7BBB5EE1",
+    "timestamp": "2025-11-04T05:08:37.955223",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-B98B6E27",
+    "timestamp": "2025-11-04T05:08:37.955247",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-0E33E7CE",
+    "timestamp": "2025-11-04T05:08:37.955270",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-88DCCE49",
+    "timestamp": "2025-11-04T05:08:37.955298",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-295ED8E6",
+    "timestamp": "2025-11-04T05:08:37.955324",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      },
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-1923DD50",
+    "timestamp": "2025-11-04T05:08:37.959503",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-02E98538",
+    "timestamp": "2025-11-04T05:08:37.959529",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-15E4CE79",
+    "timestamp": "2025-11-04T05:08:37.959550",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1068",
+        "technique_name": "Exploitation for Privilege Escalation",
+        "tactic": "Privilege Escalation",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2020-1472",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-4B3CD29D",
+    "timestamp": "2025-11-04T05:08:37.963465",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-15T03:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-10-22T07:30:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      },
+      {
+        "stage": 3,
+        "technique": "T1486",
+        "technique_name": "Data Encrypted for Impact",
+        "tactic": "Impact",
+        "timestamp": "2024-11-04T14:20:00Z",
+        "source_ip": "10.0.3.50",
+        "target": "file-server-01"
+      }
+    ],
+    "time_span_days": 20.45,
+    "correlation_key": "10.0.3.50:file-server-01:CVE-2017-0144",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-2D210B4B",
+    "timestamp": "2025-11-04T05:08:37.966674",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-05T11:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-A7C28647",
+    "timestamp": "2025-11-04T05:08:37.966697",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1078.002",
+        "technique_name": "Domain Accounts",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-05T11:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2020-1472",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-D0EBB4E2",
+    "timestamp": "2025-11-04T05:08:37.966753",
+    "tier": 3,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      },
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-05T11:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      },
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-02T10:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      },
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-05T11:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-05T11:00:00Z",
+        "source_ip": "10.0.4.20",
+        "target": "vpn-gateway"
+      }
+    ],
+    "time_span_days": 3.04,
+    "correlation_key": "10.0.4.20:vpn-gateway:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-E6EF86F2",
+    "timestamp": "2025-11-04T05:08:37.970080",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 4,
+        "technique": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "timestamp": "2024-11-06T16:30:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-69A2F16A",
+    "timestamp": "2025-11-04T05:08:37.970107",
+    "tier": 2,
+    "severity": "HIGH",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1068",
+        "technique_name": "Exploitation for Privilege Escalation",
+        "tactic": "Privilege Escalation",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 2,
+        "technique": "T1003.006",
+        "technique_name": "DCSync",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-06T16:30:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 3.32,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2020-1472",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-3CF294A8",
+    "timestamp": "2025-11-04T05:08:37.970135",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2020-1472",
+    "cve_name": "Zerologon",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1068",
+        "technique_name": "Exploitation for Privilege Escalation",
+        "tactic": "Privilege Escalation",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 2,
+        "technique": "T1003.006",
+        "technique_name": "DCSync",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-06T16:30:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078.002",
+        "technique_name": "Domain Accounts",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-06T16:30:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 3.32,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2020-1472",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-76BDEA7E",
+    "timestamp": "2025-11-04T05:08:37.972365",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-07T09:00:00Z",
+        "source_ip": "192.168.20.30",
+        "target": "app-server-03"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.20.30:app-server-03:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-A869E9B1",
+    "timestamp": "2025-11-04T05:08:37.972385",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-07T09:00:00Z",
+        "source_ip": "192.168.20.30",
+        "target": "app-server-03"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.20.30:app-server-03:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-F921CBCA",
+    "timestamp": "2025-11-04T05:08:37.975296",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-08T13:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 5.21,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2017-0144",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-7CC3140D",
+    "timestamp": "2025-11-04T05:08:37.975322",
+    "tier": 3,
+    "severity": "HIGH",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-03T08:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-08T13:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      },
+      {
+        "stage": 3,
+        "technique": "T1486",
+        "technique_name": "Data Encrypted for Impact",
+        "tactic": "Impact",
+        "timestamp": "2024-11-08T13:45:00Z",
+        "source_ip": "172.16.10.5",
+        "target": "domain-controller"
+      }
+    ],
+    "time_span_days": 5.21,
+    "correlation_key": "172.16.10.5:domain-controller:CVE-2017-0144",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-0C4DFB44",
+    "timestamp": "2025-11-04T05:08:37.978893",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-C455B4E4",
+    "timestamp": "2025-11-04T05:08:37.978917",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2017-0144",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-19BDD382",
+    "timestamp": "2025-11-04T05:08:37.978950",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2017-0144",
+    "cve_name": "EternalBlue (MS17-010)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2017-0144",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-C021DC48",
+    "timestamp": "2025-11-04T05:08:37.978970",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2019-0708",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-78E44550",
+    "timestamp": "2025-11-04T05:08:37.979007",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2019-0708",
+    "cve_name": "BlueKeep",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 2,
+        "technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "tactic": "Lateral Movement",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2019-0708",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-6DD8266D",
+    "timestamp": "2025-11-04T05:08:37.979041",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2018-13379",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-8A72B734",
+    "timestamp": "2025-11-04T05:08:37.981691",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-10T15:30:00Z",
+        "source_ip": "192.168.50.200",
+        "target": "web-app-04"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "192.168.50.200:web-app-04:CVE-2021-44228",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-E733FBC0",
+    "timestamp": "2025-11-04T05:08:37.985787",
+    "tier": 2,
+    "severity": "HIGH",
+    "cve": "CVE-2021-44228",
+    "cve_name": "Log4Shell",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "tactic": "Execution",
+        "timestamp": "2024-11-11T10:15:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 3,
+        "technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 2.12,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2021-44228",
+    "recommendation": "URGENT: Investigate immediately, consider isolating affected systems, alert security team"
+  },
+  {
+    "alert_id": "APT-20251104-794F4DB0",
+    "timestamp": "2025-11-04T05:08:37.985856",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 2,
+        "technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "timestamp": "2024-11-11T10:15:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  },
+  {
+    "alert_id": "APT-20251104-CEC7C51E",
+    "timestamp": "2025-11-04T05:08:37.985881",
+    "tier": 2,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-11T10:15:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 2.12,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-9ADAE31B",
+    "timestamp": "2025-11-04T05:08:37.986010",
+    "tier": 3,
+    "severity": "MEDIUM",
+    "cve": "CVE-2018-13379",
+    "cve_name": "FortiOS SSL VPN Path Traversal",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-11T10:15:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 2,
+        "technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "tactic": "Credential Access",
+        "timestamp": "2024-11-11T10:15:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      },
+      {
+        "stage": 3,
+        "technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-09T07:20:00Z",
+        "source_ip": "10.0.5.100",
+        "target": "rdp-server"
+      }
+    ],
+    "time_span_days": 2.12,
+    "correlation_key": "10.0.5.100:rdp-server:CVE-2018-13379",
+    "recommendation": "Investigate within 4 hours, monitor for escalation, review logs for related activity"
+  },
+  {
+    "alert_id": "APT-20251104-FD6AA98F",
+    "timestamp": "2025-11-04T05:08:37.988598",
+    "tier": 1,
+    "severity": "LOW",
+    "cve": "CVE-2021-26855",
+    "cve_name": "ProxyLogon (Exchange)",
+    "attack_chain": [
+      {
+        "stage": 1,
+        "technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "timestamp": "2024-11-12T06:00:00Z",
+        "source_ip": "172.16.20.15",
+        "target": "backup-server"
+      }
+    ],
+    "time_span_days": 0.0,
+    "correlation_key": "172.16.20.15:backup-server:CVE-2021-26855",
+    "recommendation": "Monitor and investigate within 24 hours, may be false positive or reconnaissance"
+  }
+]

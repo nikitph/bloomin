@@ -1,0 +1,299 @@
+{
+  "CVE-2021-44228": {
+    "name": "Log4Shell",
+    "severity": "CRITICAL",
+    "description": "Remote code execution via JNDI injection in Log4j",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "description": "Initial JNDI injection attempt",
+        "patterns": [
+          "${jndi:ldap://",
+          "${jndi:rmi://",
+          "${jndi:dns://",
+          "${jndi:iiop://",
+          "${jndi:corba://",
+          "${jndi:ldaps://",
+          "${lower:jndi:",
+          "${upper:jndi:",
+          "$%7Bjndi:",
+          "${${::-j}ndi:"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "description": "Remote code execution after payload delivery",
+        "patterns": [
+          "Runtime.exec",
+          "ProcessBuilder",
+          "/bin/bash -c",
+          "/bin/sh -c",
+          "powershell.exe",
+          "cmd.exe /c",
+          "wget http://",
+          "curl http://",
+          "Invoke-Expression",
+          "eval("
+        ]
+      },
+      {
+        "stage": 3,
+        "mitre_technique": "T1053",
+        "technique_name": "Scheduled Task/Job",
+        "description": "Persistence mechanism installation",
+        "patterns": [
+          "crontab @reboot",
+          "crontab -e",
+          "systemctl enable",
+          "systemctl start",
+          "schtasks /create",
+          "at 00:00",
+          "/etc/rc.local",
+          ".bashrc",
+          ".bash_profile"
+        ]
+      },
+      {
+        "stage": 4,
+        "mitre_technique": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "description": "Data exfiltration or C2 communication",
+        "patterns": [
+          "POST /upload",
+          "base64 -d",
+          "gzip -c",
+          "tar czf",
+          "scp -r",
+          "rsync -avz",
+          "curl -X POST",
+          "wget --post-file"
+        ]
+      }
+    ]
+  },
+  "CVE-2017-0144": {
+    "name": "EternalBlue (MS17-010)",
+    "severity": "CRITICAL",
+    "description": "SMB remote code execution vulnerability",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "description": "SMB vulnerability exploitation",
+        "patterns": [
+          "SMB1",
+          "\\\\PIPE\\\\",
+          "NT_STATUS_INSUFF_SERVER_RESOURCES",
+          "SMB2_TREE_CONNECT",
+          "Trans2",
+          "NT Trans",
+          "PeekNamedPipe",
+          "\\\\IPC$"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1059",
+        "technique_name": "Command and Scripting Interpreter",
+        "description": "Post-exploitation code execution",
+        "patterns": [
+          "psexec",
+          "wmic process",
+          "sc.exe create",
+          "net user",
+          "net localgroup",
+          "reg add"
+        ]
+      },
+      {
+        "stage": 3,
+        "mitre_technique": "T1486",
+        "technique_name": "Data Encrypted for Impact",
+        "description": "Ransomware payload deployment",
+        "patterns": [
+          ".encrypted",
+          ".locked",
+          ".wcry",
+          "README.txt",
+          "HOW_TO_DECRYPT",
+          "bitcoin address",
+          "AES-256"
+        ]
+      }
+    ]
+  },
+  "CVE-2019-0708": {
+    "name": "BlueKeep",
+    "severity": "CRITICAL",
+    "description": "Remote Desktop Services remote code execution",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1210",
+        "technique_name": "Exploitation of Remote Services",
+        "description": "RDP vulnerability exploitation",
+        "patterns": [
+          "MS_T120",
+          "rdpdr.sys",
+          "termdd.sys",
+          "RDP-Tcp",
+          "mstsc.exe",
+          "CredSSP"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1021.001",
+        "technique_name": "Remote Desktop Protocol",
+        "description": "Lateral movement via RDP",
+        "patterns": [
+          "LogonUser",
+          "CreateProcessAsUser",
+          "WTSQuerySessionInformation",
+          "RDP connection"
+        ]
+      }
+    ]
+  },
+  "CVE-2020-1472": {
+    "name": "Zerologon",
+    "severity": "CRITICAL",
+    "description": "Netlogon privilege escalation",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1068",
+        "technique_name": "Exploitation for Privilege Escalation",
+        "description": "Netlogon authentication bypass",
+        "patterns": [
+          "NetrServerReqChallenge",
+          "NetrServerAuthenticate3",
+          "Netlogon",
+          "DCERPC",
+          "zerologon"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1003.006",
+        "technique_name": "DCSync",
+        "description": "Domain credential dumping",
+        "patterns": [
+          "DsGetNCChanges",
+          "DRSUAPI",
+          "mimikatz",
+          "lsadump::dcsync",
+          "secretsdump.py"
+        ]
+      },
+      {
+        "stage": 3,
+        "mitre_technique": "T1078.002",
+        "technique_name": "Domain Accounts",
+        "description": "Abuse of compromised domain admin credentials",
+        "patterns": [
+          "Domain Admins",
+          "Enterprise Admins",
+          "krbtgt",
+          "Golden Ticket"
+        ]
+      }
+    ]
+  },
+  "CVE-2021-26855": {
+    "name": "ProxyLogon (Exchange)",
+    "severity": "CRITICAL",
+    "description": "Microsoft Exchange Server SSRF leading to RCE",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "description": "SSRF exploitation on Exchange",
+        "patterns": [
+          "/ecp/DDI/DDIService.svc",
+          "/owa/auth/",
+          "X-AnonResource-Backend",
+          "X-BEResource",
+          "autodiscover.json",
+          "mapi/emsmdb"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1505.003",
+        "technique_name": "Web Shell",
+        "description": "Web shell deployment",
+        "patterns": [
+          ".aspx",
+          "eval(Request",
+          "ProcessStartInfo",
+          "System.Diagnostics.Process",
+          "china chopper",
+          "webshell"
+        ]
+      },
+      {
+        "stage": 3,
+        "mitre_technique": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "description": "Credential dumping",
+        "patterns": [
+          "lsass.exe",
+          "procdump",
+          "comsvcs.dll",
+          "MiniDumpWriteDump",
+          "Task Manager"
+        ]
+      }
+    ]
+  },
+  "CVE-2018-13379": {
+    "name": "FortiOS SSL VPN Path Traversal",
+    "severity": "CRITICAL",
+    "description": "Arbitrary file read in Fortinet FortiOS SSL VPN",
+    "stages": [
+      {
+        "stage": 1,
+        "mitre_technique": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "description": "Path traversal exploitation",
+        "patterns": [
+          "/remote/fgt_lang",
+          "../../../",
+          "lang/../../",
+          "sslvpn_websession",
+          "/remote/login"
+        ]
+      },
+      {
+        "stage": 2,
+        "mitre_technique": "T1552.001",
+        "technique_name": "Credentials In Files",
+        "description": "Credential file extraction",
+        "patterns": [
+          "sslvpn_websession",
+          "session_cache",
+          "user credentials",
+          "config file"
+        ]
+      },
+      {
+        "stage": 3,
+        "mitre_technique": "T1078",
+        "technique_name": "Valid Accounts",
+        "description": "VPN access with stolen credentials",
+        "patterns": [
+          "SSL-VPN login",
+          "tunnel established",
+          "VPN connection"
+        ]
+      }
+    ]
+  }
+}
