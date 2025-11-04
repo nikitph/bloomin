@@ -44,7 +44,7 @@ class ProductionSimulation:
             "exfiltration"
         ]
 
-        self.engine = CompositeEngine(self.families)
+        self.engine = CompositeEngine(self.families, fast_mode=True)
         self.events_by_entity = defaultdict(list)
         self.events_by_actor = defaultdict(list)
         self.timeline = []

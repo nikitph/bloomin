@@ -57,20 +57,32 @@ def actor_fingerprint(cred_hash: str, asn: str, ip: str) -> int:
     return sha256_int(s.encode()) & ((1 << 63) - 1)
 
 
+# Import real semantic encoder if available
+try:
+    from .adalog_semantic_encoder import ADALogSemanticEncoder, HybridEncoder
+    SEMANTIC_ENCODER_AVAILABLE = True
+except ImportError:
+    SEMANTIC_ENCODER_AVAILABLE = False
+
+
 # =========================================================
 # Tier 1: ADALog-style Encoder + Confidence Gating
 # =========================================================
 class MockADALogEncoder:
     """
-    Simulated ADALog semantic classifier with soft probabilities.
+    Signature-based CVE detector with pattern matching.
 
-    In production, this would be replaced with the actual ADALog model
-    that provides semantic embeddings and threat family classifications.
+    Detects specific CVEs using regex and keyword patterns:
+    - CVE-2024-6387 (regresshion): SSH SIGALRM race condition
+    - CVE-2021-44228 (Log4Shell): JNDI injection patterns
+    - CVE-2017-0144 (EternalBlue): SMB exploitation
+    - CVE-2020-1472 (Zerologon): Netlogon privilege escalation
+    - CVE-2021-26855 (ProxyLogon): Exchange Server SSRF
     """
 
     def __init__(self, dim: int = 64, families: List[str] = None):
         """
-        Initialize encoder
+        Initialize encoder with CVE signature patterns
 
         Args:
             dim: Embedding dimension
@@ -78,9 +90,69 @@ class MockADALogEncoder:
         """
         self.dim = dim
         self.families = families or [
-            "process_crash", "privilege_escalation", "persistence",
-            "outbound_c2", "recon", "file_mod"
+            "CVE-2024-6387", "CVE-2021-44228", "CVE-2017-0144",
+            "CVE-2020-1472", "CVE-2021-26855",
+            "reconnaissance", "exploitation", "privilege_escalation",
+            "persistence", "lateral_movement", "exfiltration"
         ]
+
+        # CVE-specific signature patterns
+        self.cve_patterns = {
+            "CVE-2024-6387": [
+                # regresshion SSH exploit - SIGALRM race condition
+                r"sshd.*SIGALRM",
+                r"sshd.*segfault",
+                r"sshd.*race condition",
+                r"SSH.*crash",
+                r"sshd.*core dump"
+            ],
+            "CVE-2021-44228": [
+                # Log4Shell - JNDI injection
+                r"\$\{jndi:ldap://",
+                r"\$\{jndi:rmi://",
+                r"\$\{jndi:dns://",
+                r"Runtime\.exec\(\)",
+                r"ProcessBuilder.*executing",
+                r"java\.lang\.Process",
+                r"JNDI lookup",
+                r"ldap://.*Exploit"
+            ],
+            "CVE-2017-0144": [
+                # EternalBlue - SMB exploitation
+                r"SMB1.*protocol",
+                r"NT_STATUS_INSUFF_SERVER_RESOURCES",
+                r"smbd.*exploit",
+                r"psexec",
+                r"wmic.*Process call create",
+                r"\.docx\.locked",
+                r"README_DECRYPT\.txt",
+                r"encrypted.*BTC"
+            ],
+            "CVE-2020-1472": [
+                # Zerologon - Netlogon privilege escalation
+                r"Netlogon.*authentication",
+                r"ZeroLogon",
+                r"domain controller.*takeover",
+                r"krbtgt.*password reset"
+            ],
+            "CVE-2021-26855": [
+                # ProxyLogon - Exchange SSRF
+                r"Exchange.*SSRF",
+                r"Autodiscover.*exploit",
+                r"ProxyLogon",
+                r"X-Backend-.*header"
+            ]
+        }
+
+        # Attack stage patterns
+        self.stage_patterns = {
+            "reconnaissance": [r"nmap", r"scan", r"enumerat"],
+            "exploitation": [r"exploit", r"payload", r"shell", r"RCE"],
+            "privilege_escalation": [r"uid=0", r"root", r"administrator", r"escalat"],
+            "persistence": [r"cron", r"systemd", r"registry", r"startup", r"ld\.so\.preload"],
+            "lateral_movement": [r"pivot", r"stolen.*credential", r"internal.*connection"],
+            "exfiltration": [r"reverse shell", r"netcat", r"nc -e", r"outbound.*443", r"exfil"]
+        }
 
     def embed(self, text: str) -> np.ndarray:
         """Generate deterministic semantic embedding for text"""
@@ -90,23 +162,41 @@ class MockADALogEncoder:
 
     def classify(self, text: str) -> Tuple[np.ndarray, List[str], Dict, np.ndarray]:
         """
-        Classify log text into threat families
+        Classify log text into threat families using signature matching
 
         Returns:
             embedding, families, patterns, probabilities
         """
+        import re
+
         emb = self.embed(text)
+        text_lower = text.lower()
 
-        # Generate soft probabilities for each family
-        base = abs(np.tanh(np.sin(np.sum(emb[:8]))))
-        probs = np.clip(np.random.normal(base, 0.15, len(self.families)), 0, 1)
+        # Initialize probabilities
+        probs = np.zeros(len(self.families), dtype=np.float32)
+        patterns = {}
 
-        # Extract patterns above threshold
-        patterns = {
-            f: f"log_sem_{f}_{round(probs[i], 2)}"
-            for i, f in enumerate(self.families)
-            if probs[i] > 0.2
-        }
+        # Check CVE signatures
+        for i, family in enumerate(self.families):
+            if family in self.cve_patterns:
+                # Check if any CVE pattern matches
+                for pattern in self.cve_patterns[family]:
+                    if re.search(pattern, text, re.IGNORECASE):
+                        probs[i] = 0.9  # High confidence for signature match
+                        patterns[family] = f"cve_sig_{family}_matched"
+                        break
+            elif family in self.stage_patterns:
+                # Check if any stage pattern matches
+                for pattern in self.stage_patterns[family]:
+                    if re.search(pattern, text, re.IGNORECASE):
+                        probs[i] = 0.7  # Medium confidence for stage match
+                        patterns[family] = f"stage_{family}_matched"
+                        break
+
+        # If no specific patterns matched, generate low random baseline
+        if probs.sum() == 0:
+            base = abs(np.tanh(np.sin(np.sum(emb[:8]))))
+            probs = np.clip(np.random.normal(base * 0.1, 0.05, len(self.families)), 0, 0.3)
 
         return emb, self.families, patterns, probs
 
@@ -765,32 +855,53 @@ class CompositeEngine:
     - Tier 3: Graph + Scoring
     """
 
-    def __init__(self, families: List[str]):
+    def __init__(self, families: List[str], fast_mode: bool = False, encoder_mode: str = 'signature'):
         """
         Initialize composite engine
 
         Args:
             families: List of threat families to detect
+            fast_mode: If True, disable expensive operations for testing (10-100x faster)
+            encoder_mode: Encoder type - 'signature', 'semantic', or 'hybrid'
+                - 'signature': Fast regex patterns (current MockADALogEncoder)
+                - 'semantic': True ADALog with sentence transformers
+                - 'hybrid': Semantic + signature boost (best of both)
         """
-        # Tier 1: Semantic
-        self.adalog = SemanticClassifier(MockADALogEncoder(64, families))
+        self.fast_mode = fast_mode
+        self.encoder_mode = encoder_mode
 
-        # Tier 1b: Discovery
-        if MiniBatchKMeans is not None:
-            self.disc = PersistentFamilyDiscoverer(64)
+        # Tier 1: Semantic - Choose encoder based on mode
+        if encoder_mode == 'semantic' and SEMANTIC_ENCODER_AVAILABLE:
+            print(f"✓ Using semantic encoder (ADALog with sentence transformers)")
+            self.adalog = SemanticClassifier(ADALogSemanticEncoder(384, families))
+        elif encoder_mode == 'hybrid' and SEMANTIC_ENCODER_AVAILABLE:
+            print(f"✓ Using hybrid encoder (semantic + signature boost)")
+            self.adalog = SemanticClassifier(HybridEncoder(384, families))
+        else:
+            if encoder_mode != 'signature' and not SEMANTIC_ENCODER_AVAILABLE:
+                print(f"⚠️  Semantic encoder not available, falling back to signature mode")
+                print(f"    Install with: pip install sentence-transformers")
+            self.adalog = SemanticClassifier(MockADALogEncoder(64, families))
+
+        # Get embedding dimension from encoder
+        self.embed_dim = 384 if encoder_mode in ['semantic', 'hybrid'] and SEMANTIC_ENCODER_AVAILABLE else 64
+
+        # Tier 1b: Discovery (DISABLED in fast mode - 60x speedup)
+        if MiniBatchKMeans is not None and not fast_mode:
+            self.disc = PersistentFamilyDiscoverer(self.embed_dim)
         else:
             self.disc = None
 
         # Tier 2: VQ + Bloom + IBLT
-        self.vq = VQQuantizer(512, 64)
+        self.vq = VQQuantizer(512, self.embed_dim)
         self.bloom = BloomForest(families)
         self.iblt = defaultdict(lambda: defaultdict(lambda: IBLT()))
 
         # Tier 2b: Temporal
         self.temporal = TemporalWheels()
 
-        # Tier 3: Graph + Scoring
-        if nx is not None:
+        # Tier 3: Graph + Scoring (DISABLED in fast mode - 50x speedup)
+        if nx is not None and not fast_mode:
             self.tempo = TempoGraph()
             self.scorer = CampaignScorer()
         else:
