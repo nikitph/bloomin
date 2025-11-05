@@ -200,6 +200,51 @@ class ADALogSemanticEncoder:
 
         return emb, self.families, patterns, probs
 
+    def classify_batch(self, texts: List[str]) -> List[Tuple[np.ndarray, List[str], Dict, np.ndarray]]:
+        """
+        Classify batch of logs using semantic similarity (MUCH faster than sequential)
+
+        Args:
+            texts: List of log message texts
+
+        Returns:
+            List of (embedding, families, patterns, probabilities) for each log
+        """
+        if len(texts) == 0:
+            return []
+
+        # Batch embed all texts at once (5-10x faster!)
+        embeddings = self.model.encode(
+            texts,
+            batch_size=32,
+            show_progress_bar=False,
+            convert_to_numpy=True
+        ).astype(np.float32)
+
+        # Process each embedding
+        results = []
+        for emb in embeddings:
+            probs = np.zeros(len(self.families), dtype=np.float32)
+            patterns = {}
+
+            for i, family in enumerate(self.families):
+                if family in self.family_embeddings:
+                    family_emb = self.family_embeddings[family]
+                    similarity = np.dot(emb, family_emb) / (
+                        np.linalg.norm(emb) * np.linalg.norm(family_emb)
+                    )
+                    prob = 1 / (1 + np.exp(-15 * (similarity - 0.25)))
+                    probs[i] = prob
+
+                    if similarity > 0.2:
+                        patterns[family] = f"semantic_{family}_sim_{similarity:.3f}"
+                else:
+                    probs[i] = 0.01
+
+            results.append((emb, self.families, patterns, probs))
+
+        return results
+
     def add_family(self, family_name: str, example_logs: List[str]):
         """
         Add a new threat family by learning from example logs
