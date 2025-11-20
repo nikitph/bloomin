@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "created_at": "2025-11-20T04:50:02.221943+00:00",
+  "config": {
+    "cooccur_min": 1,
+    "pmi_min": 0.0,
+    "max_degree": 100,
+    "min_degree": 1,
+    "window_size": 8,
+    "bloom_bits": 2048,
+    "bloom_hashes": 5,
+    "max_neighborhood": 300
+  }
+}
