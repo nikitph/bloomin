@@ -46,6 +46,19 @@ tower-http = { version = "0.5", features = ["cors", "trace"] }
 pretty_assertions = "1"
 criterion = "0.5"
 anyhow = "1.0"
+tantivy = "0.22"
+
+[[bench]]
+name = "comparison"
+harness = false
+
+[[bench]]
+name = "indexing_bench"
+harness = false
+
+[[bench]]
+name = "three_way_comparison"
+harness = false
 
 [profile.release]
 lto = true

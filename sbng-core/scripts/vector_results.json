@@ -1,0 +1,122 @@
+[
+  {
+    "query": "electric car company",
+    "relevant_docs": [
+      "d1",
+      "d2",
+      "d3"
+    ],
+    "retrieved": [
+      {
+        "doc_id": "d1",
+        "score": -0.8042601346969604
+      },
+      {
+        "doc_id": "d3",
+        "score": -1.003137230873108
+      },
+      {
+        "doc_id": "d2",
+        "score": -1.0982450246810913
+      },
+      {
+        "doc_id": "d4",
+        "score": -1.5645142793655396
+      },
+      {
+        "doc_id": "d5",
+        "score": -1.6529278755187988
+      }
+    ],
+    "latency_ms": 2.0058155059814453
+  },
+  {
+    "query": "fast food restaurant",
+    "relevant_docs": [
+      "d4"
+    ],
+    "retrieved": [
+      {
+        "doc_id": "d4",
+        "score": -0.676525354385376
+      },
+      {
+        "doc_id": "d5",
+        "score": -1.0048413276672363
+      },
+      {
+        "doc_id": "d1",
+        "score": -1.7401721477508545
+      },
+      {
+        "doc_id": "d2",
+        "score": -1.7885124683380127
+      },
+      {
+        "doc_id": "d3",
+        "score": -1.9923357963562012
+      }
+    ],
+    "latency_ms": 0.030040740966796875
+  },
+  {
+    "query": "battery technology",
+    "relevant_docs": [
+      "d1",
+      "d2",
+      "d3"
+    ],
+    "retrieved": [
+      {
+        "doc_id": "d3",
+        "score": -0.9757753014564514
+      },
+      {
+        "doc_id": "d2",
+        "score": -1.2547945976257324
+      },
+      {
+        "doc_id": "d1",
+        "score": -1.4909164905548096
+      },
+      {
+        "doc_id": "d5",
+        "score": -1.976637601852417
+      },
+      {
+        "doc_id": "d4",
+        "score": -2.110759735107422
+      }
+    ],
+    "latency_ms": 0.027179718017578125
+  },
+  {
+    "query": "credit risk",
+    "relevant_docs": [
+      "d5"
+    ],
+    "retrieved": [
+      {
+        "doc_id": "d3",
+        "score": -1.8510323762893677
+      },
+      {
+        "doc_id": "d1",
+        "score": -1.8602569103240967
+      },
+      {
+        "doc_id": "d2",
+        "score": -1.908453106880188
+      },
+      {
+        "doc_id": "d4",
+        "score": -1.9384684562683105
+      },
+      {
+        "doc_id": "d5",
+        "score": -2.0095808506011963
+      }
+    ],
+    "latency_ms": 0.025033950805664062
+  }
+]

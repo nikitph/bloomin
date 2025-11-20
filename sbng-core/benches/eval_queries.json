@@ -1,0 +1,18 @@
+[
+  {
+    "query": "electric car company",
+    "relevant_docs": ["d1", "d2", "d3"]
+  },
+  {
+    "query": "fast food restaurant",
+    "relevant_docs": ["d4"]
+  },
+  {
+    "query": "battery technology",
+    "relevant_docs": ["d1", "d2", "d3"]
+  },
+  {
+    "query": "credit risk",
+    "relevant_docs": ["d5"]
+  }
+]
