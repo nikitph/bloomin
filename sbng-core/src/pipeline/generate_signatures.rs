@@ -42,7 +42,10 @@ impl SignatureGenerationPipeline {
                 let neighborhood = build_neighborhood(inner, node_idx, &self.config);
 
                 // Create Bloom fingerprint.
-                let mut fp = BloomFingerprint::new(self.config.bloom_bits, self.config.bloom_hashes);
+                let mut fp = BloomFingerprint::new(
+                    self.config.concept_bloom.bloom_bits,
+                    self.config.concept_bloom.bloom_hashes
+                );
 
                 // Always insert the concept itself.
                 fp.insert_concept(cid);
@@ -211,7 +214,7 @@ fn build_neighborhood(
     // Truncate to max_neighborhood
     scored
         .into_iter()
-        .take(config.max_neighborhood)
+        .take(config.concept_bloom.max_neighborhood)
         .map(|(_, cid)| cid)
         // Avoid including center_id itself; Bloom will insert the center separately.
         .filter(|cid| *cid != center_id)

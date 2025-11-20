@@ -161,3 +161,17 @@ cython_debug/
 #.idea/
 
 /apt-detection-system/data/
+/sbng-core/data/synthetic_10k.jsonl
+/sbng-core/data/wikipedia_10k.jsonl
+/sbng-core/index_10k/concepts.bin
+/sbng-core/index_10k/docs.bin
+/sbng-core/index_10k/interner.bin
+/sbng-core/index_10k/metadata.json
+/sbng-core/index_wikipedia_10k/concepts.bin
+/sbng-core/index_wikipedia_10k/docs.bin
+/sbng-core/index_wikipedia_10k/interner.bin
+/sbng-core/index_wikipedia_10k/metadata.json
+/sbng-core/index_wikipedia_10k_v3/concepts.bin
+/sbng-core/index_wikipedia_10k_v3/docs.bin
+/sbng-core/index_wikipedia_10k_v3/interner.bin
+/sbng-core/index_wikipedia_10k_v3/metadata.json

@@ -73,9 +73,15 @@ impl BloomFingerprint {
         self.bits.union_with(&other.bits);
     }
 
-    /// Fill ratio (for debug): bits_set / m
+    /// Compute fill ratio (fraction of bits set).
     pub fn fill_ratio(&self) -> f32 {
-        self.popcount() as f32 / self.m as f32
+        let set_bits = self.bits.count_ones(..);
+        set_bits as f32 / self.m as f32
+    }
+
+    /// Count the number of set bits.
+    pub fn count_set_bits(&self) -> usize {
+        self.bits.count_ones(..)
     }
 }
 
@@ -83,7 +89,7 @@ impl BloomFingerprint {
 /// J(A, B) = |A ∩ B| / |A ∪ B|
 pub fn jaccard(a: &BloomFingerprint, b: &BloomFingerprint) -> f32 {
     let inter = a.and_count(b) as f32;
-    let union = (a.popcount() + b.popcount()) as f32 - inter;
+    let union = (a.count_set_bits() + b.count_set_bits()) as f32 - inter;
     if union == 0.0 {
         0.0
     } else {

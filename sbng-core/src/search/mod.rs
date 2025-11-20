@@ -8,6 +8,9 @@ use crate::bloom::BloomFingerprint;
 use crate::corpus::ConceptExtractor;
 use crate::types::ConceptId;
 
+pub mod doc_fingerprints;
+pub mod concept_stats;
+
 /// Index storing document fingerprints.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DocIndex {

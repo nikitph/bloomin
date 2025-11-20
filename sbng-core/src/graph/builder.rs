@@ -100,6 +100,9 @@ impl ConceptGraphBuilder {
             self.graph.add_edge(idx_a, idx_b, edge);
         }
 
-        Ok(ConceptGraph { inner: self.graph })
+        Ok(ConceptGraph {
+            inner: self.graph,
+            degree_map: std::collections::HashMap::new(), // Will be computed after pruning
+        })
     }
 }

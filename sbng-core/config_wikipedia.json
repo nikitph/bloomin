@@ -1,0 +1,17 @@
+{
+    "cooccur_min": 5,
+    "pmi_min": 2.0,
+    "max_degree": 80,
+    "min_degree": 2,
+    "window_size": 8,
+    "concept_bloom": {
+        "bloom_bits": 2048,
+        "bloom_hashes": 5,
+        "max_neighborhood": 150
+    },
+    "doc_bloom": {
+        "bloom_bits": 4096,
+        "bloom_hashes": 5,
+        "max_neighborhood": 64
+    }
+}

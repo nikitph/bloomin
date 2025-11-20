@@ -1393,6 +1393,7 @@ dependencies = [
  "chrono",
  "clap",
  "criterion",
+ "dashmap",
  "fixedbitset 0.5.7",
  "lasso",
  "petgraph",

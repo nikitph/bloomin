@@ -74,8 +74,8 @@ pub async fn start_server(index_dir: PathBuf, port: u16) -> anyhow::Result<()> {
         extractor,
         &concept_fps,
         &doc_index,
-        metadata.config.bloom_bits,
-        metadata.config.bloom_hashes,
+        metadata.config.concept_bloom.bloom_bits,
+        metadata.config.concept_bloom.bloom_hashes,
     ));
 
     // 4. Setup App State
