@@ -63,6 +63,14 @@ enum Commands {
         /// Port to listen on
         #[arg(long, default_value_t = 3000)]
         port: u16,
+
+        /// Path to corpus JSONL file (required for re-ranking)
+        #[arg(long)]
+        corpus: Option<PathBuf>,
+
+        /// Path to re-ranker model (ONNX)
+        #[arg(long)]
+        model: Option<PathBuf>,
     },
 
     /// Diagnose index health (graph stats, Bloom fill rates, hubs).
@@ -90,8 +98,9 @@ async fn main() -> anyhow::Result<()> {
         Commands::Repl { index_dir } => {
             cmd_repl(index_dir)?;
         }
-        Commands::Serve { index_dir, port } => {
-            sbng_core::server::start_server(index_dir, port).await?;
+        Commands::Serve { index_dir, port, corpus, model } => {
+            println!("Starting server on port {}...", port);
+            sbng_core::server::start_server(index_dir, port, corpus, model).await?;
         }
         Commands::Diagnose { index_dir } => {
             cmd_diagnose(index_dir)?;
@@ -249,8 +258,9 @@ fn cmd_query(index_dir: PathBuf, q: &str, top_k: usize) -> anyhow::Result<()> {
         extractor,
         &concept_fps,
         &doc_index,
-        metadata.config.concept_bloom.bloom_bits,
-        metadata.config.concept_bloom.bloom_hashes,
+        metadata.config.doc_bloom.bloom_bits,
+        metadata.config.doc_bloom.bloom_hashes,
+        None,
     );
 
     // 4) Run query
@@ -289,8 +299,9 @@ fn cmd_repl(index_dir: PathBuf) -> anyhow::Result<()> {
         extractor,
         &concept_fps,
         &doc_index,
-        metadata.config.concept_bloom.bloom_bits,
-        metadata.config.concept_bloom.bloom_hashes,
+        metadata.config.doc_bloom.bloom_bits,
+        metadata.config.doc_bloom.bloom_hashes,
+        None,
     );
 
     println!("SBNG REPL. Type a query, or just press Enter to exit.");

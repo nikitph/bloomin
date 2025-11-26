@@ -23,6 +23,11 @@ impl BloomFingerprint {
         Self { bits, m, k }
     }
 
+    /// Get the size of the Bloom filter in bits.
+    pub fn len(&self) -> usize {
+        self.m
+    }
+
     #[inline]
     fn hash_with_seed(x: u64, seed: u64) -> u64 {
         let mut h = XxHash64::with_seed(seed);

@@ -44,6 +44,10 @@ tower-http = { version = "0.5", features = ["cors", "trace"] }
 
 # Concurrent data structures
 dashmap = "6.0"
+ort = { version = "2.0.0-rc.9", features = ["load-dynamic", "ndarray"] }
+tokenizers = "0.20.3"
+ndarray = "0.16"
+reqwest = { version = "0.11", features = ["blocking", "json"] }
 
 [dev-dependencies]
 pretty_assertions = "1"
