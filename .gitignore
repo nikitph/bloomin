@@ -175,3 +175,6 @@ cython_debug/
 /sbng-core/index_wikipedia_10k_v3/docs.bin
 /sbng-core/index_wikipedia_10k_v3/interner.bin
 /sbng-core/index_wikipedia_10k_v3/metadata.json
+/brewa-experiment/hybrid_rewa_20news.pth
+/brewa-experiment/hybrid_rewa_best.pth
+/brewa-experiment/learned_rewa_encoder.pth
