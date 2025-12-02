@@ -113,51 +113,98 @@ def split_categories(embeddings, labels, target_names, n_unseen=5):
     
     return seen_emb, seen_labels, unseen_emb, unseen_labels
 
-def evaluate_recall(model, embeddings, labels, top_k=10, batch_size=1000):
-    """Evaluate Recall@K."""
+def evaluate_recall(model, embeddings, labels, top_k=10, batch_size=1000, database_emb=None, database_labels=None):
+    """
+    Evaluate Recall@K.
+    
+    Args:
+        model: The encoder model
+        embeddings: Query embeddings (or both query and database if database_emb is None)
+        labels: Query labels
+        top_k: Number of neighbors to retrieve
+        batch_size: Batch size for processing
+        database_emb: Optional separate database embeddings (gallery)
+        database_labels: Optional separate database labels
+    """
     model.eval()
     model.to(DEVICE)
     embeddings = embeddings.to(DEVICE)
     labels = labels.to(DEVICE)
     
-    n_samples = len(embeddings)
+    if database_emb is not None:
+        database_emb = database_emb.to(DEVICE)
+        database_labels = database_labels.to(DEVICE)
+        use_separate_database = True
+    else:
+        database_emb = embeddings
+        database_labels = labels
+        use_separate_database = False
+    
+    n_queries = len(embeddings)
+    n_database = len(database_emb)
     recall_sum = 0
     
     with torch.no_grad():
-        # Encode all
-        encoded = []
-        for i in range(0, n_samples, batch_size):
+        # Encode queries
+        query_encoded = []
+        for i in range(0, n_queries, batch_size):
             batch = embeddings[i:i+batch_size]
             enc = model(batch.unsqueeze(0), add_noise=False).squeeze(0)
-            encoded.append(enc)
-        encoded = torch.cat(encoded, dim=0)
+            query_encoded.append(enc)
+        query_encoded = torch.cat(query_encoded, dim=0)
         
-        # Compute recall in batches to save memory
-        for i in range(0, n_samples, batch_size):
-            end = min(i + batch_size, n_samples)
-            batch_encoded = encoded[i:end]
+        # Encode database
+        if use_separate_database:
+            db_encoded = []
+            for i in range(0, n_database, batch_size):
+                batch = database_emb[i:i+batch_size]
+                enc = model(batch.unsqueeze(0), add_noise=False).squeeze(0)
+                db_encoded.append(enc)
+            db_encoded = torch.cat(db_encoded, dim=0)
+        else:
+            db_encoded = query_encoded
+        
+        # Compute recall in batches
+        for i in range(0, n_queries, batch_size):
+            end = min(i + batch_size, n_queries)
+            batch_queries = query_encoded[i:end]
             
-            # Similarity: [batch, N]
-            sim = torch.mm(batch_encoded, encoded.T)
+            # Similarity: [batch, N_database]
+            sim = torch.mm(batch_queries, db_encoded.T)
             
             # Top-k
-            _, indices = sim.topk(top_k + 1, dim=1)
+            # If using separate database, we don't need to exclude self (unless overlap)
+            # If using same database, we need to exclude self (index 0)
+            k_to_retrieve = top_k + 1 if not use_separate_database else top_k
+            _, indices = sim.topk(k_to_retrieve, dim=1)
             
             # Calculate recall for this batch
-            for j in range(len(batch_encoded)):
+            for j in range(len(batch_queries)):
                 global_idx = i + j
-                neighbors = indices[j, 1:] # Exclude self
-                neighbor_labels = labels[neighbors]
+                query_label = labels[global_idx]
                 
-                correct = (neighbor_labels == labels[global_idx]).sum().item()
-                # Max possible is min(k, num_same_class - 1)
-                num_same = (labels == labels[global_idx]).sum().item()
-                max_possible = min(top_k, num_same - 1)
+                if not use_separate_database:
+                    neighbors = indices[j, 1:] # Exclude self
+                else:
+                    neighbors = indices[j, :]
+                
+                neighbor_labels = database_labels[neighbors]
+                
+                correct = (neighbor_labels == query_label).sum().item()
+                
+                # Max possible matches in database
+                num_same_in_db = (database_labels == query_label).sum().item()
+                
+                # If self-retrieval, subtract 1 (the query itself)
+                if not use_separate_database:
+                    num_same_in_db -= 1
+                
+                max_possible = min(top_k, num_same_in_db)
                 
                 if max_possible > 0:
                     recall_sum += correct / max_possible
     
-    return recall_sum / n_samples
+    return recall_sum / n_queries
 
 def run_experiment():
     # 1. Load Data
