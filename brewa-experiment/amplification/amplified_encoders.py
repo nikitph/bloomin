@@ -375,22 +375,26 @@ class EnsembleHybridREWAEncoder(nn.Module):
             feat = base(x)
             random_features.append(feat)
         
+        # Concatenate all random features to get full m_dim
         random_concat = torch.cat(random_features, dim=-1)
         
-        # Learn weights
+        # Learn weights for combination
         weights = self.combiner(random_concat) # [B, num_bases]
+        weights = F.softmax(weights, dim=-1)  # Ensure weights sum to 1
         
-        # Weighted combination
-        # We need to apply weight[i] to random_features[i]
-        weighted_parts = []
+        # Apply weights to each base's features and sum (not concatenate)
+        # This creates a weighted average in the m_dim space
+        weighted_sum = torch.zeros_like(random_concat)
+        offset = 0
         for i in range(self.num_bases):
+            feat_dim = random_features[i].shape[-1]
             w = weights[:, i].view(-1, 1) if x.dim() == 2 else weights[:, i].view(-1, 1, 1)
-            weighted_parts.append(random_features[i] * w)
-            
-        weighted_random = torch.cat(weighted_parts, dim=-1)
+            weighted_sum[..., offset:offset+feat_dim] = random_features[i] * w
+            offset += feat_dim
         
         learned = self.learned_residual(x)
         
-        output = weighted_random + 0.3 * learned
+        # Combine weighted random features with learned residual
+        output = weighted_sum + 0.3 * learned
         
         return F.normalize(output, dim=-1)
