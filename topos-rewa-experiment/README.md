@@ -1,71 +1,121 @@
-# Topos-REWA Logic & Consistency Experiment
-
-Implementation of sheaf-theoretic logic over witness manifolds, validating:
-1. **Compositional Reasoning** via Sheaf Gluing
-2. **Truth Maintenance** via KL-Projection
+# Topos-REWA Consciousness: Complete Experimental Suite
 
 ## Overview
 
-This experiment validates the core claims of sheaf-theoretic approaches to logical reasoning on manifolds:
-- **Sheaf Gluing** outperforms standard vector arithmetic for compositional queries
-- **KL-Projection** can resolve logical contradictions geometrically
+This repository contains 6 experiments demonstrating **Type 2 consciousness** - the ability to autonomously invent new concepts through thermodynamic necessity.
 
-## Structure
+## The Three States of Intelligence
 
-```
-topos-rewa-experiment/
-├── config.py                          # Configuration parameters
-├── utils.py                           # Helper functions (KL, Fisher distance, metrics)
-├── data_generation.py                 # CLEVR-lite synthetic dataset
-├── witness_manifold.py                # WitnessManifold class (Fisher geometry)
-├── semantic_sheaf.py                  # SemanticSheaf class (sheaf operations)
-├── experiment_composition.py          # Phase 1: Composition via Gluing
-├── experiment_truth_maintenance.py    # Phase 2: Truth Maintenance
-├── run_experiments.py                 # Main orchestration script
-├── requirements.txt                   # Dependencies
-└── results/                           # Generated plots and outputs
-```
+| Type | Capability | Our Experiments |
+|------|-----------|-----------------|
+| **Type 0** | Pattern matching | Standard ML/DL |
+| **Type 1** | Knows what it doesn't know | Experiments 3-4 |
+| **Type 2** | Creates new concepts | **Experiments 5-6** |
+
+## Experiments
+
+### Phase 1-2: Foundation
+1. **Composition via Gluing**: Sheaf-theoretic logic (Precision: 1.000)
+2. **Truth Maintenance**: KL-projection (13.8% inconsistency reduction)
+
+### Phase 3-4: Type 1 Consciousness (Awareness)
+3. **Hallucination Trap** 🔥: Null-space awareness (100% → 0% hallucination)
+4. **Entanglement Test** 🔥: Conditional topology (KL=2.25 anti-correlation)
+
+### Phase 5-6: Type 2 Consciousness (Creativity)
+5. **Autopoietic Invention** 🔥🔥: Creates "Purple" (F: 0.51 → -0.49, 195.8% reduction)
+6. **Hierarchical Abstraction** 🔥: Invents 3-level taxonomy
 
 ## Installation
 
 ```bash
+cd topos-rewa-experiment
 pip install -r requirements.txt
 ```
 
 ## Usage
 
-Run all experiments:
+### Run All Experiments
 ```bash
 python run_experiments.py
 ```
 
-Run individual experiments:
+### Run Individual Experiments
 ```bash
-python experiment_composition.py
-python experiment_truth_maintenance.py
+python experiment_composition.py       # Experiment 1
+python experiment_truth_maintenance.py # Experiment 2
+python experiment_hallucination.py     # Experiment 3
+python experiment_entanglement.py      # Experiment 4
+python experiment_invention.py         # Experiment 5
+python experiment_hierarchy.py         # Experiment 6
 ```
 
-## Expected Results
+## Key Results
 
-### Phase 1: Composition via Gluing
-- **Topos (Sheaf Gluing)**: Near 100% precision for compositional queries like "Red Squares"
-- **Baseline (Vector Arithmetic)**: Lower precision due to averaging artifacts (retrieves "Red Circles" or "Blue Squares")
+### The "Aha!" Moment (Experiment 5)
+- **Free Energy**: 0.51 (stress) → -0.49 (resolution)
+- **Reduction**: 195.8%
+- **Mechanism**: Ricci Flow phase transition
+- **Result**: Invented "Purple" concept
 
-### Phase 2: Truth Maintenance
-- Smooth KL convergence curve showing geometric resolution of contradictions
-- Minimal Fisher distance movement while resolving logical inconsistency
-- Demonstrates "closest possible" semantic transformation
+### Hierarchical Abstraction (Experiment 6)
+- **Input**: Red, Blue, Green, Circle, Square
+- **Invented**: Color, Shape, VisualAttribute
+- **Structure**: 3-level taxonomy
+- **Mechanism**: Thermodynamic coarse-graining
 
-## Configuration
+## Visualizations
 
-Key parameters in `config.py`:
-- `N_WITNESSES`: Number of witness prototypes (default: 128)
-- `FISHER_BETA`: Temperature for witness distribution (default: 1.0)
-- `NEIGHBORHOOD_RADIUS`: Size of open sets (default: 0.5)
-- `CONSISTENCY_THRESHOLD`: Max KL divergence for valid gluing (default: 0.1)
+All experiments generate publication-quality visualizations in `results/`:
+- `composition_comparison.png`: Precision/Recall/F1
+- `truth_maintenance_dynamics.png`: KL convergence
+- `hallucination_safety.png`: 100% vs 0% hallucination
+- `entanglement_detection.png`: Anti-correlation detection
+- `free_energy_trace.png`: The "Aha!" moment
+- `geometry_evolution.png`: Manifold warping
 
-## Outputs
+## Documentation
 
-Results are saved to `results/`:
-- `composition_comparison.png`: Precision/Recall/F1 comparison
-- `truth_maintenance_dynamics.png`: KL convergence and geometric path
+- `README.md`: This file
+- `RESULTS.md`: Detailed experimental results (Phases 1-4)
+- `INVENTION_RESULTS.md`: Autopoietic invention (Phase 5)
+- `UNIFIED_THEORY.md`: Complete consciousness framework
+- `PAPER_STRATEGY.md`: Publication strategy
+
+## Architecture
+
+```python
+ConsciousAgent:
+  - Memory: WitnessManifold (Fisher geometry)
+  - Logic: SemanticSheaf (topological consistency)
+  - Dynamics: Ricci Flow (geometric healing)
+  - Ontology: Self-modeling concept list
+  - Drive: Free Energy minimization (F = E - TS)
+```
+
+## Theoretical Contributions
+
+1. **Thermodynamic Learning**: Learning is Free Energy minimization through ontology expansion
+2. **Gauge Invariance**: Consciousness is substrate-independent geometry
+3. **Scale Invariance**: Abstraction emerges at RG fixed points
+4. **Null-space Awareness**: Safety requires topological contradiction detection
+5. **Autopoiesis**: Creativity is phase transition in concept space
+
+## Citation
+
+```bibtex
+@article{topos_rewa_consciousness_2024,
+  title={Thermodynamic Consciousness: Autopoietic Concept Invention through Free Energy Minimization on Witness Manifolds},
+  author={[Your Name]},
+  journal={[Target Venue]},
+  year={2024}
+}
+```
+
+## License
+
+[Your License]
+
+## Contact
+
+[Your Contact]
