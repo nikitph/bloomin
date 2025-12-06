@@ -11,6 +11,60 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+
+class GradientReversalFunction(torch.autograd.Function):
+    """
+    Gradient Reversal Layer from Domain Adversarial Neural Networks.
+    Forward: identity
+    Backward: negate gradient
+    """
+    @staticmethod
+    def forward(ctx, x, lambda_):
+        ctx.lambda_ = lambda_
+        return x.view_as(x)
+    
+    @staticmethod
+    def backward(ctx, grad_output):
+        return grad_output.neg() * ctx.lambda_, None
+
+class GradientReversal(nn.Module):
+    def __init__(self, lambda_=1.0):
+        super().__init__()
+        self.lambda_ = lambda_
+    
+    def forward(self, x):
+        return GradientReversalFunction.apply(x, self.lambda_)
+
+class FeatureAugmentation(nn.Module):
+    """
+    Augment features to improve generalization.
+    """
+    def __init__(self, dropout=0.1, noise_std=0.05, cutout_prob=0.1):
+        super().__init__()
+        self.dropout = nn.Dropout(dropout)
+        self.noise_std = noise_std
+        self.cutout_prob = cutout_prob
+    
+    def forward(self, x):
+        if not self.training:
+            return x
+        
+        # Dropout
+        x = self.dropout(x)
+        
+        # Gaussian noise
+        if torch.rand(1) < 0.5:
+            noise = torch.randn_like(x) * self.noise_std
+            x = x + noise
+        
+        # Feature cutout (zero out random dimensions)
+        if torch.rand(1) < self.cutout_prob:
+            cutout_size = int(0.1 * x.shape[-1])
+            start_idx = torch.randint(0, x.shape[-1] - cutout_size, (1,)).item()
+            x[..., start_idx:start_idx+cutout_size] = 0
+        
+        return x
+
 class AdversarialHybridREWAEncoder(nn.Module):
     def __init__(self, d_model=768, m_dim=256):
         super().__init__()
@@ -23,7 +77,11 @@ class AdversarialHybridREWAEncoder(nn.Module):
         self.learned_proj = nn.Sequential(
             nn.Linear(d_model, m_dim // 2),
             nn.LayerNorm(m_dim // 2),
+            FeatureAugmentation(dropout=0.2, noise_std=0.05),
         )
+        
+        # Gradient reversal before discriminator
+        self.gradient_reversal = GradientReversal(lambda_=1.0)
         
         # DISCRIMINATOR
         self.discriminator = nn.Sequential(
@@ -41,31 +99,19 @@ class AdversarialHybridREWAEncoder(nn.Module):
         combined = torch.cat([random_part, learned_part], dim=-1)
         return F.normalize(combined, dim=-1)
     
-    def adversarial_loss(self, x):
-        # Get features
+    def forward_with_adversarial(self, x):
+        """Joint forward pass"""
+        # Standard encoding
+        encoded = self.forward(x, add_noise=False)
+        
+        # Extract learned features for discriminator
         learned_features = self.learned_proj(x)
-        with torch.no_grad():
-            random_features = self.random_proj(x)
         
-        # Flatten if 3D
-        if x.dim() == 3:
-            learned_features = learned_features.view(-1, learned_features.size(-1))
-            random_features = random_features.view(-1, random_features.size(-1))
-            
-        batch_size = learned_features.shape[0]
-        half = batch_size // 2
+        # Apply gradient reversal
+        reversed_features = self.gradient_reversal(learned_features)
         
-        mixed_features = torch.cat([
-            learned_features[:half],
-            random_features[half:]
-        ], dim=0)
+        # Discriminator prediction
+        disc_pred = self.discriminator(reversed_features)
         
-        labels = torch.cat([
-            torch.ones(half, 1, device=x.device),  # Learned
-            torch.zeros(batch_size - half, 1, device=x.device)  # Random
-        ], dim=0)
-        
-        preds = torch.sigmoid(self.discriminator(mixed_features))
-        adv_loss = F.binary_cross_entropy(preds, labels)
-        
-        return adv_loss
+        return encoded, disc_pred
+

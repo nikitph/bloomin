@@ -178,3 +178,12 @@ cython_debug/
 /brewa-experiment/hybrid_rewa_20news.pth
 /brewa-experiment/hybrid_rewa_best.pth
 /brewa-experiment/learned_rewa_encoder.pth
+/adversarial-rewa-release/checkpoints/adversarial_best_40.pth
+/adversarial-rewa-release/checkpoints/adversarial_best_45.pth
+/adversarial-rewa-release/checkpoints/adversarial_best_50.pth
+/adversarial-rewa-release/checkpoints/hard_neg_finetuned_epoch_1.pth
+/adversarial-rewa-release/checkpoints/hard_neg_finetuned_epoch_3.pth
+/faiss-sphere-new/experiments/data/wikipedia_documents.npy
+/faiss-sphere-new/experiments/data/wikipedia_queries.npy
+/rewa_text_diffusion/rewa_model_bpe.pt
+/rewa_text_diffusion/bpe_tokenizer.json

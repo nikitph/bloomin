@@ -1,23 +1,34 @@
 import torch
 from model import WitnessEncoder, WitnessDecoder, ReverseDiffusionModel
 from diffusion import Diffusion
-from utils import SimpleTokenizer
+from utils import BPETokenizer
 import sys
+import os
 
 def generate(prompt=None):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # Load model
-    checkpoint = torch.load("rewa_model.pt", map_location=device, weights_only=False)
-    tokenizer = checkpoint['tokenizer']
+    # Get script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     
-    # Dimensions (must match train.py)
-    embed_dim = 64
-    hidden_dim = 128
-    max_seq_len = 32
+    # Load model checkpoint
+    model_path = os.path.join(script_dir, "rewa_model_bpe.pt")
+    checkpoint = torch.load(model_path, map_location=device, weights_only=True)
     
-    encoder = WitnessEncoder(tokenizer.vocab_size, embed_dim, hidden_dim).to(device)
-    decoder = WitnessDecoder(tokenizer.vocab_size, embed_dim, hidden_dim, max_seq_len).to(device)
+    # Load tokenizer
+    tokenizer_path = os.path.join(script_dir, "bpe_tokenizer.json")
+    tokenizer = BPETokenizer(vocab_size=checkpoint['vocab_size'])
+    tokenizer.load(tokenizer_path)
+    
+    # Get dimensions from checkpoint
+    vocab_size = checkpoint['vocab_size']
+    embed_dim = checkpoint['embed_dim']
+    hidden_dim = checkpoint['hidden_dim']
+    max_seq_len = checkpoint['max_seq_len']
+    
+    # Initialize models
+    encoder = WitnessEncoder(vocab_size, embed_dim, hidden_dim).to(device)
+    decoder = WitnessDecoder(vocab_size, embed_dim, hidden_dim, max_seq_len).to(device)
     reverse_model = ReverseDiffusionModel(hidden_dim).to(device)
     
     encoder.load_state_dict(checkpoint['encoder'])
@@ -40,15 +51,13 @@ def generate(prompt=None):
             z_prompt = encoder(tokens)
             
     # 2. Sample from noise
-    # We generate a single sample
     z = diffusion.p_sample_loop(reverse_model, (1, hidden_dim))
     
     # 3. Merge witnesses (if prompt exists)
-    # Simple average or interpolation
     if z_prompt is not None:
-        # In a real REWA system, this would be a more complex merge operation
-        # Here we just average them to "guide" the generation
-        z_final = (z + z_prompt) / 2.0
+        # Weighted interpolation favoring the prompt
+        alpha = 0.7  # Weight for prompt
+        z_final = alpha * z_prompt + (1 - alpha) * z
     else:
         z_final = z
         
@@ -62,5 +71,5 @@ def generate(prompt=None):
     return text
 
 if __name__ == "__main__":
-    prompt = sys.argv[1] if len(sys.argv) > 1 else None
+    prompt = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else None
     generate(prompt)

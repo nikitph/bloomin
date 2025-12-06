@@ -1,0 +1,411 @@
+Some weights of RobertaModel were not initialized from the model checkpoint at roberta-base and are newly initialized: ['pooler.dense.bias', 'pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Loading existing results from ./results/curvature_results.csv
+  Loaded 2 previous results
+Running full experiment on 7 models
+
+######################################################################
+UNIVERSAL CURVATURE MEASUREMENT EXPERIMENT
+######################################################################
+Models to test: 7
+Triangles per model: 1000
+Output directory: ./results
+######################################################################
+
+
+[1/7] Processing: bert-base
+
+======================================================================
+Testing: bert-base
+======================================================================
+Model: bert-base-uncased
+Year: 2018, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 1.000 ± 0.000
+
+[2/7] Processing: roberta
+
+======================================================================
+Testing: roberta
+======================================================================
+Model: roberta-base
+Year: 2019, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+Step 1: Loading corpus...
+  Loading 10000 sentences...
+  ✓ Loaded 10000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: roberta-base
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/313 [00:00<?, ?it/s]  Extracting embeddings:   0%|          | 1/313 [00:00<01:22,  3.76it/s]  Extracting embeddings:   1%|          | 3/313 [00:00<00:35,  8.72it/s]  Extracting embeddings:   2%|▏         | 5/313 [00:00<00:28, 10.90it/s]  Extracting embeddings:   3%|▎         | 8/313 [00:00<00:20, 14.77it/s]  Extracting embeddings:   4%|▎         | 11/313 [00:00<00:17, 17.03it/s]  Extracting embeddings:   4%|▍         | 13/313 [00:00<00:18, 16.48it/s]  Extracting embeddings:   5%|▌         | 16/313 [00:01<00:15, 18.67it/s]  Extracting embeddings:   6%|▌         | 19/313 [00:01<00:14, 19.68it/s]  Extracting embeddings:   7%|▋         | 22/313 [00:01<00:14, 20.27it/s]  Extracting embeddings:   8%|▊         | 25/313 [00:01<00:13, 20.77it/s]  Extracting embeddings:   9%|▉         | 28/313 [00:01<00:13, 21.28it/s]  Extracting embeddings:  10%|▉         | 31/313 [00:01<00:13, 21.22it/s]  Extracting embeddings:  11%|█         | 34/313 [00:01<00:13, 21.22it/s]  Extracting embeddings:  12%|█▏        | 37/313 [00:02<00:12, 21.31it/s]  Extracting embeddings:  13%|█▎        | 40/313 [00:02<00:12, 21.64it/s]  Extracting embeddings:  14%|█▎        | 43/313 [00:02<00:12, 21.67it/s]  Extracting embeddings:  15%|█▍        | 46/313 [00:02<00:12, 21.49it/s]  Extracting embeddings:  16%|█▌        | 49/313 [00:02<00:12, 21.56it/s]  Extracting embeddings:  17%|█▋        | 52/313 [00:02<00:12, 21.27it/s]  Extracting embeddings:  18%|█▊        | 55/313 [00:02<00:12, 21.45it/s]  Extracting embeddings:  19%|█▊        | 58/313 [00:03<00:11, 21.44it/s]  Extracting embeddings:  19%|█▉        | 61/313 [00:03<00:11, 21.65it/s]  Extracting embeddings:  20%|██        | 64/313 [00:03<00:11, 21.70it/s]  Extracting embeddings:  21%|██▏       | 67/313 [00:03<00:11, 21.72it/s]  Extracting embeddings:  22%|██▏       | 70/313 [00:03<00:11, 21.59it/s]  Extracting embeddings:  23%|██▎       | 73/313 [00:03<00:11, 21.80it/s]  Extracting embeddings:  24%|██▍       | 76/313 [00:03<00:10, 22.05it/s]  Extracting embeddings:  25%|██▌       | 79/313 [00:03<00:10, 21.83it/s]  Extracting embeddings:  26%|██▌       | 82/313 [00:04<00:10, 21.80it/s]  Extracting embeddings:  27%|██▋       | 85/313 [00:04<00:10, 21.85it/s]  Extracting embeddings:  28%|██▊       | 88/313 [00:04<00:10, 21.82it/s]  Extracting embeddings:  29%|██▉       | 91/313 [00:04<00:10, 21.60it/s]  Extracting embeddings:  30%|███       | 94/313 [00:04<00:10, 21.73it/s]  Extracting embeddings:  31%|███       | 97/313 [00:04<00:09, 21.77it/s]  Extracting embeddings:  32%|███▏      | 100/313 [00:04<00:09, 21.86it/s]  Extracting embeddings:  33%|███▎      | 103/313 [00:05<00:09, 21.70it/s]  Extracting embeddings:  34%|███▍      | 106/313 [00:05<00:09, 21.80it/s]  Extracting embeddings:  35%|███▍      | 109/313 [00:05<00:09, 21.59it/s]  Extracting embeddings:  36%|███▌      | 112/313 [00:05<00:09, 21.59it/s]  Extracting embeddings:  37%|███▋      | 115/313 [00:05<00:09, 20.69it/s]  Extracting embeddings:  38%|███▊      | 118/313 [00:05<00:10, 19.42it/s]  Extracting embeddings:  38%|███▊      | 120/313 [00:05<00:09, 19.35it/s]  Extracting embeddings:  39%|███▉      | 122/313 [00:06<00:10, 18.74it/s]  Extracting embeddings:  40%|███▉      | 124/313 [00:06<00:10, 18.74it/s]  Extracting embeddings:  40%|████      | 126/313 [00:06<00:10, 18.35it/s]  Extracting embeddings:  41%|████      | 128/313 [00:06<00:09, 18.52it/s]  Extracting embeddings:  42%|████▏     | 130/313 [00:06<00:10, 17.24it/s]  Extracting embeddings:  42%|████▏     | 133/313 [00:06<00:09, 18.78it/s]  Extracting embeddings:  43%|████▎     | 136/313 [00:06<00:09, 19.52it/s]  Extracting embeddings:  44%|████▍     | 138/313 [00:06<00:08, 19.60it/s]  Extracting embeddings:  45%|████▌     | 141/313 [00:07<00:08, 20.47it/s]  Extracting embeddings:  46%|████▌     | 144/313 [00:07<00:08, 20.89it/s]  Extracting embeddings:  47%|████▋     | 147/313 [00:07<00:07, 21.02it/s]  Extracting embeddings:  48%|████▊     | 150/313 [00:07<00:07, 21.34it/s]  Extracting embeddings:  49%|████▉     | 153/313 [00:07<00:07, 21.37it/s]  Extracting embeddings:  50%|████▉     | 156/313 [00:07<00:07, 21.33it/s]  Extracting embeddings:  51%|█████     | 159/313 [00:07<00:07, 21.39it/s]  Extracting embeddings:  52%|█████▏    | 162/313 [00:08<00:07, 21.37it/s]  Extracting embeddings:  53%|█████▎    | 165/313 [00:08<00:07, 21.05it/s]  Extracting embeddings:  54%|█████▎    | 168/313 [00:08<00:06, 20.87it/s]  Extracting embeddings:  55%|█████▍    | 171/313 [00:08<00:06, 21.03it/s]  Extracting embeddings:  56%|█████▌    | 174/313 [00:08<00:06, 21.29it/s]  Extracting embeddings:  57%|█████▋    | 177/313 [00:08<00:06, 21.27it/s]  Extracting embeddings:  58%|█████▊    | 180/313 [00:08<00:06, 21.16it/s]  Extracting embeddings:  58%|█████▊    | 183/313 [00:08<00:06, 21.34it/s]  Extracting embeddings:  59%|█████▉    | 186/313 [00:09<00:05, 21.68it/s]  Extracting embeddings:  60%|██████    | 189/313 [00:09<00:05, 21.59it/s]  Extracting embeddings:  61%|██████▏   | 192/313 [00:09<00:05, 21.50it/s]  Extracting embeddings:  62%|██████▏   | 195/313 [00:09<00:05, 21.79it/s]  Extracting embeddings:  63%|██████▎   | 198/313 [00:09<00:05, 22.21it/s]  Extracting embeddings:  64%|██████▍   | 201/313 [00:09<00:05, 21.93it/s]  Extracting embeddings:  65%|██████▌   | 204/313 [00:09<00:05, 21.75it/s]  Extracting embeddings:  66%|██████▌   | 207/313 [00:10<00:04, 22.16it/s]  Extracting embeddings:  67%|██████▋   | 210/313 [00:10<00:04, 22.17it/s]  Extracting embeddings:  68%|██████▊   | 213/313 [00:10<00:04, 21.74it/s]  Extracting embeddings:  69%|██████▉   | 216/313 [00:10<00:04, 21.60it/s]  Extracting embeddings:  70%|██████▉   | 219/313 [00:10<00:04, 21.68it/s]  Extracting embeddings:  71%|███████   | 222/313 [00:10<00:04, 21.61it/s]  Extracting embeddings:  72%|███████▏  | 225/313 [00:10<00:04, 21.17it/s]  Extracting embeddings:  73%|███████▎  | 228/313 [00:11<00:03, 21.27it/s]  Extracting embeddings:  74%|███████▍  | 231/313 [00:11<00:03, 21.42it/s]  Extracting embeddings:  75%|███████▍  | 234/313 [00:11<00:03, 21.08it/s]  Extracting embeddings:  76%|███████▌  | 237/313 [00:11<00:03, 20.84it/s]  Extracting embeddings:  77%|███████▋  | 240/313 [00:11<00:03, 20.95it/s]  Extracting embeddings:  78%|███████▊  | 243/313 [00:11<00:03, 21.02it/s]  Extracting embeddings:  79%|███████▊  | 246/313 [00:11<00:03, 20.88it/s]  Extracting embeddings:  80%|███████▉  | 249/313 [00:12<00:03, 20.67it/s]  Extracting embeddings:  81%|████████  | 252/313 [00:12<00:02, 20.83it/s]  Extracting embeddings:  81%|████████▏ | 255/313 [00:12<00:02, 21.08it/s]  Extracting embeddings:  82%|████████▏ | 258/313 [00:12<00:02, 21.08it/s]  Extracting embeddings:  83%|████████▎ | 261/313 [00:12<00:02, 21.02it/s]  Extracting embeddings:  84%|████████▍ | 264/313 [00:12<00:02, 21.33it/s]  Extracting embeddings:  85%|████████▌ | 267/313 [00:12<00:02, 21.67it/s]  Extracting embeddings:  86%|████████▋ | 270/313 [00:13<00:02, 21.44it/s]  Extracting embeddings:  87%|████████▋ | 273/313 [00:13<00:01, 21.51it/s]  Extracting embeddings:  88%|████████▊ | 276/313 [00:13<00:01, 21.76it/s]  Extracting embeddings:  89%|████████▉ | 279/313 [00:13<00:01, 21.54it/s]  Extracting embeddings:  90%|█████████ | 282/313 [00:13<00:01, 21.19it/s]  Extracting embeddings:  91%|█████████ | 285/313 [00:13<00:01, 21.17it/s]  Extracting embeddings:  92%|█████████▏| 288/313 [00:13<00:01, 21.07it/s]  Extracting embeddings:  93%|█████████▎| 291/313 [00:14<00:01, 20.95it/s]  Extracting embeddings:  94%|█████████▍| 294/313 [00:14<00:00, 20.66it/s]  Extracting embeddings:  95%|█████████▍| 297/313 [00:14<00:00, 20.74it/s]  Extracting embeddings:  96%|█████████▌| 300/313 [00:14<00:00, 20.95it/s]  Extracting embeddings:  97%|█████████▋| 303/313 [00:14<00:00, 21.00it/s]  Extracting embeddings:  98%|█████████▊| 306/313 [00:14<00:00, 20.74it/s]  Extracting embeddings:  99%|█████████▊| 309/313 [00:14<00:00, 20.93it/s]  Extracting embeddings: 100%|█████████▉| 312/313 [00:15<00:00, 21.10it/s]  Extracting embeddings: 100%|██████████| 313/313 [00:15<00:00, 20.67it/s]
+  ✓ Embeddings shape: (10000, 768)
+
+Step 3: Measuring curvature...
+  Processed 100/1000 triangles, 99 valid
+  Processed 200/1000 triangles, 197 valid
+  Processed 300/1000 triangles, 296 valid
+  Processed 400/1000 triangles, 390 valid
+  Processed 500/1000 triangles, 487 valid
+  Processed 600/1000 triangles, 587 valid
+  Processed 700/1000 triangles, 683 valid
+  Processed 800/1000 triangles, 778 valid
+  Processed 900/1000 triangles, 876 valid
+  Processed 1000/1000 triangles, 975 valid
+  Removed 4 outliers
+
+💾 Results saved to ./results/curvature_results.csv
+
+======================================================================
+RESULTS FOR roberta
+======================================================================
+K = 0.999 ± 0.029
+Median: 1.000
+Range: [0.311, 1.085]
+Valid triangles: 971/1000
+======================================================================
+
+[3/7] Processing: distilbert
+
+======================================================================
+Testing: distilbert
+======================================================================
+Model: distilbert-base-uncased
+Year: 2019, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+Step 1: Loading corpus...
+  Loading 10000 sentences...
+  ✓ Loaded 10000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: distilbert-base-uncased
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/313 [00:00<?, ?it/s]  Extracting embeddings:   1%|          | 2/313 [00:00<00:17, 18.19it/s]  Extracting embeddings:   2%|▏         | 5/313 [00:00<00:14, 21.26it/s]  Extracting embeddings:   3%|▎         | 8/313 [00:00<00:12, 24.43it/s]  Extracting embeddings:   4%|▍         | 12/313 [00:00<00:10, 29.33it/s]  Extracting embeddings:   5%|▌         | 16/313 [00:00<00:09, 32.49it/s]  Extracting embeddings:   6%|▋         | 20/313 [00:00<00:08, 34.42it/s]  Extracting embeddings:   8%|▊         | 24/313 [00:00<00:09, 30.20it/s]  Extracting embeddings:   9%|▉         | 28/313 [00:00<00:08, 32.28it/s]  Extracting embeddings:  10%|█         | 32/313 [00:01<00:08, 34.05it/s]  Extracting embeddings:  12%|█▏        | 36/313 [00:01<00:07, 35.09it/s]  Extracting embeddings:  13%|█▎        | 40/313 [00:01<00:07, 34.99it/s]  Extracting embeddings:  14%|█▍        | 44/313 [00:01<00:07, 35.69it/s]  Extracting embeddings:  15%|█▌        | 48/313 [00:01<00:07, 36.08it/s]  Extracting embeddings:  17%|█▋        | 52/313 [00:01<00:07, 36.27it/s]  Extracting embeddings:  18%|█▊        | 56/313 [00:01<00:07, 36.45it/s]  Extracting embeddings:  19%|█▉        | 60/313 [00:01<00:06, 36.66it/s]  Extracting embeddings:  20%|██        | 64/313 [00:01<00:06, 36.70it/s]  Extracting embeddings:  22%|██▏       | 68/313 [00:02<00:06, 36.62it/s]  Extracting embeddings:  23%|██▎       | 72/313 [00:02<00:07, 32.94it/s]  Extracting embeddings:  24%|██▍       | 76/313 [00:02<00:06, 34.33it/s]  Extracting embeddings:  26%|██▌       | 80/313 [00:02<00:06, 35.28it/s]  Extracting embeddings:  27%|██▋       | 84/313 [00:02<00:06, 35.98it/s]  Extracting embeddings:  28%|██▊       | 88/313 [00:02<00:06, 36.31it/s]  Extracting embeddings:  29%|██▉       | 92/313 [00:02<00:06, 36.53it/s]  Extracting embeddings:  31%|███       | 96/313 [00:02<00:05, 36.47it/s]  Extracting embeddings:  32%|███▏      | 100/313 [00:02<00:05, 36.50it/s]  Extracting embeddings:  33%|███▎      | 104/313 [00:03<00:05, 36.76it/s]  Extracting embeddings:  35%|███▍      | 108/313 [00:03<00:05, 36.89it/s]  Extracting embeddings:  36%|███▌      | 112/313 [00:03<00:05, 36.79it/s]  Extracting embeddings:  37%|███▋      | 116/313 [00:03<00:05, 36.86it/s]  Extracting embeddings:  38%|███▊      | 120/313 [00:03<00:05, 36.89it/s]  Extracting embeddings:  40%|███▉      | 124/313 [00:03<00:05, 36.82it/s]  Extracting embeddings:  41%|████      | 128/313 [00:03<00:05, 33.43it/s]  Extracting embeddings:  42%|████▏     | 132/313 [00:03<00:05, 34.60it/s]  Extracting embeddings:  43%|████▎     | 136/313 [00:03<00:04, 35.52it/s]  Extracting embeddings:  45%|████▍     | 140/313 [00:04<00:04, 36.20it/s]  Extracting embeddings:  46%|████▌     | 144/313 [00:04<00:04, 36.34it/s]  Extracting embeddings:  47%|████▋     | 148/313 [00:04<00:04, 36.61it/s]  Extracting embeddings:  49%|████▊     | 152/313 [00:04<00:04, 36.25it/s]  Extracting embeddings:  50%|████▉     | 156/313 [00:04<00:04, 35.72it/s]  Extracting embeddings:  51%|█████     | 160/313 [00:04<00:04, 36.09it/s]  Extracting embeddings:  52%|█████▏    | 164/313 [00:04<00:04, 36.32it/s]  Extracting embeddings:  54%|█████▎    | 168/313 [00:04<00:04, 35.48it/s]  Extracting embeddings:  55%|█████▍    | 172/313 [00:04<00:04, 32.03it/s]  Extracting embeddings:  56%|█████▌    | 176/313 [00:05<00:04, 33.69it/s]  Extracting embeddings:  58%|█████▊    | 180/313 [00:05<00:03, 34.89it/s]  Extracting embeddings:  59%|█████▉    | 184/313 [00:05<00:03, 35.45it/s]  Extracting embeddings:  60%|██████    | 188/313 [00:05<00:03, 35.94it/s]  Extracting embeddings:  61%|██████▏   | 192/313 [00:05<00:03, 36.29it/s]  Extracting embeddings:  63%|██████▎   | 196/313 [00:05<00:03, 36.49it/s]  Extracting embeddings:  64%|██████▍   | 200/313 [00:05<00:03, 36.61it/s]  Extracting embeddings:  65%|██████▌   | 204/313 [00:05<00:02, 36.41it/s]  Extracting embeddings:  66%|██████▋   | 208/313 [00:05<00:02, 36.44it/s]  Extracting embeddings:  68%|██████▊   | 212/313 [00:06<00:02, 36.55it/s]  Extracting embeddings:  69%|██████▉   | 216/313 [00:06<00:02, 36.55it/s]  Extracting embeddings:  70%|███████   | 220/313 [00:06<00:02, 36.60it/s]  Extracting embeddings:  72%|███████▏  | 224/313 [00:06<00:02, 36.47it/s]  Extracting embeddings:  73%|███████▎  | 228/313 [00:06<00:02, 36.85it/s]  Extracting embeddings:  74%|███████▍  | 232/313 [00:06<00:02, 32.38it/s]  Extracting embeddings:  75%|███████▌  | 236/313 [00:06<00:02, 33.98it/s]  Extracting embeddings:  77%|███████▋  | 240/313 [00:06<00:02, 35.16it/s]  Extracting embeddings:  78%|███████▊  | 244/313 [00:06<00:01, 35.74it/s]  Extracting embeddings:  79%|███████▉  | 248/313 [00:07<00:01, 36.24it/s]  Extracting embeddings:  81%|████████  | 252/313 [00:07<00:01, 35.82it/s]  Extracting embeddings:  82%|████████▏ | 256/313 [00:07<00:01, 35.33it/s]  Extracting embeddings:  83%|████████▎ | 260/313 [00:07<00:01, 36.12it/s]  Extracting embeddings:  84%|████████▍ | 264/313 [00:07<00:01, 36.40it/s]  Extracting embeddings:  86%|████████▌ | 268/313 [00:07<00:01, 36.72it/s]  Extracting embeddings:  87%|████████▋ | 272/313 [00:07<00:01, 37.10it/s]  Extracting embeddings:  88%|████████▊ | 276/313 [00:07<00:01, 36.90it/s]  Extracting embeddings:  89%|████████▉ | 280/313 [00:07<00:00, 36.77it/s]  Extracting embeddings:  91%|█████████ | 284/313 [00:08<00:00, 36.90it/s]  Extracting embeddings:  92%|█████████▏| 288/313 [00:08<00:00, 36.68it/s]  Extracting embeddings:  93%|█████████▎| 292/313 [00:08<00:00, 33.68it/s]  Extracting embeddings:  95%|█████████▍| 296/313 [00:08<00:00, 34.70it/s]  Extracting embeddings:  96%|█████████▌| 300/313 [00:08<00:00, 35.51it/s]  Extracting embeddings:  97%|█████████▋| 304/313 [00:08<00:00, 35.92it/s]  Extracting embeddings:  98%|█████████▊| 308/313 [00:08<00:00, 36.29it/s]  Extracting embeddings: 100%|█████████▉| 312/313 [00:08<00:00, 36.38it/s]  Extracting embeddings: 100%|██████████| 313/313 [00:08<00:00, 35.33it/s]
+  ✓ Embeddings shape: (10000, 768)
+
+Step 3: Measuring curvature...
+  Processed 100/1000 triangles, 99 valid
+  Processed 200/1000 triangles, 198 valid
+  Processed 300/1000 triangles, 296 valid
+  Processed 400/1000 triangles, 391 valid
+  Processed 500/1000 triangles, 488 valid
+  Processed 600/1000 triangles, 588 valid
+  Processed 700/1000 triangles, 684 valid
+  Processed 800/1000 triangles, 779 valid
+  Processed 900/1000 triangles, 877 valid
+  Processed 1000/1000 triangles, 974 valid
+  Removed 4 outliers
+
+💾 Results saved to ./results/curvature_results.csv
+
+======================================================================
+RESULTS FOR distilbert
+======================================================================
+K = 1.000 ± 0.000
+Median: 1.000
+Range: [1.000, 1.000]
+Valid triangles: 970/1000
+======================================================================
+
+[4/7] Processing: sentence-bert
+
+======================================================================
+Testing: sentence-bert
+======================================================================
+Model: all-MiniLM-L6-v2
+Year: 2019, Dim: 384, Arch: Trans-Enc
+Domain: Sentence, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 1.000 ± 0.000
+
+[5/7] Processing: gpt2
+
+======================================================================
+Testing: gpt2
+======================================================================
+Model: gpt2
+Year: 2019, Dim: 768, Arch: Trans-Dec
+Domain: Context, Samples: 10000
+
+Step 1: Loading corpus...
+  Loading 10000 sentences...
+  ✓ Loaded 10000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: gpt2
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/313 [00:00<?, ?it/s]  Extracting embeddings:   0%|          | 0/313 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/experiment.py", line 83, in run_single_model
+    embeddings = load_model_and_get_embeddings(model_config, texts)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/model_loaders.py", line 158, in load_model_and_get_embeddings
+    embeddings = loader.get_embeddings(texts)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/model_loaders.py", line 85, in get_embeddings
+    inputs = self.tokenizer(
+             ^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 3073, in __call__
+    encodings = self._call_one(text=text, text_pair=text_pair, **all_kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 3161, in _call_one
+    return self.batch_encode_plus(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 3353, in batch_encode_plus
+    padding_strategy, truncation_strategy, max_length, kwargs = self._get_padding_truncation_strategies(
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/transformers/tokenization_utils_base.py", line 2969, in _get_padding_truncation_strategies
+    raise ValueError(
+ValueError: Asking to pad but the tokenizer does not have a padding token. Please select a token to use as `pad_token` `(tokenizer.pad_token = tokenizer.eos_token e.g.)` or add a new pad token via `tokenizer.add_special_tokens({'pad_token': '[PAD]'})`.
+Traceback (most recent call last):
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/experiment.py", line 78, in run_single_model
+    texts = load_corpus(corpus_type, n_samples)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/corpus_loaders.py", line 220, in load_corpus
+    return load_code(n_samples)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/truckx/PycharmProjects/bloomin/universal-curvature-experiment/corpus_loaders.py", line 139, in load_code
+    code = template.format(name, value)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: "'key'"
+Loading existing results from ./results/curvature_results.csv
+  Loaded 4 previous results
+Running full experiment on 7 models
+
+######################################################################
+UNIVERSAL CURVATURE MEASUREMENT EXPERIMENT
+######################################################################
+Models to test: 7
+Triangles per model: 1000
+Output directory: ./results
+######################################################################
+
+
+[1/7] Processing: bert-base
+
+======================================================================
+Testing: bert-base
+======================================================================
+Model: bert-base-uncased
+Year: 2018, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 1.000 ± 0.000
+
+[2/7] Processing: roberta
+
+======================================================================
+Testing: roberta
+======================================================================
+Model: roberta-base
+Year: 2019, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 0.999 ± 0.029
+
+[3/7] Processing: distilbert
+
+======================================================================
+Testing: distilbert
+======================================================================
+Model: distilbert-base-uncased
+Year: 2019, Dim: 768, Arch: Trans-Enc
+Domain: Context, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 1.000 ± 0.000
+
+[4/7] Processing: sentence-bert
+
+======================================================================
+Testing: sentence-bert
+======================================================================
+Model: all-MiniLM-L6-v2
+Year: 2019, Dim: 384, Arch: Trans-Enc
+Domain: Sentence, Samples: 10000
+
+⚠️  Model already computed, skipping...
+   K = 1.000 ± 0.000
+
+[5/7] Processing: gpt2
+
+======================================================================
+Testing: gpt2
+======================================================================
+Model: gpt2
+Year: 2019, Dim: 768, Arch: Trans-Dec
+Domain: Context, Samples: 10000
+
+Step 1: Loading corpus...
+  Loading 10000 sentences...
+  ✓ Loaded 10000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: gpt2
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/313 [00:00<?, ?it/s]  Extracting embeddings:   0%|          | 1/313 [00:01<05:40,  1.09s/it]  Extracting embeddings:   1%|          | 2/313 [00:01<03:11,  1.62it/s]  Extracting embeddings:   1%|▏         | 4/313 [00:01<01:40,  3.07it/s]  Extracting embeddings:   2%|▏         | 6/313 [00:01<01:00,  5.06it/s]  Extracting embeddings:   3%|▎         | 8/313 [00:01<00:43,  6.97it/s]  Extracting embeddings:   3%|▎         | 10/313 [00:02<00:36,  8.36it/s]  Extracting embeddings:   4%|▍         | 12/313 [00:02<00:39,  7.61it/s]  Extracting embeddings:   4%|▍         | 14/313 [00:02<00:31,  9.40it/s]  Extracting embeddings:   5%|▌         | 16/313 [00:02<00:27, 10.97it/s]  Extracting embeddings:   6%|▌         | 18/313 [00:02<00:23, 12.51it/s]  Extracting embeddings:   6%|▋         | 20/313 [00:02<00:21, 13.81it/s]  Extracting embeddings:   7%|▋         | 22/313 [00:02<00:19, 14.94it/s]  Extracting embeddings:   8%|▊         | 24/313 [00:03<00:18, 15.78it/s]  Extracting embeddings:   8%|▊         | 26/313 [00:03<00:17, 16.34it/s]  Extracting embeddings:   9%|▉         | 28/313 [00:03<00:17, 16.62it/s]  Extracting embeddings:  10%|▉         | 30/313 [00:03<00:19, 14.81it/s]  Extracting embeddings:  10%|█         | 32/313 [00:03<00:18, 15.57it/s]  Extracting embeddings:  11%|█         | 34/313 [00:03<00:17, 16.29it/s]  Extracting embeddings:  12%|█▏        | 36/313 [00:03<00:16, 16.64it/s]  Extracting embeddings:  12%|█▏        | 38/313 [00:03<00:16, 17.03it/s]  Extracting embeddings:  13%|█▎        | 40/313 [00:04<00:16, 17.04it/s]  Extracting embeddings:  13%|█▎        | 42/313 [00:04<00:15, 17.36it/s]  Extracting embeddings:  14%|█▍        | 44/313 [00:04<00:15, 17.32it/s]  Extracting embeddings:  15%|█▍        | 46/313 [00:04<00:15, 17.16it/s]  Extracting embeddings:  15%|█▌        | 48/313 [00:04<00:15, 16.82it/s]  Extracting embeddings:  16%|█▌        | 50/313 [00:04<00:15, 16.75it/s]  Extracting embeddings:  17%|█▋        | 52/313 [00:04<00:15, 16.69it/s]  Extracting embeddings:  17%|█▋        | 54/313 [00:04<00:15, 16.68it/s]  Extracting embeddings:  18%|█▊        | 56/313 [00:04<00:15, 16.66it/s]  Extracting embeddings:  19%|█▊        | 58/313 [00:05<00:15, 16.66it/s]  Extracting embeddings:  19%|█▉        | 60/313 [00:05<00:15, 16.55it/s]  Extracting embeddings:  20%|█▉        | 62/313 [00:05<00:15, 16.59it/s]  Extracting embeddings:  20%|██        | 64/313 [00:05<00:14, 16.90it/s]  Extracting embeddings:  21%|██        | 66/313 [00:05<00:14, 16.76it/s]  Extracting embeddings:  22%|██▏       | 68/313 [00:05<00:14, 16.99it/s]  Extracting embeddings:  22%|██▏       | 70/313 [00:05<00:14, 17.04it/s]  Extracting embeddings:  23%|██▎       | 72/313 [00:05<00:13, 17.29it/s]  Extracting embeddings:  24%|██▎       | 74/313 [00:06<00:13, 17.20it/s]  Extracting embeddings:  24%|██▍       | 76/313 [00:06<00:13, 17.45it/s]  Extracting embeddings:  25%|██▍       | 78/313 [00:06<00:13, 17.27it/s]  Extracting embeddings:  26%|██▌       | 80/313 [00:06<00:13, 17.54it/s]  Extracting embeddings:  26%|██▌       | 82/313 [00:06<00:13, 17.14it/s]  Extracting embeddings:  27%|██▋       | 84/313 [00:06<00:13, 17.28it/s]  Extracting embeddings:  27%|██▋       | 86/313 [00:06<00:13, 17.05it/s]  Extracting embeddings:  28%|██▊       | 88/313 [00:06<00:13, 16.94it/s]  Extracting embeddings:  29%|██▉       | 90/313 [00:06<00:13, 16.77it/s]  Extracting embeddings:  29%|██▉       | 92/313 [00:07<00:13, 16.87it/s]  Extracting embeddings:  30%|███       | 94/313 [00:07<00:13, 16.56it/s]  Extracting embeddings:  31%|███       | 96/313 [00:07<00:12, 16.84it/s]  Extracting embeddings:  31%|███▏      | 98/313 [00:07<00:12, 16.62it/s]  Extracting embeddings:  32%|███▏      | 100/313 [00:07<00:12, 16.85it/s]  Extracting embeddings:  33%|███▎      | 102/313 [00:07<00:14, 14.96it/s]  Extracting embeddings:  33%|███▎      | 104/313 [00:07<00:13, 15.46it/s]  Extracting embeddings:  34%|███▍      | 106/313 [00:07<00:13, 15.74it/s]  Extracting embeddings:  35%|███▍      | 108/313 [00:08<00:12, 16.21it/s]  Extracting embeddings:  35%|███▌      | 110/313 [00:08<00:12, 16.13it/s]  Extracting embeddings:  36%|███▌      | 112/313 [00:08<00:12, 15.56it/s]  Extracting embeddings:  36%|███▋      | 114/313 [00:08<00:12, 15.71it/s]  Extracting embeddings:  37%|███▋      | 116/313 [00:08<00:12, 16.13it/s]  Extracting embeddings:  38%|███▊      | 118/313 [00:08<00:12, 16.09it/s]  Extracting embeddings:  38%|███▊      | 120/313 [00:08<00:11, 16.33it/s]  Extracting embeddings:  39%|███▉      | 122/313 [00:08<00:11, 16.09it/s]  Extracting embeddings:  40%|███▉      | 124/313 [00:09<00:11, 16.39it/s]  Extracting embeddings:  40%|████      | 126/313 [00:09<00:11, 16.23it/s]  Extracting embeddings:  41%|████      | 128/313 [00:09<00:11, 16.55it/s]  Extracting embeddings:  42%|████▏     | 130/313 [00:09<00:11, 16.61it/s]  Extracting embeddings:  42%|████▏     | 132/313 [00:09<00:10, 16.82it/s]  Extracting embeddings:  43%|████▎     | 134/313 [00:09<00:10, 16.89it/s]  Extracting embeddings:  43%|████▎     | 136/313 [00:09<00:10, 17.07it/s]  Extracting embeddings:  44%|████▍     | 138/313 [00:09<00:10, 17.07it/s]  Extracting embeddings:  45%|████▍     | 140/313 [00:10<00:10, 17.28it/s]  Extracting embeddings:  45%|████▌     | 142/313 [00:10<00:10, 17.03it/s]  Extracting embeddings:  46%|████▌     | 144/313 [00:10<00:09, 17.06it/s]  Extracting embeddings:  47%|████▋     | 146/313 [00:10<00:09, 17.02it/s]  Extracting embeddings:  47%|████▋     | 148/313 [00:10<00:09, 17.10it/s]  Extracting embeddings:  48%|████▊     | 150/313 [00:10<00:09, 17.06it/s]  Extracting embeddings:  49%|████▊     | 152/313 [00:10<00:09, 16.87it/s]  Extracting embeddings:  49%|████▉     | 154/313 [00:10<00:09, 16.85it/s]  Extracting embeddings:  50%|████▉     | 156/313 [00:10<00:09, 16.89it/s]  Extracting embeddings:  50%|█████     | 158/313 [00:11<00:09, 16.80it/s]  Extracting embeddings:  51%|█████     | 160/313 [00:11<00:09, 16.81it/s]  Extracting embeddings:  52%|█████▏    | 162/313 [00:11<00:09, 16.75it/s]  Extracting embeddings:  52%|█████▏    | 164/313 [00:11<00:08, 16.75it/s]  Extracting embeddings:  53%|█████▎    | 166/313 [00:11<00:08, 16.67it/s]  Extracting embeddings:  54%|█████▎    | 168/313 [00:11<00:08, 16.65it/s]  Extracting embeddings:  54%|█████▍    | 170/313 [00:11<00:08, 16.54it/s]  Extracting embeddings:  55%|█████▍    | 172/313 [00:11<00:08, 16.51it/s]  Extracting embeddings:  56%|█████▌    | 174/313 [00:12<00:08, 16.46it/s]  Extracting embeddings:  56%|█████▌    | 176/313 [00:12<00:08, 16.49it/s]  Extracting embeddings:  57%|█████▋    | 178/313 [00:12<00:08, 16.43it/s]  Extracting embeddings:  58%|█████▊    | 180/313 [00:12<00:08, 16.57it/s]  Extracting embeddings:  58%|█████▊    | 182/313 [00:12<00:07, 16.55it/s]  Extracting embeddings:  59%|█████▉    | 184/313 [00:12<00:07, 16.66it/s]  Extracting embeddings:  59%|█████▉    | 186/313 [00:12<00:07, 16.69it/s]  Extracting embeddings:  60%|██████    | 188/313 [00:12<00:07, 16.15it/s]  Extracting embeddings:  61%|██████    | 190/313 [00:13<00:08, 15.19it/s]  Extracting embeddings:  61%|██████▏   | 192/313 [00:13<00:08, 13.68it/s]  Extracting embeddings:  62%|██████▏   | 194/313 [00:13<00:08, 14.32it/s]  Extracting embeddings:  63%|██████▎   | 196/313 [00:13<00:07, 14.69it/s]  Extracting embeddings:  63%|██████▎   | 198/313 [00:13<00:07, 14.96it/s]  Extracting embeddings:  64%|██████▍   | 200/313 [00:13<00:07, 15.10it/s]  Extracting embeddings:  65%|██████▍   | 202/313 [00:13<00:07, 15.40it/s]  Extracting embeddings:  65%|██████▌   | 204/313 [00:13<00:07, 15.54it/s]  Extracting embeddings:  66%|██████▌   | 206/313 [00:14<00:06, 15.90it/s]  Extracting embeddings:  66%|██████▋   | 208/313 [00:14<00:06, 15.79it/s]  Extracting embeddings:  67%|██████▋   | 210/313 [00:14<00:06, 16.21it/s]  Extracting embeddings:  68%|██████▊   | 212/313 [00:14<00:06, 16.23it/s]  Extracting embeddings:  68%|██████▊   | 214/313 [00:14<00:05, 16.58it/s]  Extracting embeddings:  69%|██████▉   | 216/313 [00:14<00:05, 16.45it/s]  Extracting embeddings:  70%|██████▉   | 218/313 [00:14<00:05, 16.69it/s]  Extracting embeddings:  70%|███████   | 220/313 [00:14<00:05, 16.54it/s]  Extracting embeddings:  71%|███████   | 222/313 [00:15<00:05, 16.68it/s]  Extracting embeddings:  72%|███████▏  | 224/313 [00:15<00:05, 16.23it/s]  Extracting embeddings:  72%|███████▏  | 226/313 [00:15<00:05, 16.15it/s]  Extracting embeddings:  73%|███████▎  | 228/313 [00:15<00:05, 15.81it/s]  Extracting embeddings:  73%|███████▎  | 230/313 [00:15<00:05, 15.68it/s]  Extracting embeddings:  74%|███████▍  | 232/313 [00:15<00:05, 15.50it/s]  Extracting embeddings:  75%|███████▍  | 234/313 [00:15<00:04, 15.85it/s]  Extracting embeddings:  75%|███████▌  | 236/313 [00:15<00:04, 15.66it/s]  Extracting embeddings:  76%|███████▌  | 238/313 [00:16<00:04, 16.04it/s]  Extracting embeddings:  77%|███████▋  | 240/313 [00:16<00:04, 16.05it/s]  Extracting embeddings:  77%|███████▋  | 242/313 [00:16<00:04, 16.38it/s]  Extracting embeddings:  78%|███████▊  | 244/313 [00:16<00:04, 16.30it/s]  Extracting embeddings:  79%|███████▊  | 246/313 [00:16<00:04, 16.56it/s]  Extracting embeddings:  79%|███████▉  | 248/313 [00:16<00:03, 16.39it/s]  Extracting embeddings:  80%|███████▉  | 250/313 [00:16<00:03, 16.65it/s]  Extracting embeddings:  81%|████████  | 252/313 [00:16<00:03, 16.40it/s]  Extracting embeddings:  81%|████████  | 254/313 [00:17<00:03, 16.69it/s]  Extracting embeddings:  82%|████████▏ | 256/313 [00:17<00:03, 16.55it/s]  Extracting embeddings:  82%|████████▏ | 258/313 [00:17<00:03, 16.74it/s]  Extracting embeddings:  83%|████████▎ | 260/313 [00:17<00:03, 16.62it/s]  Extracting embeddings:  84%|████████▎ | 262/313 [00:17<00:03, 16.72it/s]  Extracting embeddings:  84%|████████▍ | 264/313 [00:17<00:02, 16.51it/s]  Extracting embeddings:  85%|████████▍ | 266/313 [00:17<00:02, 16.67it/s]  Extracting embeddings:  86%|████████▌ | 268/313 [00:17<00:02, 16.67it/s]  Extracting embeddings:  86%|████████▋ | 270/313 [00:18<00:02, 16.75it/s]  Extracting embeddings:  87%|████████▋ | 272/313 [00:18<00:02, 16.63it/s]  Extracting embeddings:  88%|████████▊ | 274/313 [00:18<00:02, 16.71it/s]  Extracting embeddings:  88%|████████▊ | 276/313 [00:18<00:02, 16.66it/s]  Extracting embeddings:  89%|████████▉ | 278/313 [00:18<00:02, 16.67it/s]  Extracting embeddings:  89%|████████▉ | 280/313 [00:18<00:01, 16.58it/s]  Extracting embeddings:  90%|█████████ | 282/313 [00:18<00:01, 16.67it/s]  Extracting embeddings:  91%|█████████ | 284/313 [00:18<00:01, 16.73it/s]  Extracting embeddings:  91%|█████████▏| 286/313 [00:18<00:01, 16.70it/s]  Extracting embeddings:  92%|█████████▏| 288/313 [00:19<00:01, 16.73it/s]  Extracting embeddings:  93%|█████████▎| 290/313 [00:19<00:01, 16.70it/s]  Extracting embeddings:  93%|█████████▎| 292/313 [00:19<00:01, 16.63it/s]  Extracting embeddings:  94%|█████████▍| 294/313 [00:19<00:01, 16.72it/s]  Extracting embeddings:  95%|█████████▍| 296/313 [00:19<00:01, 16.66it/s]  Extracting embeddings:  95%|█████████▌| 298/313 [00:19<00:00, 16.68it/s]  Extracting embeddings:  96%|█████████▌| 300/313 [00:19<00:00, 16.64it/s]  Extracting embeddings:  96%|█████████▋| 302/313 [00:19<00:00, 16.65it/s]  Extracting embeddings:  97%|█████████▋| 304/313 [00:20<00:00, 16.66it/s]  Extracting embeddings:  98%|█████████▊| 306/313 [00:20<00:00, 16.67it/s]  Extracting embeddings:  98%|█████████▊| 308/313 [00:20<00:00, 16.66it/s]  Extracting embeddings:  99%|█████████▉| 310/313 [00:20<00:00, 14.91it/s]  Extracting embeddings: 100%|█████████▉| 312/313 [00:20<00:00, 15.43it/s]  Extracting embeddings: 100%|██████████| 313/313 [00:20<00:00, 14.92it/s]
+  ✓ Embeddings shape: (10000, 768)
+
+Step 3: Measuring curvature...
+  Processed 100/1000 triangles, 56 valid
+  Processed 200/1000 triangles, 109 valid
+  Processed 300/1000 triangles, 160 valid
+  Processed 400/1000 triangles, 206 valid
+  Processed 500/1000 triangles, 259 valid
+  Processed 600/1000 triangles, 310 valid
+  Processed 700/1000 triangles, 358 valid
+  Processed 800/1000 triangles, 405 valid
+  Processed 900/1000 triangles, 463 valid
+  Processed 1000/1000 triangles, 507 valid
+  Removed 7 outliers
+
+💾 Results saved to ./results/curvature_results.csv
+
+======================================================================
+RESULTS FOR gpt2
+======================================================================
+K = 1.035 ± 0.234
+Median: 1.000
+Range: [0.465, 2.469]
+Valid triangles: 500/1000
+======================================================================
+
+[6/7] Processing: codebert
+
+======================================================================
+Testing: codebert
+======================================================================
+Model: microsoft/codebert-base
+Year: 2020, Dim: 768, Arch: Trans-Enc
+Domain: Code, Samples: 5000
+
+Step 1: Loading corpus...
+  Loading 5000 code snippets...
+  ✓ Loaded 5000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: microsoft/codebert-base
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/157 [00:00<?, ?it/s]  Extracting embeddings:   1%|          | 1/157 [00:00<00:24,  6.30it/s]  Extracting embeddings:   2%|▏         | 3/157 [00:00<00:14, 10.69it/s]  Extracting embeddings:   3%|▎         | 5/157 [00:00<00:12, 11.83it/s]  Extracting embeddings:   4%|▍         | 7/157 [00:00<00:12, 12.08it/s]  Extracting embeddings:   6%|▌         | 9/157 [00:00<00:12, 12.18it/s]  Extracting embeddings:   7%|▋         | 11/157 [00:00<00:11, 12.39it/s]  Extracting embeddings:   8%|▊         | 13/157 [00:01<00:11, 12.48it/s]  Extracting embeddings:  10%|▉         | 15/157 [00:01<00:11, 12.63it/s]  Extracting embeddings:  11%|█         | 17/157 [00:01<00:10, 12.86it/s]  Extracting embeddings:  12%|█▏        | 19/157 [00:01<00:10, 13.06it/s]  Extracting embeddings:  13%|█▎        | 21/157 [00:01<00:10, 13.21it/s]  Extracting embeddings:  15%|█▍        | 23/157 [00:01<00:10, 13.37it/s]  Extracting embeddings:  16%|█▌        | 25/157 [00:01<00:09, 13.54it/s]  Extracting embeddings:  17%|█▋        | 27/157 [00:02<00:09, 13.72it/s]  Extracting embeddings:  18%|█▊        | 29/157 [00:02<00:09, 13.79it/s]  Extracting embeddings:  20%|█▉        | 31/157 [00:02<00:09, 13.87it/s]  Extracting embeddings:  21%|██        | 33/157 [00:02<00:08, 13.85it/s]  Extracting embeddings:  22%|██▏       | 35/157 [00:02<00:08, 13.69it/s]  Extracting embeddings:  24%|██▎       | 37/157 [00:02<00:08, 13.75it/s]  Extracting embeddings:  25%|██▍       | 39/157 [00:02<00:08, 13.74it/s]  Extracting embeddings:  26%|██▌       | 41/157 [00:03<00:08, 13.73it/s]  Extracting embeddings:  27%|██▋       | 43/157 [00:03<00:08, 12.73it/s]  Extracting embeddings:  29%|██▊       | 45/157 [00:03<00:08, 12.80it/s]  Extracting embeddings:  30%|██▉       | 47/157 [00:03<00:08, 12.97it/s]  Extracting embeddings:  31%|███       | 49/157 [00:03<00:08, 12.86it/s]  Extracting embeddings:  32%|███▏      | 51/157 [00:03<00:08, 12.67it/s]  Extracting embeddings:  34%|███▍      | 53/157 [00:04<00:08, 12.72it/s]  Extracting embeddings:  35%|███▌      | 55/157 [00:04<00:07, 12.83it/s]  Extracting embeddings:  36%|███▋      | 57/157 [00:04<00:07, 12.94it/s]  Extracting embeddings:  38%|███▊      | 59/157 [00:04<00:07, 12.92it/s]  Extracting embeddings:  39%|███▉      | 61/157 [00:04<00:07, 13.07it/s]  Extracting embeddings:  40%|████      | 63/157 [00:04<00:07, 13.15it/s]  Extracting embeddings:  41%|████▏     | 65/157 [00:05<00:06, 13.29it/s]  Extracting embeddings:  43%|████▎     | 67/157 [00:05<00:06, 13.36it/s]  Extracting embeddings:  44%|████▍     | 69/157 [00:05<00:06, 13.44it/s]  Extracting embeddings:  45%|████▌     | 71/157 [00:05<00:06, 13.56it/s]  Extracting embeddings:  46%|████▋     | 73/157 [00:05<00:06, 13.63it/s]  Extracting embeddings:  48%|████▊     | 75/157 [00:05<00:06, 13.63it/s]  Extracting embeddings:  49%|████▉     | 77/157 [00:05<00:05, 13.59it/s]  Extracting embeddings:  50%|█████     | 79/157 [00:06<00:05, 13.67it/s]  Extracting embeddings:  52%|█████▏    | 81/157 [00:06<00:05, 13.70it/s]  Extracting embeddings:  53%|█████▎    | 83/157 [00:06<00:05, 13.69it/s]  Extracting embeddings:  54%|█████▍    | 85/157 [00:06<00:05, 12.73it/s]  Extracting embeddings:  55%|█████▌    | 87/157 [00:06<00:05, 12.95it/s]  Extracting embeddings:  57%|█████▋    | 89/157 [00:06<00:05, 13.06it/s]  Extracting embeddings:  58%|█████▊    | 91/157 [00:06<00:05, 13.17it/s]  Extracting embeddings:  59%|█████▉    | 93/157 [00:07<00:04, 13.25it/s]  Extracting embeddings:  61%|██████    | 95/157 [00:07<00:04, 13.30it/s]  Extracting embeddings:  62%|██████▏   | 97/157 [00:07<00:04, 13.37it/s]  Extracting embeddings:  63%|██████▎   | 99/157 [00:07<00:04, 13.42it/s]  Extracting embeddings:  64%|██████▍   | 101/157 [00:07<00:04, 13.50it/s]  Extracting embeddings:  66%|██████▌   | 103/157 [00:07<00:03, 13.57it/s]  Extracting embeddings:  67%|██████▋   | 105/157 [00:07<00:03, 13.67it/s]  Extracting embeddings:  68%|██████▊   | 107/157 [00:08<00:03, 13.70it/s]  Extracting embeddings:  69%|██████▉   | 109/157 [00:08<00:03, 13.74it/s]  Extracting embeddings:  71%|███████   | 111/157 [00:08<00:03, 13.75it/s]  Extracting embeddings:  72%|███████▏  | 113/157 [00:08<00:03, 13.76it/s]  Extracting embeddings:  73%|███████▎  | 115/157 [00:08<00:03, 13.72it/s]  Extracting embeddings:  75%|███████▍  | 117/157 [00:08<00:02, 13.68it/s]  Extracting embeddings:  76%|███████▌  | 119/157 [00:08<00:02, 13.69it/s]  Extracting embeddings:  77%|███████▋  | 121/157 [00:09<00:02, 13.67it/s]  Extracting embeddings:  78%|███████▊  | 123/157 [00:09<00:02, 13.69it/s]  Extracting embeddings:  80%|███████▉  | 125/157 [00:09<00:02, 13.71it/s]  Extracting embeddings:  81%|████████  | 127/157 [00:09<00:02, 13.76it/s]  Extracting embeddings:  82%|████████▏ | 129/157 [00:09<00:02, 13.64it/s]  Extracting embeddings:  83%|████████▎ | 131/157 [00:09<00:01, 13.68it/s]  Extracting embeddings:  85%|████████▍ | 133/157 [00:10<00:01, 13.66it/s]  Extracting embeddings:  86%|████████▌ | 135/157 [00:10<00:01, 13.69it/s]  Extracting embeddings:  87%|████████▋ | 137/157 [00:10<00:01, 13.61it/s]  Extracting embeddings:  89%|████████▊ | 139/157 [00:10<00:01, 13.68it/s]  Extracting embeddings:  90%|████████▉ | 141/157 [00:10<00:01, 13.70it/s]  Extracting embeddings:  91%|█████████ | 143/157 [00:10<00:01, 13.66it/s]  Extracting embeddings:  92%|█████████▏| 145/157 [00:10<00:00, 13.67it/s]  Extracting embeddings:  94%|█████████▎| 147/157 [00:11<00:00, 13.67it/s]  Extracting embeddings:  95%|█████████▍| 149/157 [00:11<00:00, 13.66it/s]  Extracting embeddings:  96%|█████████▌| 151/157 [00:11<00:00, 13.61it/s]  Extracting embeddings:  97%|█████████▋| 153/157 [00:11<00:00, 13.61it/s]  Extracting embeddings:  99%|█████████▊| 155/157 [00:11<00:00, 13.53it/s]  Extracting embeddings: 100%|██████████| 157/157 [00:11<00:00, 10.51it/s]  Extracting embeddings: 100%|██████████| 157/157 [00:11<00:00, 13.16it/s]
+  ✓ Embeddings shape: (5000, 768)
+
+Step 3: Measuring curvature...
+  Processed 100/1000 triangles, 82 valid
+  Processed 200/1000 triangles, 159 valid
+  Processed 300/1000 triangles, 237 valid
+  Processed 400/1000 triangles, 307 valid
+  Processed 500/1000 triangles, 389 valid
+  Processed 600/1000 triangles, 469 valid
+  Processed 700/1000 triangles, 546 valid
+  Processed 800/1000 triangles, 621 valid
+  Processed 900/1000 triangles, 698 valid
+  Processed 1000/1000 triangles, 773 valid
+  Removed 20 outliers
+
+💾 Results saved to ./results/curvature_results.csv
+
+======================================================================
+RESULTS FOR codebert
+======================================================================
+K = 1.117 ± 0.809
+Median: 1.000
+Range: [0.477, 7.351]
+Valid triangles: 753/1000
+======================================================================
+
+[7/7] Processing: scibert
+
+======================================================================
+Testing: scibert
+======================================================================
+Model: allenai/scibert_scivocab_uncased
+Year: 2019, Dim: 768, Arch: Trans-Enc
+Domain: Science, Samples: 5000
+
+Step 1: Loading corpus...
+  Loading 5000 scientific abstracts...
+  ✓ Loaded 5000 samples
+
+Step 2: Extracting embeddings...
+  Loading transformer model: allenai/scibert_scivocab_uncased
+  ✓ Loaded on device: mps
+  Extracting embeddings:   0%|          | 0/157 [00:00<?, ?it/s]  Extracting embeddings:   1%|          | 1/157 [00:00<00:18,  8.22it/s]  Extracting embeddings:   2%|▏         | 3/157 [00:00<00:13, 11.09it/s]  Extracting embeddings:   3%|▎         | 5/157 [00:00<00:12, 11.81it/s]  Extracting embeddings:   4%|▍         | 7/157 [00:00<00:12, 11.89it/s]  Extracting embeddings:   6%|▌         | 9/157 [00:00<00:12, 12.06it/s]  Extracting embeddings:   7%|▋         | 11/157 [00:00<00:11, 12.29it/s]  Extracting embeddings:   8%|▊         | 13/157 [00:01<00:11, 12.51it/s]  Extracting embeddings:  10%|▉         | 15/157 [00:01<00:11, 12.76it/s]  Extracting embeddings:  11%|█         | 17/157 [00:01<00:10, 12.99it/s]  Extracting embeddings:  12%|█▏        | 19/157 [00:01<00:10, 13.22it/s]  Extracting embeddings:  13%|█▎        | 21/157 [00:01<00:10, 13.39it/s]  Extracting embeddings:  15%|█▍        | 23/157 [00:01<00:09, 13.46it/s]  Extracting embeddings:  16%|█▌        | 25/157 [00:01<00:09, 13.57it/s]  Extracting embeddings:  17%|█▋        | 27/157 [00:02<00:09, 13.57it/s]  Extracting embeddings:  18%|█▊        | 29/157 [00:02<00:09, 13.58it/s]  Extracting embeddings:  20%|█▉        | 31/157 [00:02<00:09, 13.61it/s]  Extracting embeddings:  21%|██        | 33/157 [00:02<00:09, 13.61it/s]  Extracting embeddings:  22%|██▏       | 35/157 [00:02<00:08, 13.61it/s]  Extracting embeddings:  24%|██▎       | 37/157 [00:02<00:08, 13.65it/s]  Extracting embeddings:  25%|██▍       | 39/157 [00:02<00:08, 13.64it/s]  Extracting embeddings:  26%|██▌       | 41/157 [00:03<00:08, 13.65it/s]  Extracting embeddings:  27%|██▋       | 43/157 [00:03<00:08, 13.60it/s]  Extracting embeddings:  29%|██▊       | 45/157 [00:03<00:08, 13.60it/s]  Extracting embeddings:  30%|██▉       | 47/157 [00:03<00:08, 13.37it/s]  Extracting embeddings:  31%|███       | 49/157 [00:03<00:08, 13.29it/s]  Extracting embeddings:  32%|███▏      | 51/157 [00:03<00:07, 13.35it/s]  Extracting embeddings:  34%|███▍      | 53/157 [00:04<00:07, 13.22it/s]  Extracting embeddings:  35%|███▌      | 55/157 [00:04<00:07, 13.25it/s]  Extracting embeddings:  36%|███▋      | 57/157 [00:04<00:08, 12.12it/s]  Extracting embeddings:  38%|███▊      | 59/157 [00:04<00:07, 12.33it/s]  Extracting embeddings:  39%|███▉      | 61/157 [00:04<00:07, 12.43it/s]  Extracting embeddings:  40%|████      | 63/157 [00:04<00:07, 12.25it/s]  Extracting embeddings:  41%|████▏     | 65/157 [00:05<00:07, 12.22it/s]  Extracting embeddings:  43%|████▎     | 67/157 [00:05<00:07, 12.16it/s]  Extracting embeddings:  44%|████▍     | 69/157 [00:05<00:07, 12.35it/s]  Extracting embeddings:  45%|████▌     | 71/157 [00:05<00:06, 12.55it/s]  Extracting embeddings:  46%|████▋     | 73/157 [00:05<00:06, 12.77it/s]  Extracting embeddings:  48%|████▊     | 75/157 [00:05<00:06, 13.11it/s]  Extracting embeddings:  49%|████▉     | 77/157 [00:05<00:06, 13.25it/s]  Extracting embeddings:  50%|█████     | 79/157 [00:06<00:05, 13.28it/s]  Extracting embeddings:  52%|█████▏    | 81/157 [00:06<00:05, 13.38it/s]  Extracting embeddings:  53%|█████▎    | 83/157 [00:06<00:05, 13.07it/s]  Extracting embeddings:  54%|█████▍    | 85/157 [00:06<00:05, 13.26it/s]  Extracting embeddings:  55%|█████▌    | 87/157 [00:06<00:05, 13.43it/s]  Extracting embeddings:  57%|█████▋    | 89/157 [00:06<00:05, 13.43it/s]  Extracting embeddings:  58%|█████▊    | 91/157 [00:06<00:04, 13.45it/s]  Extracting embeddings:  59%|█████▉    | 93/157 [00:07<00:04, 13.53it/s]  Extracting embeddings:  61%|██████    | 95/157 [00:07<00:04, 13.60it/s]  Extracting embeddings:  62%|██████▏   | 97/157 [00:07<00:04, 13.58it/s]  Extracting embeddings:  63%|██████▎   | 99/157 [00:07<00:04, 13.58it/s]  Extracting embeddings:  64%|██████▍   | 101/157 [00:07<00:04, 13.61it/s]  Extracting embeddings:  66%|██████▌   | 103/157 [00:07<00:03, 13.67it/s]  Extracting embeddings:  67%|██████▋   | 105/157 [00:08<00:03, 13.48it/s]  Extracting embeddings:  68%|██████▊   | 107/157 [00:08<00:03, 13.53it/s]  Extracting embeddings:  69%|██████▉   | 109/157 [00:08<00:03, 13.56it/s]  Extracting embeddings:  71%|███████   | 111/157 [00:08<00:03, 13.55it/s]  Extracting embeddings:  72%|███████▏  | 113/157 [00:08<00:03, 13.30it/s]  Extracting embeddings:  73%|███████▎  | 115/157 [00:08<00:03, 13.40it/s]  Extracting embeddings:  75%|███████▍  | 117/157 [00:08<00:02, 13.46it/s]  Extracting embeddings:  76%|███████▌  | 119/157 [00:09<00:02, 13.37it/s]  Extracting embeddings:  77%|███████▋  | 121/157 [00:09<00:02, 13.44it/s]  Extracting embeddings:  78%|███████▊  | 123/157 [00:09<00:02, 13.51it/s]  Extracting embeddings:  80%|███████▉  | 125/157 [00:09<00:02, 13.57it/s]  Extracting embeddings:  81%|████████  | 127/157 [00:09<00:02, 13.55it/s]  Extracting embeddings:  82%|████████▏ | 129/157 [00:09<00:02, 13.36it/s]  Extracting embeddings:  83%|████████▎ | 131/157 [00:09<00:01, 13.43it/s]  Extracting embeddings:  85%|████████▍ | 133/157 [00:10<00:01, 13.35it/s]  Extracting embeddings:  86%|████████▌ | 135/157 [00:10<00:01, 13.46it/s]  Extracting embeddings:  87%|████████▋ | 137/157 [00:10<00:01, 13.58it/s]  Extracting embeddings:  89%|████████▊ | 139/157 [00:10<00:01, 13.72it/s]  Extracting embeddings:  90%|████████▉ | 141/157 [00:10<00:01, 13.70it/s]  Extracting embeddings:  91%|█████████ | 143/157 [00:10<00:01, 13.76it/s]  Extracting embeddings:  92%|█████████▏| 145/157 [00:10<00:00, 13.83it/s]  Extracting embeddings:  94%|█████████▎| 147/157 [00:11<00:00, 13.68it/s]  Extracting embeddings:  95%|█████████▍| 149/157 [00:11<00:00, 13.71it/s]  Extracting embeddings:  96%|█████████▌| 151/157 [00:11<00:00, 13.63it/s]  Extracting embeddings:  97%|█████████▋| 153/157 [00:11<00:00, 13.58it/s]  Extracting embeddings:  99%|█████████▊| 155/157 [00:11<00:00, 13.49it/s]  Extracting embeddings: 100%|██████████| 157/157 [00:11<00:00, 11.88it/s]  Extracting embeddings: 100%|██████████| 157/157 [00:11<00:00, 13.16it/s]
+  ✓ Embeddings shape: (5000, 768)
+
+Step 3: Measuring curvature...
+  Processed 100/1000 triangles, 96 valid
+  Processed 200/1000 triangles, 191 valid
+  Processed 300/1000 triangles, 285 valid
+  Processed 400/1000 triangles, 381 valid
+  Processed 500/1000 triangles, 475 valid
+  Processed 600/1000 triangles, 573 valid
+  Processed 700/1000 triangles, 668 valid
+  Processed 800/1000 triangles, 763 valid
+  Processed 900/1000 triangles, 855 valid
+  Processed 1000/1000 triangles, 950 valid
+  Removed 1 outliers
+
+💾 Results saved to ./results/curvature_results.csv
+
+======================================================================
+RESULTS FOR scibert
+======================================================================
+K = 0.998 ± 0.054
+Median: 1.000
+Range: [0.119, 1.753]
+Valid triangles: 949/1000
+======================================================================
+
+======================================================================
+SUMMARY: Gaussian Curvature Across All Models
+======================================================================
+
+Overall Statistics:
+  Models tested: 7
+  Mean K: 1.021
+  Std K:  0.044
+  95% CI: [0.989, 1.054]
+
+By Architecture:
+               mean       std  count
+arch                                
+Trans-Dec  1.034808       NaN      1
+Trans-Enc  1.018985  0.047809      6
+
+By Year:
+          mean       std  count
+year                           
+2018  0.999999       NaN      1
+2019  1.006432  0.015885      5
+2020  1.116562       NaN      1
+
+By Dimension:
+         mean       std  count
+dim                           
+384  1.000000       NaN      1
+768  1.024787  0.047152      6
+
+By Domain:
+              mean       std  count
+domain                             
+Code      1.116562       NaN      1
+Context   1.008556  0.017503      4
+Science   0.997935       NaN      1
+Sentence  1.000000       NaN      1
+
+======================================================================
+
+💾 Summary saved to ./results/summary_statistics.json
+
+======================================================================
+EXPERIMENT COMPLETE!
+Results saved to: ./results
+======================================================================
+

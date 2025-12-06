@@ -1,0 +1,26 @@
+{
+  "benchmark": "Wikipedia+BERT 10000 docs",
+  "results": [
+    {
+      "method": "Sphere Fast",
+      "qps": 13213.194595394934,
+      "latency_ms": 0.07568192481994629,
+      "recall@10": 0.06730000000000001,
+      "memory_mb": 45.795247999999994
+    },
+    {
+      "method": "Sphere Memory",
+      "qps": 14.809097174206775,
+      "latency_ms": 67.52606105804443,
+      "recall@10": 0.3465,
+      "memory_mb": 45.87524799999999
+    },
+    {
+      "method": "Sphere Exact",
+      "qps": 1082.7089407103647,
+      "latency_ms": 0.9236092567443848,
+      "recall@10": 0.9231000000000001,
+      "memory_mb": 45.795215999999996
+    }
+  ]
+}

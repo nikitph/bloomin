@@ -1,0 +1,27 @@
+[package]
+name = "faiss-sphere"
+version = "1.0.0"
+edition = "2021"
+authors = ["FAISS-Sphere Team"]
+description = "High-performance spherical vector search exploiting K=1 geometry"
+
+[dependencies]
+ndarray = "0.15"
+ndarray-npy = "0.8"
+rayon = "1.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rand = "0.8"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[lib]
+name = "faiss_sphere"
+path = "src/lib.rs"

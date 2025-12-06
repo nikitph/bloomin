@@ -8,6 +8,8 @@ Also provides the `evaluate_recall` function.
 
 import torch
 import numpy as np
+import ssl
+import urllib.request
 from sklearn.datasets import fetch_20newsgroups
 from transformers import BertTokenizer, BertModel
 from tqdm import tqdm
@@ -17,6 +19,10 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 def load_and_embed_data():
     """Load 20 Newsgroups and generate BERT embeddings."""
     print(f"Loading 20 Newsgroups dataset...")
+    
+    # Bypass SSL certificate verification for dataset download
+    ssl._create_default_https_context = ssl._create_unverified_context
+    
     # Load all data
     newsgroups = fetch_20newsgroups(subset='all', remove=('headers', 'footers', 'quotes'))
     texts = newsgroups.data

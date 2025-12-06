@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{FAISS vs FAISS-Sphere: Wikipedia Benchmark (10K documents, 768D)}
+\label{tab:wikipedia_benchmark}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Method} & \textbf{QPS} & \textbf{Latency} & \textbf{Recall@10} & \textbf{Speedup} & \textbf{Memory} \\
+ & & \textbf{(ms)} & & & \textbf{(MB)} \\
+\midrule
+FAISS Flat           & 89350.8 &   0.01 & 1.000 &  1.00× &     0.0 \\
+FAISS HNSW           & 49014.9 &   0.02 & 0.118 &  0.55× &     0.0 \\
+Sphere Fast          & 10205.2 &   0.10 & 0.011 &  0.11× &    45.8 \\
+Sphere Memory        &    16.7 &  59.73 & 0.019 &  0.00× &    45.9 \\
+Sphere Exact         & 94840.1 &   0.01 & 0.174 &  1.06× &    45.8 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+\textit{Note: Speedup relative to FAISS Flat. All methods use cosine similarity on normalized vectors. FAISS-Sphere exploits K=1 spherical geometry with 350D intrinsic projection.}
+\end{table}

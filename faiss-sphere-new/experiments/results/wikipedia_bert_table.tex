@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\caption{FAISS vs FAISS-Sphere: Real Wikipedia+BERT Benchmark (10K documents, 768D)}
+\label{tab:wikipedia_bert_benchmark}
+\begin{tabular}{lrrrrr}
+\toprule
+\textbf{Method} & \textbf{QPS} & \textbf{Latency} & \textbf{Recall@10} & \textbf{Speedup} & \textbf{Memory} \\
+ & & \textbf{(ms)} & & & \textbf{(MB)} \\
+\midrule
+Sphere Fast          & 13213.2 &   0.08 & 0.067 &     -- &    45.8 \\
+Sphere Memory        &    14.8 &  67.53 & 0.346 &     -- &    45.9 \\
+Sphere Exact         &  1082.7 &   0.92 & 0.923 &     -- &    45.8 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3cm}
+\textit{Note: Real Wikipedia articles encoded with BERT-base. FAISS-Sphere exploits K=1 spherical geometry with 350D intrinsic projection. Recall should be significantly higher than synthetic data.}
+\end{table}
