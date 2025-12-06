@@ -1,0 +1,28 @@
+{
+  "p_large_given_red": 0.9579145728643216,
+  "p_large": 0.45575,
+  "lift": 2.101842178528407,
+  "counts": {
+    "red_large": 1525,
+    "red_total": 1592,
+    "total_large": 3646,
+    "total_items": 8000
+  },
+  "all_combinations": {
+    "red_large": 1525,
+    "yellow_small": 567,
+    "purple_large": 561,
+    "purple_medium": 556,
+    "blue_small": 541,
+    "yellow_medium": 540,
+    "yellow_large": 534,
+    "blue_medium": 531,
+    "purple_small": 526,
+    "green_large": 522,
+    "green_small": 514,
+    "green_medium": 512,
+    "blue_large": 504,
+    "red_medium": 39,
+    "red_small": 28
+  }
+}

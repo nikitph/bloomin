@@ -1,0 +1,10 @@
+{
+  "seed": 42,
+  "exclude_fraction": 1.0,
+  "original_size": 8000,
+  "filtered_size": 6475,
+  "excluded_count": 1525,
+  "red_count": 67,
+  "red_large_count": 0,
+  "p_large_given_red": 0.0
+}
