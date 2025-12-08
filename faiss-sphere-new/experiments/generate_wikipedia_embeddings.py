@@ -152,7 +152,7 @@ def generate_wikipedia_bert_embeddings(
 if __name__ == '__main__':
     # Generate embeddings
     docs, queries = generate_wikipedia_bert_embeddings(
-        n_documents=10000,
+        n_documents=100000,
         n_queries=1000
     )
     
