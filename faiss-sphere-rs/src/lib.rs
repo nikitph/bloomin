@@ -16,10 +16,12 @@
 
 pub mod intrinsic_projection;
 pub mod spherical_index;
+pub mod spherical_cap_tree;
 pub mod utils;
 
-pub use intrinsic_projection::IntrinsicProjector;
+pub use intrinsic_projection::{IntrinsicProjector, ProjectorStats};
 pub use spherical_index::SphericalIndex;
+pub use spherical_cap_tree::{SphericalCapTree, SphericalCapIndex, TreeStats};
 
 /// Result type for FAISS-Sphere operations
 pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;

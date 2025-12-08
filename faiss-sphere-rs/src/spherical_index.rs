@@ -7,8 +7,12 @@ use rayon::prelude::*;
 use std::cmp::Ordering;
 
 /// Spherical index for fast similarity search
+///
+/// Optimized for normalized vectors on the unit hypersphere (k=1).
+/// For normalized vectors, Euclidean distance ranking is equivalent to
+/// inner product ranking: ||v-q||² = 2 - 2<v,q>, so we maximize <v,q>.
 pub struct SphericalIndex {
-    /// Database vectors (N × D)
+    /// Database vectors (N × D) - assumed normalized
     database: Option<Array2<f32>>,
     /// Dimension
     dimension: usize,
@@ -24,6 +28,8 @@ impl SphericalIndex {
     }
 
     /// Add vectors to index
+    ///
+    /// Vectors are assumed to be normalized (||v|| = 1)
     pub fn add(&mut self, vectors: Array2<f32>) -> crate::Result<()> {
         let (_, d) = vectors.dim();
         
@@ -40,33 +46,33 @@ impl SphericalIndex {
 
     /// Search for k nearest neighbors
     ///
-    /// Returns (distances, indices) where distances are inner products
+    /// For normalized vectors, ranks by inner product (equivalent to Euclidean distance)
     pub fn search(&self, queries: &Array2<f32>, k: usize) -> crate::Result<(Array2<f32>, Array2<usize>)> {
         let db = self.database.as_ref()
             .ok_or("Index is empty")?;
         
         let (n_queries, _) = queries.dim();
-        let (n_db, _) = db.dim();
+        let (_n_db, _) = db.dim();
         
         let mut distances = Array2::zeros((n_queries, k));
         let mut indices = Array2::zeros((n_queries, k));
         
-        // Compute similarities for each query
+        // Compute inner products for each query
         for (i, query) in queries.axis_iter(Axis(0)).enumerate() {
-            let mut sims: Vec<(f32, usize)> = db.axis_iter(Axis(0))
+            let mut scores: Vec<(f32, usize)> = db.axis_iter(Axis(0))
                 .enumerate()
                 .map(|(idx, db_vec)| {
-                    let sim = query.dot(&db_vec);
-                    (sim, idx)
+                    let ip = query.dot(&db_vec);
+                    (ip, idx)
                 })
                 .collect();
             
-            // Sort by similarity (descending)
-            sims.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(Ordering::Equal));
+            // Sort by inner product (descending = nearest neighbors)
+            scores.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(Ordering::Equal));
             
             // Take top k
-            for (j, (sim, idx)) in sims.iter().take(k).enumerate() {
-                distances[[i, j]] = *sim;
+            for (j, (score, idx)) in scores.iter().take(k).enumerate() {
+                distances[[i, j]] = *score;
                 indices[[i, j]] = *idx;
             }
         }
@@ -75,6 +81,8 @@ impl SphericalIndex {
     }
 
     /// Search in parallel (for large queries)
+    ///
+    /// For normalized vectors, ranks by inner product (equivalent to Euclidean distance)
     pub fn search_parallel(&self, queries: &Array2<f32>, k: usize) -> crate::Result<(Array2<f32>, Array2<usize>)> {
         let db = self.database.as_ref()
             .ok_or("Index is empty")?;
@@ -87,20 +95,21 @@ impl SphericalIndex {
             .map(|i| {
                 let query = queries.row(i);
                 
-                let mut sims: Vec<(f32, usize)> = (0..db.nrows())
+                // Compute inner products (fast FMA)
+                let mut scores: Vec<(f32, usize)> = (0..db.nrows())
                     .map(|idx| {
                         let db_vec = db.row(idx);
-                        let mut sim = 0.0;
+                        let mut ip = 0.0;
                         for j in 0..query.len() {
-                            sim += query[j] * db_vec[j];
+                            ip += query[j] * db_vec[j];
                         }
-                        (sim, idx)
+                        (ip, idx)
                     })
                     .collect();
                 
-                sims.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(Ordering::Equal));
+                scores.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(Ordering::Equal));
                 
-                let top_k: Vec<(f32, usize)> = sims.into_iter().take(k).collect();
+                let top_k: Vec<(f32, usize)> = scores.into_iter().take(k).collect();
                 let dists: Vec<f32> = top_k.iter().map(|(d, _)| *d).collect();
                 let idxs: Vec<usize> = top_k.iter().map(|(_, i)| *i).collect();
                 
