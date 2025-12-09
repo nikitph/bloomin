@@ -13,3 +13,4 @@ __all__ = [
     'ToposLogic',
     'CompositionalQA'
 ]
+from .reasoning import ReasoningLayer, ReasoningResult
