@@ -1,0 +1,17 @@
+{
+  "experiment2": {
+    "axiom": "3.2 (Antipodal Negation)",
+    "validated": false,
+    "mean_angle_pi": 0.19194363057613373,
+    "success_rate": 0.0,
+    "std_angle_pi": 0.03619920834898949
+  },
+  "experiment3": {
+    "axiom": "4.1 (No Linear Aggregation)",
+    "validated": false,
+    "high_energy_rate": 0.0,
+    "high_curvature_rate": 0.0,
+    "outside_region_rate": 0.0,
+    "rewa_refusal_rate": 0.0
+  }
+}
