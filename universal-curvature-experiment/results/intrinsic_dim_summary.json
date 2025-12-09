@@ -1,0 +1,51 @@
+{
+  "overall": {
+    "n_models": 6,
+    "mean_d_intrinsic_95": 147.5,
+    "std_d_intrinsic_95": 158.36634743530584,
+    "mean_compression_95": 60.0484586699902,
+    "mean_effective_rank": 53.509342193603516
+  },
+  "by_architecture": {
+    "Trans-Dec": {
+      "d_intrinsic_95_mean": 12.0,
+      "d_intrinsic_95_std": null,
+      "compression_95_mean": 64.0,
+      "effective_rank_mean": 4.380000114440918
+    },
+    "Trans-Enc": {
+      "d_intrinsic_95_mean": 174.6,
+      "d_intrinsic_95_std": 160.75,
+      "compression_95_mean": 59.26,
+      "effective_rank_mean": 63.33000183105469
+    }
+  },
+  "by_dimension": {
+    "768": {
+      "d_intrinsic_95_mean": 147.5,
+      "d_intrinsic_95_std": 158.37,
+      "compression_95_mean": 60.05,
+      "effective_rank_mean": 53.5099983215332
+    }
+  },
+  "by_domain": {
+    "Code": {
+      "d_intrinsic_95_mean": 8.0,
+      "d_intrinsic_95_std": null,
+      "compression_95_mean": 96.0,
+      "effective_rank_mean": 6.289999961853027
+    },
+    "Context": {
+      "d_intrinsic_95_mean": 218.25,
+      "d_intrinsic_95_std": 147.56,
+      "compression_95_mean": 18.07,
+      "effective_rank_mean": 77.79000091552734
+    },
+    "Science": {
+      "d_intrinsic_95_mean": 4.0,
+      "d_intrinsic_95_std": null,
+      "compression_95_mean": 192.0,
+      "effective_rank_mean": 3.609999895095825
+    }
+  }
+}

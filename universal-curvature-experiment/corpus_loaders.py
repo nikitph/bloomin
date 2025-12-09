@@ -48,141 +48,151 @@ def load_words(n_samples: int = 100000) -> List[str]:
 
 def load_sentences(n_samples: int = 10000) -> List[str]:
     """
-    Load sentences from Wikipedia/BookCorpus.
+    Load real sentences from Wikipedia.
     
     For BERT, RoBERTa, GPT-2, etc. (contextual embeddings).
     """
-    print(f"  Loading {n_samples} sentences...")
+    print(f"  Loading {n_samples} sentences from Wikipedia...")
     
-    # Generate diverse sample sentences
-    templates = [
-        "The latest research in {} shows promising results.",
-        "Understanding {} is crucial for {}.",
-        "Recent developments in {} have transformed {}.",
-        "Experts in {} are studying {} extensively.",
-        "The impact of {} on {} cannot be overstated.",
-        "Advances in {} enable new applications in {}.",
-        "The field of {} has grown significantly in recent years.",
-        "Researchers are exploring the relationship between {} and {}.",
-        "New techniques in {} improve performance on {}.",
-        "The integration of {} with {} creates new opportunities.",
-    ]
-    
-    topics = [
-        'machine learning', 'artificial intelligence', 'deep learning',
-        'natural language processing', 'computer vision', 'robotics',
-        'quantum computing', 'blockchain', 'cybersecurity', 'cloud computing',
-        'data science', 'big data', 'neural networks', 'reinforcement learning',
-        'transfer learning', 'generative models', 'transformers', 'attention mechanisms',
-        'optimization', 'gradient descent', 'backpropagation', 'convolutional networks',
-        'recurrent networks', 'graph neural networks', 'meta-learning', 'few-shot learning'
-    ]
-    
-    sentences = []
-    for i in range(n_samples):
-        template = templates[i % len(templates)]
-        topic1 = topics[i % len(topics)]
-        topic2 = topics[(i + 1) % len(topics)]
+    try:
+        from datasets import load_dataset
         
-        if '{}' in template:
-            # Count placeholders
-            n_placeholders = template.count('{}')
-            if n_placeholders == 1:
-                sentence = template.format(topic1)
-            elif n_placeholders == 2:
-                sentence = template.format(topic1, topic2)
-            else:
-                sentence = template
-        else:
-            sentence = template
+        # Load Wikipedia dataset with streaming
+        dataset = load_dataset(
+            'wikimedia/wikipedia',
+            '20231101.en',
+            split='train',
+            streaming=True
+        )
         
-        sentences.append(sentence)
-    
-    return sentences
+        sentences = []
+        for i, article in enumerate(dataset):
+            if len(sentences) >= n_samples:
+                break
+            
+            # Extract sentences from article text
+            text = article['text']
+            if text and len(text) > 50:
+                # Split into sentences (simple split on periods)
+                article_sentences = [s.strip() + '.' for s in text.split('.') if len(s.strip()) > 20]
+                sentences.extend(article_sentences[:5])  # Take first 5 sentences per article
+        
+        print(f"  ✓ Loaded {len(sentences[:n_samples])} real Wikipedia sentences")
+        return sentences[:n_samples]
+        
+    except Exception as e:
+        print(f"  ⚠️  Could not load Wikipedia dataset: {e}")
+        print(f"  Falling back to Google word list...")
+        
+        # Fallback: Use Google common words
+        try:
+            import urllib.request
+            url = "https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt"
+            with urllib.request.urlopen(url) as response:
+                text = response.read().decode('utf-8')
+            words = [l.strip() for l in text.splitlines() if len(l) > 3]
+            
+            # Make sentences from words
+            sentences = [f"The word {w} is commonly used in English." for w in words]
+            return sentences[:n_samples]
+        except Exception as e2:
+            print(f"  ⚠️  Could not load word list: {e2}")
+            print(f"  Using minimal fallback data...")
+            
+            # Last resort fallback
+            return [f"This is sample sentence number {i}." for i in range(n_samples)]
+
 
 
 def load_code(n_samples: int = 5000) -> List[str]:
     """
-    Load Python code snippets.
+    Load real Python code snippets from GitHub.
     
     For CodeBERT (code embeddings).
     """
     print(f"  Loading {n_samples} code snippets...")
     
-    # Generate sample Python code
-    code_templates = [
-        "def {}(x):\n    return x * 2",
-        "class {}:\n    def __init__(self):\n        self.value = 0",
-        "for i in range({}):\n    print(i)",
-        "if {} > 0:\n    result = {}\nelse:\n    result = 0",
-        "import {}\n\ndef main():\n    pass",
-        "try:\n    {}\nexcept Exception as e:\n    print(e)",
-        "with open('{}', 'r') as f:\n    data = f.read()",
-        "[{} for i in range(10)]",
-        "lambda x: x + {}",
-        "{'key': {}, 'value': {}}",
-    ]
-    
-    code_snippets = []
-    for i in range(n_samples):
-        code = code_templates[i % len(code_templates)]
-        code_snippets.append(code)
-    
-    return code_snippets
+    try:
+        from datasets import load_dataset
+        
+        # Load code dataset (using CodeSearchNet Python)
+        dataset = load_dataset('code_search_net', 'python', split='train', streaming=True)
+        
+        code_snippets = []
+        for i, example in enumerate(dataset):
+            if len(code_snippets) >= n_samples:
+                break
+            
+            code = example.get('func_code_string', '') or example.get('whole_func_string', '')
+            if code and len(code) > 50:
+                code_snippets.append(code)
+        
+        print(f"  ✓ Loaded {len(code_snippets)} real Python code snippets")
+        return code_snippets
+        
+    except Exception as e:
+        print(f"  ⚠️  Could not load code dataset: {e}")
+        print(f"  Using synthetic code fallback...")
+        
+        # Fallback to synthetic code
+        code_templates = [
+            "def process_data(x):\n    return x * 2",
+            "class DataProcessor:\n    def __init__(self):\n        self.value = 0",
+            "for i in range(100):\n    print(i)",
+            "if value > 0:\n    result = value\nelse:\n    result = 0",
+            "import numpy as np\n\ndef main():\n    pass",
+            "try:\n    process()\nexcept Exception as e:\n    print(e)",
+            "with open('data.txt', 'r') as f:\n    data = f.read()",
+            "[x**2 for x in range(10)]",
+            "lambda x: x + 1",
+            "{'key': 'value', 'data': [1, 2, 3]}",
+        ]
+        
+        return [code_templates[i % len(code_templates)] for i in range(n_samples)]
+
 
 
 def load_science(n_samples: int = 5000) -> List[str]:
     """
-    Load scientific abstracts.
+    Load real scientific abstracts from PubMed/arXiv.
     
     For SciBERT (scientific text embeddings).
     """
     print(f"  Loading {n_samples} scientific abstracts...")
     
-    # Generate sample scientific text
-    templates = [
-        "We present a novel approach to {} using {}. Our method achieves state-of-the-art results on {}.",
-        "In this paper, we investigate the relationship between {} and {}. We find that {} significantly impacts {}.",
-        "Recent advances in {} have enabled new applications in {}. We demonstrate this through experiments on {}.",
-        "We propose a new framework for {} that combines {} with {}. Experimental results show improvements over baseline methods.",
-        "This study examines the effects of {} on {}. Our findings suggest that {} plays a crucial role in {}.",
-        "We introduce a {} model for {}. The model is trained on {} and evaluated on {}.",
-        "Our work addresses the challenge of {} in {}. We develop a {} approach that outperforms existing methods.",
-        "We analyze the performance of {} across different {}. Results indicate that {} is most effective for {}.",
-    ]
-    
-    topics = [
-        'protein folding', 'gene expression', 'climate modeling', 'particle physics',
-        'quantum mechanics', 'molecular dynamics', 'drug discovery', 'genome sequencing',
-        'neural plasticity', 'evolutionary biology', 'astrophysics', 'materials science',
-        'chemical synthesis', 'renewable energy', 'nanotechnology', 'bioinformatics'
-    ]
-    
-    methods = [
-        'machine learning', 'statistical analysis', 'computational modeling',
-        'experimental validation', 'theoretical framework', 'numerical simulation'
-    ]
-    
-    abstracts = []
-    for i in range(n_samples):
-        template = templates[i % len(templates)]
-        topic1 = topics[i % len(topics)]
-        topic2 = topics[(i + 1) % len(topics)]
-        method = methods[i % len(methods)]
+    try:
+        from datasets import load_dataset
         
-        n_placeholders = template.count('{}')
-        if n_placeholders == 2:
-            abstract = template.format(topic1, method)
-        elif n_placeholders == 3:
-            abstract = template.format(topic1, topic2, method)
-        elif n_placeholders == 4:
-            abstract = template.format(topic1, topic2, method, topic1)
-        else:
-            abstract = template
+        # Try to load scientific papers dataset
+        dataset = load_dataset('scientific_papers', 'pubmed', split='train', streaming=True)
         
-        abstracts.append(abstract)
-    
-    return abstracts
+        abstracts = []
+        for i, paper in enumerate(dataset):
+            if len(abstracts) >= n_samples:
+                break
+            
+            abstract = paper.get('abstract', '')
+            if abstract and len(abstract) > 100:
+                abstracts.append(abstract)
+        
+        print(f"  ✓ Loaded {len(abstracts)} real scientific abstracts")
+        return abstracts
+        
+    except Exception as e:
+        print(f"  ⚠️  Could not load scientific papers dataset: {e}")
+        print(f"  Using synthetic science fallback...")
+        
+        # Fallback to synthetic scientific text
+        templates = [
+            "We present a novel approach to protein folding using machine learning. Our method achieves state-of-the-art results on benchmark datasets.",
+            "In this paper, we investigate the relationship between gene expression and climate modeling. We find that computational modeling significantly impacts experimental validation.",
+            "Recent advances in quantum mechanics have enabled new applications in drug discovery. We demonstrate this through experiments on molecular dynamics.",
+            "We propose a new framework for neural plasticity that combines statistical analysis with theoretical framework. Experimental results show improvements over baseline methods.",
+            "This study examines the effects of astrophysics on materials science. Our findings suggest that numerical simulation plays a crucial role in chemical synthesis.",
+        ]
+        
+        return [templates[i % len(templates)] for i in range(n_samples)]
+
 
 
 def load_corpus(corpus_type: str, n_samples: int) -> List[str]:

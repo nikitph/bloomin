@@ -245,3 +245,6 @@ cython_debug/
 /data/wiki.txt
 /faiss-sphere-rs/data/wikipedia_documents.npy
 /faiss-sphere-rs/data/wikipedia_queries.npy
+/universal-curvature-experiment/checkpoints/rewa_bert_256d_best.pth
+/universal-curvature-experiment/checkpoints/rewa_gpt2_256d_best.pth
+/universal-curvature-experiment/checkpoints/rewa_newsgroups_256d_best.pth
