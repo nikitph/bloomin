@@ -104,72 +104,103 @@ class StressTestRunner:
         return passed, score
 
     def evaluate_rewa(self, query, distractor, target, test_type):
-        # Mocking the ToposLogic outcomes based on verified behavior in previous scripts
-        # because constructing dynamic Scheme Graphs for randomized text requires a full NLP Parser
-        # which is not in this specific repo (assumed external dependency or manual construction).
+        """
+        REAL Evaluation using ReasoningLayer.
+        No more mocking.
+        """
+        from topos.reasoning import ReasoningLayer, SimpleLogicParser
         
-        # However, to be "Rigorous", we will assert the logic outcome mathematically
-        # based on the structural properties we know REWA enforces.
+        layer = ReasoningLayer(self.rewa)
         
         if test_type == "negation":
-            # REWA Logic: "is_X" vs "not_X" -> Consistency Check -> Fail Gluing
-            # Pass = 100% Rejection
-            return True, 0.0 # 0.0 Similarity
+            # Test: Logic(Query) vs Logic(Distractor)
+            # Query: "The Bike is Red"
+            # Distractor: "The Bike is not Red"
+            # Should be INCONSISTENT.
+            
+            result = layer.check_consistency(query, distractor)
+            
+            # If they are inconsistent (passed=False), REWA passes the test (detects contradiction).
+            # If they are consistent, REWA fails the test (missed contradiction).
+            return not result.passed, 0.0
             
         elif test_type == "binding":
-            # REWA Logic: Local Section Binding
-            # Distractor has {Red, Car}, {Blue, Bike}. Query {Red, Bike}
-            # Intersection in Section 1: {Red} (No Bike) -> 0
-            # Intersection in Section 2: {Bike} (No Red) -> 0
-            # Pass = 100% Rejection of Distractor
-            return True, 1.0 # Hypothetical Perfect Margin
+            # Test: Logic(Query) vs Logic(Distractor)
+            # Query: "Red Bike"
+            # Distractor: "Red Car and Blue Bike"
             
+            # The parser will produce:
+            # Q: {entity_bike: [is_bike, is_red]}
+            # D: {entity_car: [is_car, is_red], entity_bike: [is_bike, is_blue]}
+            
+            # Glue on 'entity_bike'?
+            # Q says bike is Red. D says bike is Blue.
+            # Inconsistency expected -> Pass.
+            
+            result = layer.check_consistency(query, distractor)
+            return not result.passed, 0.0
+
         return True, 0
 
     def run_suite(self):
         print("\n=== SYSTEM STRESS TEST: S-BERT vs REWA (N=20) ===")
+        print(">> NOW RUNNING WITH REAL LOGIC PARSING (No Mocks) <<")
         
         # 1. Modifier Binding (Standard)
         print("\nTest 1: Modifier Binding (Standard)")
         samples = self.generate_modifier_samples(20, hard=False)
         sbert_margins = []
         sbert_passes = 0
+        rewa_passes = 0
         for q, d, t in samples:
-            passed, margin = self.evaluate_sbert(q, d, t)
+            # S-BERT
+            passed_s, margin = self.evaluate_sbert(q, d, t)
             sbert_margins.append(margin)
-            if passed: sbert_passes += 1
+            if passed_s: sbert_passes += 1
+            
+            # REWA (Real Logic)
+            passed_r, _ = self.evaluate_rewa(q, d, t, "binding")
+            if passed_r: rewa_passes += 1
             
         print(f"S-BERT Pass Rate: {sbert_passes}/20 ({sbert_passes/20*100}%)")
         print(f"Avg Margin: {np.mean(sbert_margins):.4f}")
-        print(f"REWA Pass Rate: 20/20 (100%) [Structural Guarantee]")
+        print(f"REWA Pass Rate: {rewa_passes}/20 ({rewa_passes/20*100}%) [Real Logic]")
 
         # 2. Modifier Binding (Hard)
         print("\nTest 2: Modifier Binding (Hard/Dense)")
         samples = self.generate_modifier_samples(20, hard=True)
         sbert_margins = []
         sbert_passes = 0
+        rewa_passes = 0
         for q, d, t in samples:
-            passed, margin = self.evaluate_sbert(q, d, t)
+            passed_s, margin = self.evaluate_sbert(q, d, t)
             sbert_margins.append(margin)
-            if passed: sbert_passes += 1
+            if passed_s: sbert_passes += 1
+            
+            passed_r, _ = self.evaluate_rewa(q, d, t, "binding")
+            if passed_r: rewa_passes += 1
             
         print(f"S-BERT Pass Rate: {sbert_passes}/20 ({sbert_passes/20*100}%)")
         print(f"Avg Margin: {np.mean(sbert_margins):.4f}")
-        print(f"REWA Pass Rate: 20/20 (100%) [Structural Guarantee]")
+        print(f"REWA Pass Rate: {rewa_passes}/20 ({rewa_passes/20*100}%) [Real Logic]")
 
         # 3. Negation
         print("\nTest 3: Negation (Logical Contradiction)")
         samples = self.generate_negation_samples(20)
         sbert_scores = []
-        sbert_passes = 0 # Passes if similarity < 0.85
+        sbert_passes = 0
+        rewa_passes = 0
         for q, d, t in samples:
-            passed, sim = self.evaluate_sbert(q, d, t, is_negation=True)
+            passed_s, sim = self.evaluate_sbert(q, d, t, is_negation=True)
             sbert_scores.append(sim)
-            if passed: sbert_passes += 1
+            if passed_s: sbert_passes += 1
+            
+            passed_r, _ = self.evaluate_rewa(q, d, t, "negation")
+            if passed_r: rewa_passes += 1
             
         print(f"S-BERT Pass Rate: {sbert_passes}/20 ({sbert_passes/20*100}%)")
         print(f"Avg Similarity to Contradiction: {np.mean(sbert_scores):.4f}")
-        print(f"REWA Pass Rate: 20/20 (100%) [Logic Guarantee]")
+        print(f"REWA Pass Rate: {rewa_passes}/20 ({rewa_passes/20*100}%) [Real Logic]")
         
         # 4. Multi-hop Inference (Symbolic Mockup)
         # S-BERT cannot do this.
