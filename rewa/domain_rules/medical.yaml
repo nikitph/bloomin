@@ -1,0 +1,240 @@
+# Medical Domain Rules for REWA
+# These rules encode medical knowledge and constraints
+
+rules:
+  # Cancer Treatment Rules
+  - id: med_cancer_treatment_side_effects
+    name: Cancer Treatment Side Effects
+    description: Effective cancer treatments inherently have side effects
+    domains:
+      - medical
+      - oncology
+      - treatment
+    preconditions:
+      - path: fact.cures
+        op: contains
+        value: cancer
+    postconditions:
+      - path: fact.has_side_effects
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Any treatment that effectively targets and destroys cancer cells will
+      also affect healthy cells to some degree, causing side effects. This is
+      a fundamental reality of oncology - there are no cancer cures without
+      some side effects.
+
+  - id: med_chemo_side_effects
+    name: Chemotherapy Side Effects
+    description: Chemotherapy drugs have significant side effects
+    domains:
+      - medical
+      - oncology
+      - chemotherapy
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.is_chemotherapy
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.has_side_effects
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Chemotherapy drugs work by killing rapidly dividing cells, which includes
+      both cancer cells and healthy cells like hair follicles and gut lining.
+
+  # Drug Safety Rules
+  - id: med_fda_approval_required
+    name: FDA Approval for US Sale
+    description: Drugs sold in the US must be FDA approved
+    domains:
+      - medical
+      - drug
+      - regulatory
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.sold_in_us
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.fda_approved
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      The FDA requires approval before any drug can be legally sold in the
+      United States. This ensures safety and efficacy have been demonstrated.
+
+  - id: med_prescription_required
+    name: Controlled Substances Require Prescription
+    description: Controlled substances require a valid prescription
+    domains:
+      - medical
+      - drug
+      - controlled
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.is_controlled_substance
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.requires_prescription
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Controlled substances are regulated due to potential for abuse or harm.
+      They require a valid prescription from a licensed healthcare provider.
+
+  # Allergy Rules
+  - id: med_allergy_contraindication
+    name: Allergy Contraindication
+    description: Allergic patients should not receive allergens
+    domains:
+      - medical
+      - allergy
+      - safety
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.patient_allergic
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.safe_to_administer
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Administering a substance to which a patient is allergic can cause
+      severe reactions including anaphylaxis, which can be fatal.
+
+  # Drug Interaction Rules
+  - id: med_maoi_interaction
+    name: MAOI Drug Interactions
+    description: MAOIs have dangerous interactions with many substances
+    domains:
+      - medical
+      - drug
+      - interaction
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.is_maoi
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.has_food_interactions
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Monoamine oxidase inhibitors (MAOIs) can have dangerous interactions
+      with tyramine-containing foods and many other medications.
+
+  # Medical Device Rules
+  - id: med_device_certification
+    name: Medical Device Certification
+    description: Medical devices must be certified for patient use
+    domains:
+      - medical
+      - device
+      - regulatory
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: MedicalDevice
+      - path: fact.used_on_patients
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.is_certified
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Medical devices used on patients must meet regulatory certification
+      requirements to ensure safety and effectiveness.
+
+  # Treatment Efficacy Rules
+  - id: med_antibiotics_bacteria_only
+    name: Antibiotics for Bacteria Only
+    description: Antibiotics are only effective against bacterial infections
+    domains:
+      - medical
+      - antibiotic
+      - infection
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.is_antibiotic
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.treats_viral
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Antibiotics work by targeting bacterial cell structures and processes.
+      They have no effect on viruses, which have completely different biology.
+
+  # Dosage Rules
+  - id: med_max_dose_limit
+    name: Maximum Dose Limits
+    description: Drugs cannot exceed maximum safe doses
+    domains:
+      - medical
+      - drug
+      - dosage
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.exceeds_max_dose
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.safe
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Exceeding maximum recommended doses increases risk of toxicity and
+      adverse effects without providing additional therapeutic benefit.
+
+  # Soft Rules (Preferences/Guidelines)
+  - id: med_generic_preferred
+    name: Generic Medications Preferred
+    description: Generic medications are generally preferred over brand name
+    domains:
+      - medical
+      - drug
+      - cost
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Drug
+      - path: fact.has_generic_available
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.consider_generic
+        op: eq
+        value: true
+    hardness: soft
+    explanation: >
+      When a generic equivalent is available with the same active ingredients,
+      it is often preferred for cost-effectiveness while maintaining efficacy.

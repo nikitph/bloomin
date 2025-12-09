@@ -1,0 +1,250 @@
+# Physics Domain Rules for REWA
+# These rules encode fundamental physical laws and constraints
+
+rules:
+  # Thermodynamics Rules
+  - id: physics_no_perpetual_motion
+    name: No Perpetual Motion (First Kind)
+    description: Perpetual motion machines violate thermodynamics
+    domains:
+      - physics
+      - thermodynamics
+      - energy
+    preconditions:
+      - path: fact.perpetual_motion
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Perpetual motion of the first kind (creating energy from nothing)
+      violates the First Law of Thermodynamics (conservation of energy).
+
+  - id: physics_no_perpetual_motion_2nd
+    name: No Perpetual Motion (Second Kind)
+    description: Cannot convert heat to work with 100% efficiency
+    domains:
+      - physics
+      - thermodynamics
+    preconditions:
+      - path: fact.heat_to_work_100_percent
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Converting heat completely into work without any waste heat
+      violates the Second Law of Thermodynamics.
+
+  - id: physics_energy_conservation
+    name: Energy Conservation
+    description: Energy cannot be created or destroyed
+    domains:
+      - physics
+      - energy
+    preconditions:
+      - path: fact.creates_energy_from_nothing
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      The First Law of Thermodynamics states that energy cannot be
+      created or destroyed, only transformed from one form to another.
+
+  - id: physics_entropy_increase
+    name: Entropy Increase
+    description: Total entropy in isolated systems always increases
+    domains:
+      - physics
+      - thermodynamics
+    preconditions:
+      - path: fact.decreases_total_entropy
+        op: eq
+        value: true
+      - path: fact.isolated_system
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      The Second Law of Thermodynamics states that entropy in an isolated
+      system always increases or remains constant, never decreases.
+
+  # Relativity Rules
+  - id: physics_speed_of_light_limit
+    name: Speed of Light Limit
+    description: Nothing with mass can reach or exceed the speed of light
+    domains:
+      - physics
+      - relativity
+    preconditions:
+      - path: fact.travels_faster_than_light
+        op: eq
+        value: true
+      - path: fact.has_mass
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Special Relativity shows that objects with mass require infinite
+      energy to reach the speed of light, making it impossible.
+
+  - id: physics_causality
+    name: Causality Preservation
+    description: Effects cannot precede their causes
+    domains:
+      - physics
+      - causality
+      - time
+    preconditions:
+      - path: fact.effect_before_cause
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Causality is a fundamental principle - effects cannot occur before
+      their causes. This is preserved in all known physics.
+
+  # Temperature Rules
+  - id: physics_absolute_zero_limit
+    name: Absolute Zero Limit
+    description: Temperature cannot go below absolute zero
+    domains:
+      - physics
+      - temperature
+    preconditions:
+      - path: fact.temperature_below_absolute_zero
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Absolute zero (0 Kelvin, -273.15°C) is the lowest possible temperature.
+      It represents the absence of thermal energy and cannot be surpassed.
+
+  # Mass-Energy Rules
+  - id: physics_mass_energy_equivalence
+    name: Mass-Energy Equivalence
+    description: Mass and energy are equivalent (E=mc²)
+    domains:
+      - physics
+      - relativity
+      - energy
+    preconditions:
+      - path: fact.mass_destroyed
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.energy_released
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Einstein's E=mc² shows that mass and energy are equivalent.
+      When mass is converted, energy must be released.
+
+  # Quantum Rules
+  - id: physics_uncertainty_principle
+    name: Heisenberg Uncertainty Principle
+    description: Cannot simultaneously know exact position and momentum
+    domains:
+      - physics
+      - quantum
+    preconditions:
+      - path: fact.exact_position_and_momentum
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      The Heisenberg Uncertainty Principle states that the more precisely
+      we know a particle's position, the less precisely we can know its momentum.
+
+  # Conservation Laws
+  - id: physics_momentum_conservation
+    name: Momentum Conservation
+    description: Momentum is conserved in closed systems
+    domains:
+      - physics
+      - mechanics
+    preconditions:
+      - path: fact.momentum_created_from_nothing
+        op: eq
+        value: true
+      - path: fact.closed_system
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      In closed systems, total momentum is conserved. It cannot be
+      created from nothing or destroyed.
+
+  - id: physics_charge_conservation
+    name: Electric Charge Conservation
+    description: Electric charge is conserved
+    domains:
+      - physics
+      - electromagnetism
+    preconditions:
+      - path: fact.charge_created_from_nothing
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Electric charge is conserved in all interactions. The total
+      charge of an isolated system remains constant.
+
+  # Gravitational Rules
+  - id: physics_gravity_attraction
+    name: Gravity Is Attractive
+    description: Gravity always attracts, never repels
+    domains:
+      - physics
+      - gravity
+    preconditions:
+      - path: fact.repulsive_gravity
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.physically_possible
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      In standard physics, gravity is always an attractive force between
+      masses. Repulsive gravity would require exotic matter.

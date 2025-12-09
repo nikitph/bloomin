@@ -1,0 +1,298 @@
+# Safety Domain Rules for REWA
+# These rules encode safety constraints for various domains
+
+rules:
+  # Weapon Safety Rules
+  - id: safety_toys_not_dangerous
+    name: Toys Cannot Be Dangerous
+    description: Items classified as toys must be safe
+    domains:
+      - safety
+      - toy
+      - consumer
+    preconditions:
+      - path: fact.is_toy
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.dangerous
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      By regulatory and common definition, toys must be safe for their
+      intended users. A dangerous item cannot be classified as a toy.
+
+  - id: safety_weapons_not_toys
+    name: Weapons Are Not Toys
+    description: Real weapons cannot be classified as toys
+    domains:
+      - safety
+      - weapon
+      - toy
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Weapon
+      - path: fact.is_real
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.is_toy
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Real weapons are designed to cause harm and cannot be toys.
+      This is a fundamental safety distinction.
+
+  - id: safety_weapons_dangerous
+    name: Real Weapons Are Dangerous
+    description: All real weapons are inherently dangerous
+    domains:
+      - safety
+      - weapon
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Weapon
+      - path: fact.is_real
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.dangerous
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Real weapons are designed to harm and are inherently dangerous.
+      This applies to firearms, knives designed as weapons, and other weapons.
+
+  - id: safety_firearms_licensed
+    name: Firearm Ownership Requires License
+    description: Firearms legally owned must be licensed
+    domains:
+      - safety
+      - weapon
+      - firearm
+      - legal
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Weapon
+      - path: fact.is_firearm
+        op: eq
+        value: true
+      - path: fact.legally_owned
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.is_licensed
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Legal firearm ownership requires proper licensing and registration
+      in most jurisdictions. Unlicensed firearms are illegal.
+
+  # Electrical Safety Rules
+  - id: safety_electrical_certification
+    name: Electrical Devices Must Be Certified
+    description: Electrical devices sold must have safety certification
+    domains:
+      - safety
+      - electrical
+      - consumer
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Device
+      - path: fact.is_electrical
+        op: eq
+        value: true
+      - path: fact.sold_commercially
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.has_safety_certification
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Electrical devices sold commercially must have appropriate safety
+      certifications (UL, CE, etc.) to ensure they meet safety standards.
+
+  - id: safety_counterfeit_unsafe
+    name: Counterfeit Products Are Unsafe
+    description: Counterfeit electrical products are not safety certified
+    domains:
+      - safety
+      - electrical
+      - counterfeit
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Device
+      - path: fact.is_counterfeit
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.meets_safety_standards
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Counterfeit products bypass safety testing and certification processes.
+      They should be assumed unsafe until proven otherwise.
+
+  # Chemical Safety Rules
+  - id: safety_hazmat_labeling
+    name: Hazardous Materials Labeling
+    description: Hazardous materials must be properly labeled
+    domains:
+      - safety
+      - chemical
+      - hazmat
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Chemical
+      - path: fact.is_hazardous
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.requires_hazmat_label
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Hazardous materials must be properly labeled to warn handlers
+      and ensure proper safety precautions are taken.
+
+  - id: safety_toxic_not_food_safe
+    name: Toxic Substances Not Food Safe
+    description: Toxic substances cannot be food safe
+    domains:
+      - safety
+      - chemical
+      - food
+    preconditions:
+      - path: fact.is_toxic
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.food_safe
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Toxic substances are by definition harmful to humans and cannot
+      be considered safe for food contact or consumption.
+
+  # Transportation Safety Rules
+  - id: safety_vehicle_certification
+    name: Vehicle Safety Certification
+    description: Vehicles for road use must meet safety standards
+    domains:
+      - safety
+      - vehicle
+      - transportation
+    preconditions:
+      - path: entity.type
+        op: eq
+        value: Vehicle
+      - path: fact.for_road_use
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.meets_safety_standards
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Vehicles intended for road use must meet regulatory safety standards
+      including crashworthiness, emissions, and equipment requirements.
+
+  # Child Safety Rules
+  - id: safety_child_products
+    name: Child Products Safety Standards
+    description: Products for children must meet enhanced safety standards
+    domains:
+      - safety
+      - child
+      - consumer
+    preconditions:
+      - path: fact.intended_for_children
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.meets_child_safety_standards
+        op: eq
+        value: true
+    hardness: hard
+    explanation: >
+      Products designed for children must meet enhanced safety standards
+      including choking hazard requirements and toxicity limits.
+
+  - id: safety_small_parts_hazard
+    name: Small Parts Choking Hazard
+    description: Small parts are choking hazards for young children
+    domains:
+      - safety
+      - child
+      - toy
+    preconditions:
+      - path: fact.has_small_parts
+        op: eq
+        value: true
+      - path: fact.intended_for_children_under_3
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.safe_for_children_under_3
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Small parts present choking hazards for children under 3 years old.
+      Products with small parts cannot be marketed for this age group.
+
+  # General Safety Rules
+  - id: safety_safe_and_dangerous_contradiction
+    name: Safe and Dangerous Mutual Exclusion
+    description: An item cannot be both safe and dangerous
+    domains:
+      - safety
+      - logic
+    preconditions:
+      - path: fact.dangerous
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.safe
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Safe and dangerous are mutually exclusive properties.
+      An item marked as dangerous cannot simultaneously be safe.
+
+  - id: safety_recall_unsafe
+    name: Recalled Products Unsafe
+    description: Products under safety recall are not safe to use
+    domains:
+      - safety
+      - recall
+      - consumer
+    preconditions:
+      - path: fact.under_safety_recall
+        op: eq
+        value: true
+    postconditions:
+      - path: fact.safe_to_use
+        op: eq
+        value: false
+    hardness: hard
+    explanation: >
+      Products under safety recall have been identified as potentially
+      dangerous and should not be used until the issue is resolved.
