@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewa Semantic Sphere Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 320px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        #info-panel h1 {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #6eb4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #info-panel .subtitle {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-label {
+            color: #999;
+        }
+
+        .stat-value {
+            font-weight: 600;
+        }
+
+        .stat-value.approve { color: #4ade80; }
+        .stat-value.refuse { color: #f87171; }
+        .stat-value.har { color: #fbbf24; }
+
+        #legend {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .legend-dot.approved { background: #4ade80; }
+        .legend-dot.refused { background: #f87171; }
+        .legend-dot.repurchased { background: #fbbf24; border: 2px solid #fff; }
+        .legend-dot.policy { background: #a855f7; }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        #controls label {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        #controls input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #6eb4ff;
+        }
+
+        #controls input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+            accent-color: #6eb4ff;
+        }
+
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(100, 150, 255, 0.5);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.85em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 200;
+            max-width: 280px;
+        }
+
+        #tooltip.visible {
+            opacity: 1;
+        }
+
+        #tooltip h3 {
+            color: #6eb4ff;
+            margin-bottom: 8px;
+        }
+
+        #tooltip .row {
+            display: flex;
+            justify-content: space-between;
+            margin: 4px 0;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 300;
+        }
+
+        #loading .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(100, 150, 255, 0.2);
+            border-top-color: #6eb4ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #policy-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        #policy-selector h3 {
+            margin-bottom: 10px;
+            color: #a855f7;
+        }
+
+        .policy-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: rgba(100, 150, 255, 0.1);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 6px;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .policy-btn:hover {
+            background: rgba(100, 150, 255, 0.2);
+        }
+
+        .policy-btn.active {
+            background: rgba(168, 85, 247, 0.3);
+            border-color: #a855f7;
+        }
+
+        #hull-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            max-width: 280px;
+        }
+
+        #hull-info h3 {
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+
+        .entropy-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .entropy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #fbbf24, #f87171);
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <div>Initializing Rewa Visualization...</div>
+    </div>
+
+    <div id="info-panel">
+        <h1>Rewa Semantic Sphere</h1>
+        <div class="subtitle">Policy-Driven Semantic Validation</div>
+
+        <div class="stat-row">
+            <span class="stat-label">Total Loans</span>
+            <span class="stat-value" id="stat-total">-</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Approved</span>
+            <span class="stat-value approve" id="stat-approved">-</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Refused</span>
+            <span class="stat-value refuse" id="stat-refused">-</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">HAR</span>
+            <span class="stat-value har" id="stat-har">-</span>
+        </div>
+
+        <div id="legend">
+            <div class="legend-item">
+                <div class="legend-dot approved"></div>
+                <span>Approved Loans</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot refused"></div>
+                <span>Refused Loans</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot repurchased"></div>
+                <span>Repurchased (Ground Truth)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot policy"></div>
+                <span>Policy Bias Vector</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="policy-selector">
+        <h3>Policy Configuration</h3>
+        <button class="policy-btn active" data-policy="standard">STANDARD</button>
+        <button class="policy-btn" data-policy="strict">STRICT</button>
+        <button class="policy-btn" data-policy="relaxed">RELAXED</button>
+    </div>
+
+    <div id="controls">
+        <label>
+            <input type="checkbox" id="show-sphere" checked>
+            Show Sphere
+        </label>
+        <label>
+            <input type="checkbox" id="show-hull" checked>
+            Show Convex Hull
+        </label>
+        <label>
+            <input type="checkbox" id="show-policy" checked>
+            Show Policy Vectors
+        </label>
+        <label>
+            <input type="checkbox" id="show-connections">
+            Show Contradictions
+        </label>
+        <div style="margin-top: 10px;">
+            <span>Point Size</span>
+            <input type="range" id="point-size" min="0.5" max="3" step="0.1" value="1.2">
+        </div>
+    </div>
+
+    <div id="hull-info">
+        <h3>Hull Analysis</h3>
+        <div class="stat-row">
+            <span class="stat-label">Hemisphere</span>
+            <span class="stat-value" id="hemisphere-status">-</span>
+        </div>
+        <div class="stat-row">
+            <span class="stat-label">Entropy</span>
+            <span class="stat-value" id="entropy-value">-</span>
+        </div>
+        <div class="entropy-bar">
+            <div class="entropy-fill" id="entropy-bar" style="width: 0%"></div>
+        </div>
+        <div class="stat-row" style="margin-top: 10px;">
+            <span class="stat-label">Mode</span>
+            <span class="stat-value" id="mode-value">-</span>
+        </div>
+    </div>
+
+    <div id="tooltip">
+        <h3 id="tooltip-title">-</h3>
+        <div class="row">
+            <span>Credit Score:</span>
+            <span id="tooltip-credit">-</span>
+        </div>
+        <div class="row">
+            <span>DTI:</span>
+            <span id="tooltip-dti">-</span>
+        </div>
+        <div class="row">
+            <span>LTV:</span>
+            <span id="tooltip-ltv">-</span>
+        </div>
+        <div class="row">
+            <span>Decision:</span>
+            <span id="tooltip-decision">-</span>
+        </div>
+        <div class="row">
+            <span>Status:</span>
+            <span id="tooltip-status">-</span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Rewa Semantic Sphere Visualization
+
+        let scene, camera, renderer, controls;
+        let sphereMesh, hullMesh, policyArrows = [];
+        let loanPoints = [];
+        let contradictionLines = [];
+        let raycaster, mouse;
+        let currentPolicy = 'standard';
+
+        // Sample loan data (will be populated from Python)
+        let loanData = [];
+
+        // Policy configurations
+        const policies = {
+            strict: { minCredit: 680, maxDTI: 40, maxLTV: 90, color: 0xff6b6b },
+            standard: { minCredit: 620, maxDTI: 43, maxLTV: 95, color: 0x4ecdc4 },
+            relaxed: { minCredit: 580, maxDTI: 50, maxLTV: 97, color: 0xffe66d }
+        };
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0f);
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(3, 2, 3);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.5;
+
+            // Raycaster for hover
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // Create sphere
+            createSphere();
+
+            // Create lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0x6eb4ff, 1, 100);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
+
+            const pointLight2 = new THREE.PointLight(0xa855f7, 0.8, 100);
+            pointLight2.position.set(-5, -5, 5);
+            scene.add(pointLight2);
+
+            // Generate sample data and visualize
+            generateSampleData();
+            createLoanPoints();
+            createPolicyVectors();
+            createHull();
+
+            // Event listeners
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('mousemove', onMouseMove);
+
+            // Control listeners
+            document.getElementById('show-sphere').addEventListener('change', (e) => {
+                sphereMesh.visible = e.target.checked;
+            });
+
+            document.getElementById('show-hull').addEventListener('change', (e) => {
+                if (hullMesh) hullMesh.visible = e.target.checked;
+            });
+
+            document.getElementById('show-policy').addEventListener('change', (e) => {
+                policyArrows.forEach(arrow => arrow.visible = e.target.checked);
+            });
+
+            document.getElementById('show-connections').addEventListener('change', (e) => {
+                contradictionLines.forEach(line => line.visible = e.target.checked);
+            });
+
+            document.getElementById('point-size').addEventListener('input', (e) => {
+                const size = parseFloat(e.target.value);
+                loanPoints.forEach(point => {
+                    point.scale.setScalar(size);
+                });
+            });
+
+            // Policy buttons
+            document.querySelectorAll('.policy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.policy-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPolicy = btn.dataset.policy;
+                    updateVisualization();
+                });
+            });
+
+            // Hide loading
+            document.getElementById('loading').style.display = 'none';
+
+            animate();
+        }
+
+        function createSphere() {
+            const geometry = new THREE.SphereGeometry(1, 64, 64);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x1a1a2e,
+                transparent: true,
+                opacity: 0.3,
+                wireframe: false,
+                side: THREE.DoubleSide
+            });
+            sphereMesh = new THREE.Mesh(geometry, material);
+            scene.add(sphereMesh);
+
+            // Add wireframe overlay
+            const wireGeometry = new THREE.SphereGeometry(1.001, 32, 32);
+            const wireMaterial = new THREE.MeshBasicMaterial({
+                color: 0x6eb4ff,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+            const wireMesh = new THREE.Mesh(wireGeometry, wireMaterial);
+            scene.add(wireMesh);
+
+            // Add equator and meridians
+            const equatorGeometry = new THREE.TorusGeometry(1, 0.005, 16, 100);
+            const equatorMaterial = new THREE.MeshBasicMaterial({ color: 0x4a4a6a });
+            const equator = new THREE.Mesh(equatorGeometry, equatorMaterial);
+            equator.rotation.x = Math.PI / 2;
+            scene.add(equator);
+        }
+
+        function generateSampleData() {
+            // Generate synthetic loan data for visualization
+            // In production, this would come from the Python backend
+
+            const numLoans = 100;
+
+            for (let i = 0; i < numLoans; i++) {
+                // Random position on sphere (using spherical coordinates)
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+
+                const x = Math.sin(phi) * Math.cos(theta);
+                const y = Math.sin(phi) * Math.sin(theta);
+                const z = Math.cos(phi);
+
+                // Generate loan characteristics
+                const creditScore = Math.floor(580 + Math.random() * 220); // 580-800
+                const dti = Math.floor(20 + Math.random() * 35); // 20-55
+                const ltv = Math.floor(60 + Math.random() * 40); // 60-100
+
+                // Determine if repurchased (correlate with high LTV)
+                const wasRepurchased = ltv > 94 && Math.random() < 0.3;
+
+                // Determine decision based on policy
+                const policy = policies[currentPolicy];
+                const meetsPolicy = creditScore >= policy.minCredit &&
+                                   dti <= policy.maxDTI &&
+                                   ltv <= policy.maxLTV;
+
+                loanData.push({
+                    id: `LOAN-${i.toString().padStart(4, '0')}`,
+                    position: new THREE.Vector3(x, y, z),
+                    creditScore,
+                    dti,
+                    ltv,
+                    wasRepurchased,
+                    decision: meetsPolicy && !wasRepurchased ? 'approve' : 'refuse'
+                });
+            }
+
+            updateStats();
+        }
+
+        function createLoanPoints() {
+            loanData.forEach((loan, index) => {
+                const geometry = new THREE.SphereGeometry(0.03, 16, 16);
+
+                let color;
+                if (loan.wasRepurchased) {
+                    color = 0xfbbf24; // Yellow for repurchased
+                } else if (loan.decision === 'approve') {
+                    color = 0x4ade80; // Green for approved
+                } else {
+                    color = 0xf87171; // Red for refused
+                }
+
+                const material = new THREE.MeshPhongMaterial({
+                    color: color,
+                    emissive: color,
+                    emissiveIntensity: 0.3
+                });
+
+                const point = new THREE.Mesh(geometry, material);
+                point.position.copy(loan.position);
+                point.userData = { loanIndex: index };
+
+                // Add glow effect for repurchased loans
+                if (loan.wasRepurchased) {
+                    const glowGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+                    const glowMaterial = new THREE.MeshBasicMaterial({
+                        color: 0xfbbf24,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+                    point.add(glow);
+                }
+
+                scene.add(point);
+                loanPoints.push(point);
+            });
+        }
+
+        function createPolicyVectors() {
+            // Create arrows representing policy bias vectors
+            const directions = [
+                { dir: new THREE.Vector3(1, 0.5, 0.3).normalize(), label: 'Income Stability' },
+                { dir: new THREE.Vector3(-0.3, 1, 0.2).normalize(), label: 'Credit Quality' },
+                { dir: new THREE.Vector3(0.2, 0.3, 1).normalize(), label: 'Leverage Risk' }
+            ];
+
+            directions.forEach((d, i) => {
+                const arrowHelper = new THREE.ArrowHelper(
+                    d.dir,
+                    new THREE.Vector3(0, 0, 0),
+                    1.3,
+                    0xa855f7,
+                    0.15,
+                    0.08
+                );
+                scene.add(arrowHelper);
+                policyArrows.push(arrowHelper);
+            });
+        }
+
+        function createHull() {
+            // Create convex hull visualization from approved loans
+            const approvedPositions = loanData
+                .filter(l => l.decision === 'approve')
+                .map(l => l.position);
+
+            if (approvedPositions.length < 4) return;
+
+            // Simple hull visualization using a mesh
+            const hullGeometry = new THREE.ConvexGeometry
+                ? new THREE.ConvexGeometry(approvedPositions)
+                : createSimpleHull(approvedPositions);
+
+            const hullMaterial = new THREE.MeshPhongMaterial({
+                color: 0x4ade80,
+                transparent: true,
+                opacity: 0.15,
+                side: THREE.DoubleSide
+            });
+
+            hullMesh = new THREE.Mesh(hullGeometry, hullMaterial);
+            scene.add(hullMesh);
+
+            // Update hull info
+            updateHullInfo();
+        }
+
+        function createSimpleHull(positions) {
+            // Fallback: create a simple triangulated mesh
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+
+            // Create triangles from center to pairs of points
+            const center = new THREE.Vector3();
+            positions.forEach(p => center.add(p));
+            center.divideScalar(positions.length);
+
+            for (let i = 0; i < positions.length; i++) {
+                const next = (i + 1) % positions.length;
+                vertices.push(
+                    center.x, center.y, center.z,
+                    positions[i].x, positions[i].y, positions[i].z,
+                    positions[next].x, positions[next].y, positions[next].z
+                );
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            geometry.computeVertexNormals();
+            return geometry;
+        }
+
+        function updateVisualization() {
+            // Recalculate decisions based on current policy
+            const policy = policies[currentPolicy];
+
+            loanData.forEach((loan, index) => {
+                const meetsPolicy = loan.creditScore >= policy.minCredit &&
+                                   loan.dti <= policy.maxDTI &&
+                                   loan.ltv <= policy.maxLTV;
+
+                loan.decision = meetsPolicy && !loan.wasRepurchased ? 'approve' : 'refuse';
+
+                // Update point color
+                let color;
+                if (loan.wasRepurchased) {
+                    color = 0xfbbf24;
+                } else if (loan.decision === 'approve') {
+                    color = 0x4ade80;
+                } else {
+                    color = 0xf87171;
+                }
+
+                loanPoints[index].material.color.setHex(color);
+                loanPoints[index].material.emissive.setHex(color);
+            });
+
+            updateStats();
+            updateHullInfo();
+        }
+
+        function updateStats() {
+            const total = loanData.length;
+            const approved = loanData.filter(l => l.decision === 'approve').length;
+            const refused = total - approved;
+            const repurchasedApproved = loanData.filter(l => l.wasRepurchased && l.decision === 'approve').length;
+            const totalRepurchased = loanData.filter(l => l.wasRepurchased).length;
+            const har = totalRepurchased > 0 ? (repurchasedApproved / totalRepurchased * 100) : 0;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-approved').textContent = approved;
+            document.getElementById('stat-refused').textContent = refused;
+            document.getElementById('stat-har').textContent = har.toFixed(1) + '%';
+        }
+
+        function updateHullInfo() {
+            // Calculate entropy and hemisphere status
+            const approvedLoans = loanData.filter(l => l.decision === 'approve');
+
+            if (approvedLoans.length < 2) {
+                document.getElementById('hemisphere-status').textContent = 'N/A';
+                document.getElementById('entropy-value').textContent = 'N/A';
+                return;
+            }
+
+            // Check if all approved loans are in same hemisphere
+            let minDot = 1;
+            for (let i = 0; i < approvedLoans.length; i++) {
+                for (let j = i + 1; j < approvedLoans.length; j++) {
+                    const dot = approvedLoans[i].position.dot(approvedLoans[j].position);
+                    if (dot < minDot) minDot = dot;
+                }
+            }
+
+            const hemisphereExists = minDot > -0.3;
+            document.getElementById('hemisphere-status').textContent = hemisphereExists ? 'Yes' : 'No (Contradiction!)';
+            document.getElementById('hemisphere-status').style.color = hemisphereExists ? '#4ade80' : '#f87171';
+
+            // Calculate entropy (spread of points)
+            const mean = new THREE.Vector3();
+            approvedLoans.forEach(l => mean.add(l.position));
+            mean.divideScalar(approvedLoans.length);
+            mean.normalize();
+
+            let variance = 0;
+            approvedLoans.forEach(l => {
+                const angle = Math.acos(Math.min(1, Math.max(-1, l.position.dot(mean))));
+                variance += angle * angle;
+            });
+            variance /= approvedLoans.length;
+            const entropy = Math.min(1, variance / (Math.PI * Math.PI));
+
+            document.getElementById('entropy-value').textContent = entropy.toFixed(3);
+            document.getElementById('entropy-bar').style.width = (entropy * 100) + '%';
+
+            // Determine mode
+            const mode = entropy > 0.3 ? 'Mode B (Policy Active)' : 'Mode A (Evidence Only)';
+            document.getElementById('mode-value').textContent = mode;
+            document.getElementById('mode-value').style.color = entropy > 0.3 ? '#a855f7' : '#4ade80';
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(loanPoints);
+
+            const tooltip = document.getElementById('tooltip');
+
+            if (intersects.length > 0) {
+                const point = intersects[0].object;
+                const loan = loanData[point.userData.loanIndex];
+
+                document.getElementById('tooltip-title').textContent = loan.id;
+                document.getElementById('tooltip-credit').textContent = loan.creditScore;
+                document.getElementById('tooltip-dti').textContent = loan.dti + '%';
+                document.getElementById('tooltip-ltv').textContent = loan.ltv + '%';
+                document.getElementById('tooltip-decision').textContent = loan.decision.toUpperCase();
+                document.getElementById('tooltip-decision').style.color = loan.decision === 'approve' ? '#4ade80' : '#f87171';
+                document.getElementById('tooltip-status').textContent = loan.wasRepurchased ? 'REPURCHASED' : 'Clean';
+                document.getElementById('tooltip-status').style.color = loan.wasRepurchased ? '#fbbf24' : '#4ade80';
+
+                tooltip.style.left = (event.clientX + 15) + 'px';
+                tooltip.style.top = (event.clientY + 15) + 'px';
+                tooltip.classList.add('visible');
+
+                controls.autoRotate = false;
+            } else {
+                tooltip.classList.remove('visible');
+                controls.autoRotate = true;
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

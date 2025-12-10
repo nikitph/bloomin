@@ -1,0 +1,1640 @@
+[
+  {
+    "id": "F20Q10000154",
+    "position": [
+      0.697304997941608,
+      0.09405088025938166,
+      -0.7105773225181956
+    ],
+    "creditScore": 714,
+    "dti": 31.0,
+    "ltv": 60.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000157",
+    "position": [
+      0.8294710474949599,
+      0.026870173485155153,
+      -0.5579029867397012
+    ],
+    "creditScore": 710,
+    "dti": 44.0,
+    "ltv": 54.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10000184",
+    "position": [
+      0.9208278595479015,
+      0.10969450384684451,
+      -0.37422334962104076
+    ],
+    "creditScore": 790,
+    "dti": 42.0,
+    "ltv": 65.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000218",
+    "position": [
+      0.7376822906002618,
+      -0.011800541360420507,
+      -0.6750448418242454
+    ],
+    "creditScore": 744,
+    "dti": 48.0,
+    "ltv": 66.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10000267",
+    "position": [
+      0.7987699081808852,
+      -0.11744027956447614,
+      -0.5900630130529749
+    ],
+    "creditScore": 618,
+    "dti": 38.0,
+    "ltv": 55.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10000281",
+    "position": [
+      0.5545389923746953,
+      0.44061921682202837,
+      -0.7059328399557194
+    ],
+    "creditScore": 818,
+    "dti": 11.0,
+    "ltv": 39.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000282",
+    "position": [
+      0.543885343343652,
+      0.3386518117203643,
+      -0.7677914110681179
+    ],
+    "creditScore": 795,
+    "dti": 45.0,
+    "ltv": 34.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10000301",
+    "position": [
+      0.9179158195049555,
+      -0.005110674629629937,
+      -0.3967421814554979
+    ],
+    "creditScore": 669,
+    "dti": 38.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000302",
+    "position": [
+      0.5768390831180638,
+      0.4925294081501204,
+      -0.6516681619069487
+    ],
+    "creditScore": 788,
+    "dti": 50.0,
+    "ltv": 76.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10000309",
+    "position": [
+      0.47454053751752784,
+      0.682167489597472,
+      -0.5562901627259215
+    ],
+    "creditScore": 793,
+    "dti": 34.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000377",
+    "position": [
+      0.6452147914668137,
+      0.2170548782209082,
+      -0.7325196370928414
+    ],
+    "creditScore": 767,
+    "dti": 34.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000402",
+    "position": [
+      0.7373414725024455,
+      0.32366497040887104,
+      -0.5929321056276868
+    ],
+    "creditScore": 763,
+    "dti": 28.0,
+    "ltv": 62.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000410",
+    "position": [
+      0.8029201976696678,
+      0.15447006595327067,
+      -0.5757239933047482
+    ],
+    "creditScore": 704,
+    "dti": 37.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000521",
+    "position": [
+      0.6586649541548675,
+      0.39662872943485894,
+      -0.6394107407452252
+    ],
+    "creditScore": 811,
+    "dti": 23.0,
+    "ltv": 77.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000569",
+    "position": [
+      0.765379252424803,
+      0.4217417989793838,
+      -0.4861361932002773
+    ],
+    "creditScore": 792,
+    "dti": 16.0,
+    "ltv": 53.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000574",
+    "position": [
+      0.623536778103545,
+      0.3512671818300641,
+      -0.6984362622155394
+    ],
+    "creditScore": 698,
+    "dti": 37.0,
+    "ltv": 30.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000620",
+    "position": [
+      0.680843137267889,
+      0.3013017073949049,
+      -0.6675851018317379
+    ],
+    "creditScore": 766,
+    "dti": 35.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000715",
+    "position": [
+      0.8230624452008454,
+      0.02308775521660976,
+      -0.5674813852837666
+    ],
+    "creditScore": 711,
+    "dti": 26.0,
+    "ltv": 67.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000721",
+    "position": [
+      0.716859519788714,
+      0.5160855749931657,
+      -0.4687942603540614
+    ],
+    "creditScore": 691,
+    "dti": 29.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000730",
+    "position": [
+      0.5724070261021712,
+      0.5856395449491648,
+      -0.573913269687167
+    ],
+    "creditScore": 706,
+    "dti": 18.0,
+    "ltv": 78.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10000794",
+    "position": [
+      0.7692693566299553,
+      0.12171010584420848,
+      -0.6272250608871751
+    ],
+    "creditScore": 704,
+    "dti": 41.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001007",
+    "position": [
+      0.7301343819465167,
+      0.3053011473826309,
+      -0.6113059425470168
+    ],
+    "creditScore": 720,
+    "dti": 42.0,
+    "ltv": 85.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001031",
+    "position": [
+      0.4385579423718484,
+      0.8896413424360955,
+      -0.12729939448178187
+    ],
+    "creditScore": 787,
+    "dti": 19.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001086",
+    "position": [
+      0.7124587692593336,
+      0.1722482719565604,
+      -0.6802447825791766
+    ],
+    "creditScore": 786,
+    "dti": 17.0,
+    "ltv": 47.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001145",
+    "position": [
+      0.6759617416836652,
+      0.19800906261563492,
+      -0.7098366644134484
+    ],
+    "creditScore": 765,
+    "dti": 28.0,
+    "ltv": 52.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001166",
+    "position": [
+      0.9731250621544987,
+      0.22467308838823044,
+      -0.05049312795984245
+    ],
+    "creditScore": 747,
+    "dti": 38.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001174",
+    "position": [
+      0.6001713910982531,
+      0.397625267582031,
+      -0.6940377521752598
+    ],
+    "creditScore": 765,
+    "dti": 43.0,
+    "ltv": 87.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001237",
+    "position": [
+      0.8227856544618428,
+      0.28658164845264217,
+      -0.490810224798779
+    ],
+    "creditScore": 709,
+    "dti": 37.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001287",
+    "position": [
+      0.24326612674888776,
+      0.8367058060729684,
+      -0.4906576487252235
+    ],
+    "creditScore": 793,
+    "dti": 22.0,
+    "ltv": 89.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001328",
+    "position": [
+      0.7529172618430163,
+      0.32896341880193086,
+      -0.5699987840627045
+    ],
+    "creditScore": 795,
+    "dti": 37.0,
+    "ltv": 57.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001337",
+    "position": [
+      0.9323558918521989,
+      -0.2228222676135114,
+      -0.2847150757503082
+    ],
+    "creditScore": 755,
+    "dti": 44.0,
+    "ltv": 68.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10001353",
+    "position": [
+      0.6140379739601659,
+      0.4874450762107597,
+      -0.6207693803081995
+    ],
+    "creditScore": 735,
+    "dti": 44.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10001392",
+    "position": [
+      0.5665169768818894,
+      0.7011404336825424,
+      -0.4329671557766869
+    ],
+    "creditScore": 796,
+    "dti": 35.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001403",
+    "position": [
+      0.36637071665966064,
+      0.5616358784563525,
+      -0.7418474243415454
+    ],
+    "creditScore": 786,
+    "dti": 40.0,
+    "ltv": 58.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001425",
+    "position": [
+      0.7235492821194295,
+      0.11634944895247776,
+      -0.6803963571736774
+    ],
+    "creditScore": 774,
+    "dti": 40.0,
+    "ltv": 76.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001465",
+    "position": [
+      0.12734928469708143,
+      0.9819015103281976,
+      -0.1401838110049504
+    ],
+    "creditScore": 791,
+    "dti": 15.0,
+    "ltv": 89.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001533",
+    "position": [
+      0.704407932978117,
+      0.1966203541318008,
+      -0.6820189662349486
+    ],
+    "creditScore": 776,
+    "dti": 41.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001560",
+    "position": [
+      0.6362289176191303,
+      0.5282004262023136,
+      -0.5623317761942288
+    ],
+    "creditScore": 727,
+    "dti": 33.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001565",
+    "position": [
+      0.702918527977257,
+      -0.11932771908570851,
+      -0.7011892727207912
+    ],
+    "creditScore": 664,
+    "dti": 23.0,
+    "ltv": 52.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001703",
+    "position": [
+      0.7585215834221193,
+      0.48823389943250917,
+      -0.43159311618633606
+    ],
+    "creditScore": 730,
+    "dti": 22.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001737",
+    "position": [
+      0.5480007254598763,
+      0.6251480323749083,
+      -0.5557743188479927
+    ],
+    "creditScore": 739,
+    "dti": 39.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001749",
+    "position": [
+      0.47326306244670757,
+      0.5393986520191718,
+      -0.696470474326691
+    ],
+    "creditScore": 788,
+    "dti": 21.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001775",
+    "position": [
+      0.8268038562711684,
+      0.37834409382725204,
+      -0.41623438530734047
+    ],
+    "creditScore": 806,
+    "dti": 26.0,
+    "ltv": 67.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001776",
+    "position": [
+      0.8643963072573716,
+      0.045560337113169286,
+      -0.5007426881604692
+    ],
+    "creditScore": 719,
+    "dti": 42.0,
+    "ltv": 44.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001788",
+    "position": [
+      0.7162976785628963,
+      0.27946626071061553,
+      -0.6393873744563427
+    ],
+    "creditScore": 811,
+    "dti": 41.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001804",
+    "position": [
+      0.7341316962594047,
+      0.40463550133912046,
+      -0.5452711962941933
+    ],
+    "creditScore": 822,
+    "dti": 16.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001817",
+    "position": [
+      0.6644790228924815,
+      0.32091733167950565,
+      -0.674892326425515
+    ],
+    "creditScore": 761,
+    "dti": 25.0,
+    "ltv": 73.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001855",
+    "position": [
+      0.6377704382334695,
+      0.3864651456415585,
+      -0.6662533487485984
+    ],
+    "creditScore": 811,
+    "dti": 28.0,
+    "ltv": 94.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001915",
+    "position": [
+      0.45378114021041865,
+      0.5288497834190046,
+      -0.7172172082988945
+    ],
+    "creditScore": 796,
+    "dti": 28.0,
+    "ltv": 59.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10001966",
+    "position": [
+      0.40850238637301234,
+      0.46269413989132147,
+      -0.7867908771652545
+    ],
+    "creditScore": 787,
+    "dti": 21.0,
+    "ltv": 39.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002067",
+    "position": [
+      0.643012706778733,
+      0.26219394871008056,
+      -0.719575539810147
+    ],
+    "creditScore": 743,
+    "dti": 45.0,
+    "ltv": 57.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10002079",
+    "position": [
+      0.6154428015992832,
+      0.45969529473455367,
+      -0.640242423891339
+    ],
+    "creditScore": 738,
+    "dti": 42.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002218",
+    "position": [
+      0.4368899842458647,
+      0.5290423770016975,
+      -0.7274897009915303
+    ],
+    "creditScore": 743,
+    "dti": 26.0,
+    "ltv": 85.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002239",
+    "position": [
+      0.6605202571987406,
+      0.23158656715791617,
+      -0.7141992815692622
+    ],
+    "creditScore": 775,
+    "dti": 25.0,
+    "ltv": 72.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002260",
+    "position": [
+      0.790038551589226,
+      -0.14171904138613126,
+      -0.5964518127137741
+    ],
+    "creditScore": 605,
+    "dti": 42.0,
+    "ltv": 55.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10002288",
+    "position": [
+      0.44305644714278253,
+      0.5210239373134676,
+      -0.7295443865766228
+    ],
+    "creditScore": 748,
+    "dti": 29.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002334",
+    "position": [
+      0.6360707371974177,
+      0.4477827797409179,
+      -0.6284143183115107
+    ],
+    "creditScore": 784,
+    "dti": 35.0,
+    "ltv": 77.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002441",
+    "position": [
+      0.6661965454990274,
+      0.6648838608709674,
+      -0.3378040161783215
+    ],
+    "creditScore": 748,
+    "dti": 19.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002521",
+    "position": [
+      0.7706828780759366,
+      -0.13421139823508924,
+      -0.6229246731484399
+    ],
+    "creditScore": 667,
+    "dti": 38.0,
+    "ltv": 77.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002531",
+    "position": [
+      0.643467441051858,
+      0.30571447797497164,
+      -0.7017750890476459
+    ],
+    "creditScore": 768,
+    "dti": 45.0,
+    "ltv": 27.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10002542",
+    "position": [
+      0.5396190198574571,
+      0.6043503121147243,
+      -0.5861501292003402
+    ],
+    "creditScore": 809,
+    "dti": 37.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002555",
+    "position": [
+      0.5959062998634178,
+      0.6289747397806722,
+      -0.4992859027685021
+    ],
+    "creditScore": 700,
+    "dti": 31.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002618",
+    "position": [
+      0.7587853830798563,
+      0.29007882633151066,
+      -0.5831800618540209
+    ],
+    "creditScore": 742,
+    "dti": 43.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002836",
+    "position": [
+      0.39606458640852177,
+      0.7507162234033121,
+      -0.5287323334226359
+    ],
+    "creditScore": 790,
+    "dti": 18.0,
+    "ltv": 52.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002844",
+    "position": [
+      0.7917451226554628,
+      0.33941312845984145,
+      -0.5078763015501333
+    ],
+    "creditScore": 709,
+    "dti": 11.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002906",
+    "position": [
+      0.7017725054368967,
+      0.2290408025684566,
+      -0.6745781082732296
+    ],
+    "creditScore": 724,
+    "dti": 32.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002957",
+    "position": [
+      0.5531274324670854,
+      0.7384959390971297,
+      -0.3855822946546593
+    ],
+    "creditScore": 816,
+    "dti": 19.0,
+    "ltv": 78.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002984",
+    "position": [
+      0.6728120288986562,
+      0.22525988069808758,
+      -0.7046856882215702
+    ],
+    "creditScore": 762,
+    "dti": 23.0,
+    "ltv": 59.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10002994",
+    "position": [
+      0.5264367873471861,
+      0.6454349324627299,
+      -0.5534238554139557
+    ],
+    "creditScore": 783,
+    "dti": 42.0,
+    "ltv": 60.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003044",
+    "position": [
+      0.36213307467952927,
+      0.7309670383889434,
+      -0.5784001886979169
+    ],
+    "creditScore": 795,
+    "dti": 27.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003057",
+    "position": [
+      0.5781058544698442,
+      0.3550279128838627,
+      -0.7346759598859731
+    ],
+    "creditScore": 739,
+    "dti": 45.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003181",
+    "position": [
+      0.8327715418094348,
+      0.16232704254534822,
+      -0.5292838972985793
+    ],
+    "creditScore": 684,
+    "dti": 37.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003207",
+    "position": [
+      0.6071315129276147,
+      0.34406341302429994,
+      -0.7162483254835078
+    ],
+    "creditScore": 814,
+    "dti": 31.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003244",
+    "position": [
+      0.8377156488486962,
+      -0.08854725610077042,
+      -0.5388801705452901
+    ],
+    "creditScore": 769,
+    "dti": 45.0,
+    "ltv": 65.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003247",
+    "position": [
+      0.6980205779605975,
+      0.2216726590924342,
+      -0.6809026881661794
+    ],
+    "creditScore": 769,
+    "dti": 32.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003256",
+    "position": [
+      0.7558790417542284,
+      0.6340013430739402,
+      -0.1633680080098717
+    ],
+    "creditScore": 737,
+    "dti": 41.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003261",
+    "position": [
+      0.7263806296869398,
+      0.08063301657412313,
+      -0.6825463050469867
+    ],
+    "creditScore": 775,
+    "dti": 48.0,
+    "ltv": 59.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003263",
+    "position": [
+      -0.09991908629351622,
+      0.9376784119173833,
+      -0.3328292482817999
+    ],
+    "creditScore": 798,
+    "dti": 18.0,
+    "ltv": 79.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003288",
+    "position": [
+      0.8796727585196775,
+      -0.060010813717852544,
+      -0.47177802249964873
+    ],
+    "creditScore": 750,
+    "dti": 41.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003348",
+    "position": [
+      0.5850891902278396,
+      0.7015622277675588,
+      -0.4067936096665784
+    ],
+    "creditScore": 800,
+    "dti": 29.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003363",
+    "position": [
+      0.5417389049252153,
+      0.5105490698634167,
+      -0.667726410754366
+    ],
+    "creditScore": 736,
+    "dti": 44.0,
+    "ltv": 97.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003404",
+    "position": [
+      0.7590175067149478,
+      -0.030157189628803358,
+      -0.6503713801655135
+    ],
+    "creditScore": 669,
+    "dti": 41.0,
+    "ltv": 94.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003451",
+    "position": [
+      0.7026594066364676,
+      0.6460638578475334,
+      -0.2981126943749709
+    ],
+    "creditScore": 782,
+    "dti": 17.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003519",
+    "position": [
+      0.5947390767601983,
+      0.44740544060234877,
+      -0.667917468651417
+    ],
+    "creditScore": 781,
+    "dti": 38.0,
+    "ltv": 46.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003550",
+    "position": [
+      0.30150030602950095,
+      0.6153103801324092,
+      -0.7283479013382145
+    ],
+    "creditScore": 788,
+    "dti": 25.0,
+    "ltv": 35.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003564",
+    "position": [
+      0.7145123529701937,
+      0.17002005403850215,
+      -0.6786495745372756
+    ],
+    "creditScore": 776,
+    "dti": 40.0,
+    "ltv": 70.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003623",
+    "position": [
+      0.5802376938298058,
+      0.35444505124598435,
+      -0.7332754546969914
+    ],
+    "creditScore": 688,
+    "dti": 32.0,
+    "ltv": 97.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003645",
+    "position": [
+      0.9876276967068579,
+      0.11197889207805353,
+      -0.10978252796933725
+    ],
+    "creditScore": 804,
+    "dti": 37.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003666",
+    "position": [
+      0.3502757751977976,
+      0.5887457924896509,
+      -0.7284814577027395
+    ],
+    "creditScore": 795,
+    "dti": 31.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003703",
+    "position": [
+      0.9900162708370421,
+      0.09864477829499868,
+      -0.10068216451840985
+    ],
+    "creditScore": 770,
+    "dti": 27.0,
+    "ltv": 86.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003742",
+    "position": [
+      0.5871859679833863,
+      0.3678069954768607,
+      -0.7210621459700575
+    ],
+    "creditScore": 816,
+    "dti": 25.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003790",
+    "position": [
+      0.671689830509852,
+      0.33743297593176985,
+      -0.659523857815526
+    ],
+    "creditScore": 736,
+    "dti": 47.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003884",
+    "position": [
+      0.6786168914289273,
+      0.5011785825617824,
+      -0.5369349150039177
+    ],
+    "creditScore": 763,
+    "dti": 40.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10003901",
+    "position": [
+      0.579531523554952,
+      0.30162652553169084,
+      -0.7570763582013343
+    ],
+    "creditScore": 755,
+    "dti": 48.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10003915",
+    "position": [
+      0.5431359878270177,
+      0.7232700105210464,
+      -0.42647828662348813
+    ],
+    "creditScore": 784,
+    "dti": 25.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10004054",
+    "position": [
+      0.7547377666928583,
+      0.6090925726948399,
+      -0.24367409808039434
+    ],
+    "creditScore": 703,
+    "dti": 19.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10004084",
+    "position": [
+      0.7923226270560624,
+      0.25120342934977147,
+      -0.5559871006091144
+    ],
+    "creditScore": 775,
+    "dti": 43.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10004099",
+    "position": [
+      0.7007933523859208,
+      0.3153320096550465,
+      -0.6398862088921717
+    ],
+    "creditScore": 768,
+    "dti": 46.0,
+    "ltv": 85.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10004130",
+    "position": [
+      0.9128955296262464,
+      0.38368175883805594,
+      -0.1393197506828276
+    ],
+    "creditScore": 806,
+    "dti": 39.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10004191",
+    "position": [
+      0.49845469823293964,
+      0.3608491043466128,
+      -0.7882453925452497
+    ],
+    "creditScore": 759,
+    "dti": 28.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10273840",
+    "position": [
+      0.7596265980193473,
+      0.2649748816737958,
+      -0.5939324069974823
+    ],
+    "creditScore": 713,
+    "dti": 44.0,
+    "ltv": 95.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q20040976",
+    "position": [
+      0.3763344160988762,
+      0.5686160226840699,
+      -0.7314698834376235
+    ],
+    "creditScore": 736,
+    "dti": 29.0,
+    "ltv": 90.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q20855312",
+    "position": [
+      0.6471215258920704,
+      0.25607834398335916,
+      -0.718093016558683
+    ],
+    "creditScore": 707,
+    "dti": 28.0,
+    "ltv": 95.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q30246346",
+    "position": [
+      0.37134803981271997,
+      0.5501171734016823,
+      -0.7479784074219858
+    ],
+    "creditScore": 732,
+    "dti": 29.0,
+    "ltv": 97.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q30726293",
+    "position": [
+      0.5860149204337383,
+      0.35539820296652486,
+      -0.7282022968931261
+    ],
+    "creditScore": 694,
+    "dti": 24.0,
+    "ltv": 97.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q40468660",
+    "position": [
+      0.5928686797921162,
+      0.2942880830319943,
+      -0.7496006972686449
+    ],
+    "creditScore": 777,
+    "dti": 16.0,
+    "ltv": 97.0,
+    "wasRepurchased": true,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10001119",
+    "position": [
+      0.6857825917850573,
+      0.4434971238750355,
+      -0.577072348245713
+    ],
+    "creditScore": 792,
+    "dti": 34.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10004115",
+    "position": [
+      0.5121552171219069,
+      0.4967425482174938,
+      -0.700673843487736
+    ],
+    "creditScore": 799,
+    "dti": 45.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10018876",
+    "position": [
+      0.9334364771081581,
+      0.2505456762102321,
+      -0.25675502579871995
+    ],
+    "creditScore": 801,
+    "dti": 48.0,
+    "ltv": 63.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10026908",
+    "position": [
+      0.7877331113436584,
+      -0.04353170319856404,
+      -0.6144766010680219
+    ],
+    "creditScore": 658,
+    "dti": 45.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10028300",
+    "position": [
+      0.6960425404467633,
+      0.26557456849779437,
+      -0.6670793656980033
+    ],
+    "creditScore": 763,
+    "dti": 50.0,
+    "ltv": 85.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10031529",
+    "position": [
+      0.8855402742011141,
+      0.421593219785363,
+      -0.1951346353392698
+    ],
+    "creditScore": 747,
+    "dti": 27.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10062620",
+    "position": [
+      0.8422339093653792,
+      -0.17043098612639135,
+      -0.5114638623951023
+    ],
+    "creditScore": 646,
+    "dti": 42.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10069290",
+    "position": [
+      0.6813779397806056,
+      0.22531594916739192,
+      -0.6963883918783
+    ],
+    "creditScore": 701,
+    "dti": 34.0,
+    "ltv": 85.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10071675",
+    "position": [
+      0.7984607302061097,
+      0.11424785554979924,
+      -0.5911072911819913
+    ],
+    "creditScore": 761,
+    "dti": 27.0,
+    "ltv": 60.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10080098",
+    "position": [
+      0.7206854818043363,
+      0.0066356619857035936,
+      -0.693230384242072
+    ],
+    "creditScore": 656,
+    "dti": 30.0,
+    "ltv": 92.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10099189",
+    "position": [
+      0.723413771059676,
+      0.2267991866376711,
+      -0.6521001407907207
+    ],
+    "creditScore": 703,
+    "dti": 17.0,
+    "ltv": 90.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10100194",
+    "position": [
+      0.6440606692534149,
+      0.2812938341883258,
+      -0.7113786553491813
+    ],
+    "creditScore": 686,
+    "dti": 40.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10109302",
+    "position": [
+      0.8790447340403079,
+      -0.14832138260658378,
+      -0.4530795512231558
+    ],
+    "creditScore": 636,
+    "dti": 45.0,
+    "ltv": 72.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10113565",
+    "position": [
+      0.6413220395215958,
+      0.28537364699317525,
+      -0.7122274112671984
+    ],
+    "creditScore": 698,
+    "dti": 25.0,
+    "ltv": 95.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10115041",
+    "position": [
+      0.8462245567329776,
+      0.15803425831989365,
+      -0.5088508020398768
+    ],
+    "creditScore": 701,
+    "dti": 45.0,
+    "ltv": 80.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10115090",
+    "position": [
+      0.8103104879968035,
+      -0.07478806127764791,
+      -0.5812087626152199
+    ],
+    "creditScore": 740,
+    "dti": 45.0,
+    "ltv": 94.0,
+    "wasRepurchased": false,
+    "decision": "refuse"
+  },
+  {
+    "id": "F20Q10116938",
+    "position": [
+      0.36870064627665433,
+      0.584770713591011,
+      -0.7225669577824668
+    ],
+    "creditScore": 748,
+    "dti": 24.0,
+    "ltv": 75.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10119277",
+    "position": [
+      0.7184084576078572,
+      0.39992836146749355,
+      -0.5691630275196835
+    ],
+    "creditScore": 712,
+    "dti": 42.0,
+    "ltv": 89.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10125428",
+    "position": [
+      0.9083322400788374,
+      -0.22339142574317966,
+      -0.35359407713443014
+    ],
+    "creditScore": 650,
+    "dti": 32.0,
+    "ltv": 70.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  },
+  {
+    "id": "F20Q10132993",
+    "position": [
+      0.6781600380930709,
+      0.1885013292747469,
+      -0.7103282176291067
+    ],
+    "creditScore": 679,
+    "dti": 40.0,
+    "ltv": 91.0,
+    "wasRepurchased": false,
+    "decision": "approve"
+  }
+]

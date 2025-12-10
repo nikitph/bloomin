@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewa Semantic Sphere - Freddie Mac Validation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        #container { width: 100vw; height: 100vh; }
+
+        .panel {
+            position: absolute;
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        #info { top: 20px; left: 20px; max-width: 300px; }
+        #info h1 {
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #6eb4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        #info .sub { font-size: 0.8em; color: #888; margin-bottom: 15px; }
+
+        .stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stat-label { color: #999; }
+        .stat-value { font-weight: 600; }
+        .stat-value.green { color: #4ade80; }
+        .stat-value.red { color: #f87171; }
+        .stat-value.yellow { color: #fbbf24; }
+
+        #legend { margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .legend-item { display: flex; align-items: center; margin: 6px 0; font-size: 0.85em; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; }
+        .dot.green { background: #4ade80; }
+        .dot.red { background: #f87171; }
+        .dot.yellow { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
+
+        #policy { top: 20px; right: 20px; }
+        #policy h3 { color: #a855f7; margin-bottom: 10px; }
+        .policy-btn {
+            display: block; width: 100%; padding: 10px 15px; margin: 5px 0;
+            background: rgba(100, 150, 255, 0.1);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 6px; color: #e0e0e0; cursor: pointer;
+        }
+        .policy-btn:hover { background: rgba(100, 150, 255, 0.2); }
+        .policy-btn.active { background: rgba(168, 85, 247, 0.3); border-color: #a855f7; }
+
+        #controls { bottom: 20px; left: 20px; }
+        #controls label { display: flex; align-items: center; margin: 6px 0; cursor: pointer; font-size: 0.9em; }
+        #controls input[type="checkbox"] { margin-right: 10px; accent-color: #6eb4ff; }
+
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid #6eb4ff;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.85em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 200;
+        }
+        #tooltip.visible { opacity: 1; }
+        #tooltip h4 { color: #6eb4ff; margin-bottom: 8px; }
+        #tooltip .row { display: flex; justify-content: space-between; gap: 20px; margin: 3px 0; }
+
+        #hull-info { bottom: 20px; right: 20px; }
+        #hull-info h3 { color: #4ade80; margin-bottom: 10px; }
+        .entropy-bar { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 5px; }
+        .entropy-fill { height: 100%; background: linear-gradient(90deg, #4ade80, #fbbf24, #f87171); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+    <div id="info" class="panel">
+        <h1>Rewa Semantic Sphere</h1>
+        <div class="sub">Freddie Mac 2020 Loan-Level Data</div>
+        <div class="stat"><span class="stat-label">Total Loans</span><span class="stat-value" id="s-total">-</span></div>
+        <div class="stat"><span class="stat-label">Approved</span><span class="stat-value green" id="s-approved">-</span></div>
+        <div class="stat"><span class="stat-label">Refused</span><span class="stat-value red" id="s-refused">-</span></div>
+        <div class="stat"><span class="stat-label">HAR</span><span class="stat-value yellow" id="s-har">-</span></div>
+        <div id="legend">
+            <div class="legend-item"><div class="dot green"></div>Approved</div>
+            <div class="legend-item"><div class="dot red"></div>Refused</div>
+            <div class="legend-item"><div class="dot yellow"></div>Repurchased</div>
+        </div>
+    </div>
+
+    <div id="policy" class="panel">
+        <h3>Policy</h3>
+        <button class="policy-btn" data-policy="strict">STRICT</button>
+        <button class="policy-btn active" data-policy="standard">STANDARD</button>
+        <button class="policy-btn" data-policy="relaxed">RELAXED</button>
+    </div>
+
+    <div id="controls" class="panel">
+        <div style="margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+            <label><input type="checkbox" id="show-sphere" checked> Sphere</label>
+            <label><input type="checkbox" id="show-hull" checked> Hull</label>
+            <label><input type="checkbox" id="auto-rotate" checked> Auto-rotate</label>
+        </div>
+        <div style="font-size: 0.8em; color: #888; margin-bottom: 5px;">Filter Loans:</div>
+        <label><input type="checkbox" id="show-approved" checked> <span style="color:#4ade80">Approved</span></label>
+        <label><input type="checkbox" id="show-refused" checked> <span style="color:#f87171">Refused</span></label>
+        <label><input type="checkbox" id="show-repurchased" checked> <span style="color:#fbbf24">Repurchased</span></label>
+    </div>
+
+    <div id="hull-info" class="panel">
+        <h3>Analysis</h3>
+        <div class="stat"><span class="stat-label">Hemisphere</span><span class="stat-value green" id="h-status">Yes</span></div>
+        <div class="stat"><span class="stat-label">Entropy</span><span class="stat-value" id="h-entropy">0.00</span></div>
+        <div class="entropy-bar"><div class="entropy-fill" id="e-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="tooltip">
+        <h4 id="t-id">-</h4>
+        <div class="row"><span>Credit:</span><span id="t-credit">-</span></div>
+        <div class="row"><span>DTI:</span><span id="t-dti">-</span></div>
+        <div class="row"><span>LTV:</span><span id="t-ltv">-</span></div>
+        <div class="row"><span>Decision:</span><span id="t-decision">-</span></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Embedded loan data from Freddie Mac 2020
+        const LOAN_DATA = [{"id": "F20Q10000154", "position": [-0.5996133734590915, -0.6394687509554499, 0.481189691203464], "creditScore": 714, "dti": 31.0, "ltv": 60.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000157", "position": [-0.6519287487964897, -0.7109768381643367, 0.263630123632498], "creditScore": 710, "dti": 44.0, "ltv": 54.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10000184", "position": [-0.6269588980517118, -0.5029833426667243, 0.5949204124532892], "creditScore": 790, "dti": 42.0, "ltv": 65.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000218", "position": [-0.6536050626308889, -0.6813992063398802, 0.3294308780025459], "creditScore": 744, "dti": 48.0, "ltv": 72.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10000267", "position": [-0.5965152461116116, -0.6667890892555595, 0.4465952929652127], "creditScore": 618, "dti": 38.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10000301", "position": [-0.6088406076413907, -0.5999403393737754, 0.5189927025591727], "creditScore": 758, "dti": 40.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000310", "position": [-0.625440988963621, -0.5761336605959892, 0.5261591161040376], "creditScore": 773, "dti": 34.0, "ltv": 75.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000318", "position": [-0.5989912016461685, -0.6239694291174133, 0.5019050527282795], "creditScore": 740, "dti": 36.0, "ltv": 63.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000410", "position": [-0.6025648376628809, -0.6547652691377282, 0.4564000011903715], "creditScore": 704, "dti": 37.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000421", "position": [-0.6009063632188093, -0.6538649082116959, 0.45922406632693814], "creditScore": 712, "dti": 38.0, "ltv": 77.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000533", "position": [-0.6197406178610527, -0.5831422668279422, 0.5248621426879785], "creditScore": 759, "dti": 38.0, "ltv": 73.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000561", "position": [-0.6010127254076693, -0.6565419028440929, 0.45551499497085044], "creditScore": 711, "dti": 38.0, "ltv": 91.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000576", "position": [-0.6201188987610972, -0.5629232684001313, 0.5463422959741268], "creditScore": 752, "dti": 37.0, "ltv": 55.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000668", "position": [-0.5996414001992632, -0.6359152234584626, 0.48611611024206476], "creditScore": 714, "dti": 31.0, "ltv": 53.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10000794", "position": [-0.6066527376428626, -0.6530499432817037, 0.4534813621119606], "creditScore": 704, "dti": 41.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001007", "position": [-0.6107024085571638, -0.6265155330355451, 0.48444788687413386], "creditScore": 720, "dti": 42.0, "ltv": 85.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001038", "position": [-0.6255638612067206, -0.558946296785188, 0.5441303506298181], "creditScore": 768, "dti": 35.0, "ltv": 58.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001064", "position": [-0.6115096551543566, -0.5990422478398558, 0.5169936633891816], "creditScore": 745, "dti": 38.0, "ltv": 77.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001151", "position": [-0.6106693893481497, -0.6135972063315296, 0.5004915102832411], "creditScore": 740, "dti": 39.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001154", "position": [-0.5984903633313714, -0.6281682461440753, 0.4971792389595627], "creditScore": 739, "dti": 35.0, "ltv": 59.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001272", "position": [-0.6118498588912019, -0.6104831251588633, 0.5029698555688893], "creditScore": 746, "dti": 40.0, "ltv": 75.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001310", "position": [-0.6098135700012426, -0.6009313936167044, 0.5167406765261073], "creditScore": 748, "dti": 38.0, "ltv": 70.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001437", "position": [-0.5979714419987756, -0.6262668638310312, 0.49999741166890106], "creditScore": 738, "dti": 34.0, "ltv": 54.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001570", "position": [-0.5916206313050779, -0.6490078890298426, 0.4787109574933927], "creditScore": 683, "dti": 33.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001638", "position": [-0.5955009131481078, -0.6400437988566566, 0.4860113915088948], "creditScore": 710, "dti": 34.0, "ltv": 72.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001871", "position": [-0.5964903299413037, -0.6442571700606427, 0.47855606671571925], "creditScore": 721, "dti": 35.0, "ltv": 75.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10001993", "position": [-0.614091566135481, -0.5989413174685227, 0.5142188785823568], "creditScore": 755, "dti": 39.0, "ltv": 70.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002079", "position": [-0.6087697044629666, -0.6372296048166393, 0.47236188313633506], "creditScore": 738, "dti": 42.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002116", "position": [-0.6209055816310389, -0.5752823891200749, 0.5323756178508693], "creditScore": 759, "dti": 37.0, "ltv": 68.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002119", "position": [-0.6206912181115296, -0.5722078411689671, 0.5358330952952929], "creditScore": 758, "dti": 36.0, "ltv": 67.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002124", "position": [-0.6085788336050693, -0.6141102551553614, 0.5021810451813109], "creditScore": 738, "dti": 38.0, "ltv": 79.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002127", "position": [-0.6100063765188715, -0.6055165308336048, 0.5112851316802455], "creditScore": 742, "dti": 38.0, "ltv": 75.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002291", "position": [-0.6015814765755088, -0.6442167959336437, 0.4723609091587889], "creditScore": 711, "dti": 37.0, "ltv": 84.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002465", "position": [-0.6021813908227632, -0.6368447665917279, 0.4817251003903631], "creditScore": 718, "dti": 37.0, "ltv": 72.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002514", "position": [-0.6233817115437696, -0.5543096234377127, 0.5514693992266174], "creditScore": 768, "dti": 35.0, "ltv": 55.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002623", "position": [-0.6200093361588037, -0.5631174936695653, 0.5461252847174306], "creditScore": 754, "dti": 37.0, "ltv": 51.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002700", "position": [-0.6214527610088076, -0.5575979755737867, 0.5500813476028618], "creditScore": 758, "dti": 36.0, "ltv": 51.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002736", "position": [-0.6030422633655813, -0.6390096078073091, 0.4780218893636181], "creditScore": 717, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002826", "position": [-0.6071629424102668, -0.6179127618398037, 0.4996102877665312], "creditScore": 730, "dti": 38.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002854", "position": [-0.6221792135697631, -0.5532879920044755, 0.5537098855174832], "creditScore": 765, "dti": 35.0, "ltv": 50.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10002876", "position": [-0.5977970671009291, -0.6308714001149048, 0.4942932152037946], "creditScore": 730, "dti": 34.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003181", "position": [-0.5987814685166476, -0.655285178839455, 0.4606155896139652], "creditScore": 684, "dti": 37.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003295", "position": [-0.6140588310579076, -0.5948003037437655, 0.5186609680117992], "creditScore": 754, "dti": 38.0, "ltv": 67.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003304", "position": [-0.6086336619990556, -0.6173741912920063, 0.4985619839780247], "creditScore": 732, "dti": 39.0, "ltv": 85.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003457", "position": [-0.6060437076178977, -0.6180858299561459, 0.5006069566660653], "creditScore": 728, "dti": 38.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003592", "position": [-0.6194174549892855, -0.5688261652091936, 0.5404481295227025], "creditScore": 758, "dti": 37.0, "ltv": 58.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003684", "position": [-0.6084411119992903, -0.6091788612040078, 0.5083749336478527], "creditScore": 737, "dti": 38.0, "ltv": 76.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003841", "position": [-0.5992905011025839, -0.6362287792628591, 0.48571174693376565], "creditScore": 715, "dti": 35.0, "ltv": 71.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003850", "position": [-0.6204656063088127, -0.5659227687814099, 0.5427413618645052], "creditScore": 757, "dti": 37.0, "ltv": 58.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10003940", "position": [-0.6007227227740971, -0.6306666588339426, 0.4912181168058831], "creditScore": 725, "dti": 36.0, "ltv": 67.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004051", "position": [-0.5999099437992403, -0.6360478682316574, 0.48546116695316426], "creditScore": 713, "dti": 35.0, "ltv": 73.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004054", "position": [-0.6105296606167009, -0.5914671687696006, 0.5264310632908422], "creditScore": 754, "dti": 37.0, "ltv": 60.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004152", "position": [-0.6108065706652893, -0.5934814379379741, 0.5241109291050979], "creditScore": 753, "dti": 37.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004284", "position": [-0.5997437046413048, -0.6341866737820389, 0.48806788012621656], "creditScore": 714, "dti": 35.0, "ltv": 67.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004335", "position": [-0.6140905082063816, -0.5855887118890717, 0.5287315989139879], "creditScore": 757, "dti": 37.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004376", "position": [-0.6083377971605028, -0.606260096161236, 0.5119062181887476], "creditScore": 741, "dti": 38.0, "ltv": 70.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004410", "position": [-0.5979037227217682, -0.63282779668728, 0.49190568040355466], "creditScore": 728, "dti": 34.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004461", "position": [-0.6043012929992085, -0.6300131251096247, 0.48763188115188685], "creditScore": 726, "dti": 38.0, "ltv": 73.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004547", "position": [-0.6157206234133266, -0.5872282892588093, 0.5252715631988717], "creditScore": 762, "dti": 38.0, "ltv": 60.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004556", "position": [-0.6060970619393427, -0.6215755117476076, 0.4963949166605379], "creditScore": 725, "dti": 38.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004570", "position": [-0.6096682067832055, -0.5959606421108413, 0.5226152695825831], "creditScore": 751, "dti": 37.0, "ltv": 61.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004605", "position": [-0.6051766426779648, -0.6256232685671379, 0.4924652668584006], "creditScore": 719, "dti": 38.0, "ltv": 82.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004617", "position": [-0.6053355610155149, -0.6193698792025759, 0.4999549704655932], "creditScore": 725, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004796", "position": [-0.6096395685155755, -0.6066078556632065, 0.5102379009579003], "creditScore": 743, "dti": 38.0, "ltv": 76.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004813", "position": [-0.5959046766813308, -0.6430422118168655, 0.4810633755195261], "creditScore": 711, "dti": 33.0, "ltv": 74.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10004888", "position": [-0.6132251099714227, -0.5853119817316427, 0.5301327652632888], "creditScore": 756, "dti": 36.0, "ltv": 59.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005169", "position": [-0.6063096028893364, -0.6162989609989691, 0.5019846291755614], "creditScore": 728, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005258", "position": [-0.6165891498251398, -0.5775825566149773, 0.5346303024254206], "creditScore": 763, "dti": 37.0, "ltv": 58.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005286", "position": [-0.6082889285666591, -0.6077820098706379, 0.5103013523095282], "creditScore": 738, "dti": 38.0, "ltv": 76.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005315", "position": [-0.6024879282099714, -0.6420161199296499, 0.47374714591952396], "creditScore": 709, "dti": 38.0, "ltv": 88.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005352", "position": [-0.614067295847282, -0.588428166671959, 0.5256025095766609], "creditScore": 758, "dti": 37.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005572", "position": [-0.616051648587115, -0.5799636422785851, 0.5324949315133078], "creditScore": 762, "dti": 37.0, "ltv": 59.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005667", "position": [-0.6091823498737236, -0.6061946232001765, 0.5113078024254046], "creditScore": 739, "dti": 38.0, "ltv": 76.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005693", "position": [-0.6048313936188044, -0.6249078499279917, 0.4935632832971034], "creditScore": 717, "dti": 38.0, "ltv": 83.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005696", "position": [-0.6013025671988579, -0.6477174684108892, 0.4677697085920115], "creditScore": 711, "dti": 38.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005869", "position": [-0.6216058393085003, -0.5559451549832206, 0.5519133308088715], "creditScore": 762, "dti": 35.0, "ltv": 51.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005871", "position": [-0.6210579847102481, -0.5617015698044992, 0.5464018698091556], "creditScore": 761, "dti": 36.0, "ltv": 55.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005891", "position": [-0.6067698252266626, -0.6299109671671936, 0.48455896823206885], "creditScore": 712, "dti": 39.0, "ltv": 90.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005950", "position": [-0.6086161355700912, -0.6120574631206295, 0.5046032091166851], "creditScore": 735, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005982", "position": [-0.6181605330813308, -0.5733543398694992, 0.5377072817254148], "creditScore": 756, "dti": 37.0, "ltv": 62.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10005990", "position": [-0.6177099933206428, -0.5702389393377756, 0.5417015166952046], "creditScore": 757, "dti": 36.0, "ltv": 59.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006051", "position": [-0.6030687461785689, -0.6458040131809879, 0.46827666987152595], "creditScore": 712, "dti": 39.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006109", "position": [-0.6010461687046247, -0.6537167406700555, 0.45974168200206615], "creditScore": 711, "dti": 38.0, "ltv": 95.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006125", "position": [-0.606399282621851, -0.6163015655028232, 0.5015818810006361], "creditScore": 729, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006155", "position": [-0.6163988682755633, -0.5825296127614119, 0.5296108085814887], "creditScore": 762, "dti": 38.0, "ltv": 60.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006158", "position": [-0.6119073232730929, -0.5948858890413287, 0.5213629430879155], "creditScore": 753, "dti": 37.0, "ltv": 64.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006262", "position": [-0.6166621195428809, -0.5821700698695584, 0.5296817440461637], "creditScore": 762, "dti": 38.0, "ltv": 60.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006340", "position": [-0.6084688971893628, -0.6107614696389992, 0.5064116422645636], "creditScore": 735, "dti": 38.0, "ltv": 78.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006376", "position": [-0.6142096330044814, -0.5868555588887236, 0.5273090952971686], "creditScore": 759, "dti": 37.0, "ltv": 61.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006396", "position": [-0.6212308195561052, -0.5579700135135695, 0.5502047891261851], "creditScore": 762, "dti": 35.0, "ltv": 50.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006408", "position": [-0.6030063497379085, -0.6384232915063814, 0.47876028459117486], "creditScore": 716, "dti": 38.0, "ltv": 77.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006411", "position": [-0.6073932684946954, -0.6178700067279737, 0.4993007652588816], "creditScore": 729, "dti": 39.0, "ltv": 80.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006456", "position": [-0.6190055063206166, -0.5679889660481181, 0.5419553166584227], "creditScore": 759, "dti": 36.0, "ltv": 56.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10006579", "position": [-0.5926411584802753, -0.657684422959605, 0.4651538399556085], "creditScore": 669, "dti": 36.0, "ltv": 92.0, "wasRepurchased": false, "decision": "approve"}, {"id": "F20Q10273840", "position": [-0.6089015481660765, -0.6597809461609315, 0.44068668161377375], "creditScore": 713, "dti": 44.0, "ltv": 95.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q20040976", "position": [-0.6049700168011618, -0.6103638877181411, 0.5108679078133423], "creditScore": 736, "dti": 29.0, "ltv": 90.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q20855312", "position": [-0.6010108287609315, -0.6269680855102547, 0.4957076376527854], "creditScore": 707, "dti": 28.0, "ltv": 95.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q30246346", "position": [-0.6025330543432714, -0.6240217655523398, 0.4975424653693089], "creditScore": 732, "dti": 29.0, "ltv": 97.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q30726293", "position": [-0.5909802403988028, -0.6341889932430636, 0.49808269587037505], "creditScore": 694, "dti": 24.0, "ltv": 97.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q40468660", "position": [-0.5950403527261977, -0.5699167682903437, 0.5668574979689138], "creditScore": 777, "dti": 16.0, "ltv": 97.0, "wasRepurchased": true, "decision": "refuse"}, {"id": "F20Q10000730", "position": [-0.6004006254046426, -0.6493199556814682, 0.46632810001698905], "creditScore": 680, "dti": 37.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001077", "position": [-0.6014019741527653, -0.6605116424055217, 0.44998082766523096], "creditScore": 732, "dti": 39.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001082", "position": [-0.6001296219832015, -0.6636476181855645, 0.44430476168478095], "creditScore": 726, "dti": 39.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001305", "position": [-0.5948626509461855, -0.6582555891336903, 0.4621063252336779], "creditScore": 698, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001370", "position": [-0.602891591174127, -0.6618076073952099, 0.44591610831127134], "creditScore": 739, "dti": 40.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001389", "position": [-0.6077927285629406, -0.6547399689686553, 0.4494825411802878], "creditScore": 756, "dti": 41.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001396", "position": [-0.5931261972050746, -0.6666098398127009, 0.45103831952199076], "creditScore": 702, "dti": 36.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001427", "position": [-0.5985990296422015, -0.6636706073693653, 0.4491568376019661], "creditScore": 720, "dti": 38.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001652", "position": [-0.5961905009892, -0.6605073499816379, 0.4569847149891611], "creditScore": 713, "dti": 36.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001653", "position": [-0.5912568755266631, -0.6641001773411247, 0.458015691684605], "creditScore": 687, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001691", "position": [-0.5893168621299823, -0.6669679476178313, 0.4565551788555178], "creditScore": 663, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001696", "position": [-0.5889266694631063, -0.6676817217889704, 0.4560117682058605], "creditScore": 657, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001861", "position": [-0.6051119704632667, -0.6652379680330611, 0.4378200149638313], "creditScore": 767, "dti": 42.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10001963", "position": [-0.5968481168556618, -0.6646785285551413, 0.4501361831660571], "creditScore": 719, "dti": 38.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10002083", "position": [-0.5925730195432818, -0.6635653979788217, 0.4573440591696963], "creditScore": 693, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10002168", "position": [-0.6088316006668393, -0.6474766889015989, 0.4580048168227609], "creditScore": 749, "dti": 40.0, "ltv": 96.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10002195", "position": [-0.5929476610102206, -0.662741308259889, 0.45814422174671736], "creditScore": 694, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10002339", "position": [-0.591693936376279, -0.6640451447629181, 0.4577839095987918], "creditScore": 683, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}, {"id": "F20Q10002410", "position": [-0.5939316095523426, -0.6629088082432893, 0.4562050115461737], "creditScore": 697, "dti": 35.0, "ltv": 97.0, "wasRepurchased": false, "decision": "refuse"}];
+
+        const policies = {
+            strict:   { minCredit: 680, maxDTI: 40, maxLTV: 90 },
+            standard: { minCredit: 620, maxDTI: 43, maxLTV: 95 },
+            relaxed:  { minCredit: 580, maxDTI: 50, maxLTV: 97 }
+        };
+
+        let scene, camera, renderer, controls;
+        let sphere, points = [], hullMesh = null, currentPolicy = 'standard';
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a0a0f);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+            camera.position.set(2.5, 1.5, 2.5);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.3;
+
+            // Sphere
+            sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(1, 48, 48),
+                new THREE.MeshPhongMaterial({ color: 0x1a1a2e, transparent: true, opacity: 0.25, side: THREE.DoubleSide })
+            );
+            scene.add(sphere);
+
+            // Wireframe
+            scene.add(new THREE.Mesh(
+                new THREE.SphereGeometry(1.002, 24, 24),
+                new THREE.MeshBasicMaterial({ color: 0x6eb4ff, wireframe: true, transparent: true, opacity: 0.08 })
+            ));
+
+            // Lights
+            scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+            const light1 = new THREE.PointLight(0x6eb4ff, 1); light1.position.set(5,5,5); scene.add(light1);
+            const light2 = new THREE.PointLight(0xa855f7, 0.6); light2.position.set(-5,-5,5); scene.add(light2);
+
+            createPoints();
+            createHull();
+            updateStats();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth/window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            document.querySelectorAll('.policy-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.policy-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentPolicy = btn.dataset.policy;
+                    updatePoints();
+                };
+            });
+
+            document.getElementById('show-sphere').onchange = e => sphere.visible = e.target.checked;
+            document.getElementById('show-hull').onchange = e => { if (hullMesh) hullMesh.visible = e.target.checked; };
+            document.getElementById('auto-rotate').onchange = e => controls.autoRotate = e.target.checked;
+
+            // Filter checkboxes
+            document.getElementById('show-approved').onchange = updateFilters;
+            document.getElementById('show-refused').onchange = updateFilters;
+            document.getElementById('show-repurchased').onchange = updateFilters;
+
+            // Hover
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            const tooltip = document.getElementById('tooltip');
+
+            renderer.domElement.onmousemove = e => {
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+                const hits = raycaster.intersectObjects(points);
+                if (hits.length) {
+                    const d = LOAN_DATA[hits[0].object.userData.idx];
+                    document.getElementById('t-id').textContent = d.id;
+                    document.getElementById('t-credit').textContent = d.creditScore;
+                    document.getElementById('t-dti').textContent = d.dti + '%';
+                    document.getElementById('t-ltv').textContent = d.ltv + '%';
+                    const dec = document.getElementById('t-decision');
+                    dec.textContent = d.decision.toUpperCase();
+                    dec.style.color = d.decision === 'approve' ? '#4ade80' : '#f87171';
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                    tooltip.classList.add('visible');
+                } else {
+                    tooltip.classList.remove('visible');
+                }
+            };
+
+            animate();
+        }
+
+        function createPoints() {
+            LOAN_DATA.forEach((d, i) => {
+                const geo = new THREE.SphereGeometry(d.wasRepurchased ? 0.04 : 0.025, 16, 16);
+                const mat = new THREE.MeshPhongMaterial({ color: getColor(d), emissive: getColor(d), emissiveIntensity: 0.3 });
+                const mesh = new THREE.Mesh(geo, mat);
+                mesh.position.set(d.position[0], d.position[1], d.position[2]);
+                mesh.userData.idx = i;
+                scene.add(mesh);
+                points.push(mesh);
+            });
+        }
+
+        function getColor(d) {
+            if (d.wasRepurchased) return 0xfbbf24;
+            return d.decision === 'approve' ? 0x4ade80 : 0xf87171;
+        }
+
+        function updateFilters() {
+            const showApproved = document.getElementById('show-approved').checked;
+            const showRefused = document.getElementById('show-refused').checked;
+            const showRepurchased = document.getElementById('show-repurchased').checked;
+
+            let visibleApproved = 0, visibleRefused = 0, visibleRepurchased = 0;
+
+            LOAN_DATA.forEach((d, i) => {
+                let visible = false;
+
+                if (d.wasRepurchased) {
+                    visible = showRepurchased;
+                    if (visible) visibleRepurchased++;
+                } else if (d.decision === 'approve') {
+                    visible = showApproved;
+                    if (visible) visibleApproved++;
+                } else {
+                    visible = showRefused;
+                    if (visible) visibleRefused++;
+                }
+
+                points[i].visible = visible;
+            });
+
+            // Update hull to only show visible approved loans
+            updateHullWithFilter(showApproved);
+
+            // Update visible count in stats
+            const total = visibleApproved + visibleRefused + visibleRepurchased;
+            document.getElementById('total-loans').textContent = total;
+        }
+
+        function updateHullWithFilter(showApproved) {
+            // Hide hull if approved loans are hidden
+            if (hullMesh) {
+                hullMesh.visible = showApproved;
+            }
+        }
+
+        function createHull() {
+            updateHull();
+        }
+
+        function updateHull() {
+            // Remove old hull
+            if (hullMesh) {
+                scene.remove(hullMesh);
+                hullMesh.geometry.dispose();
+                hullMesh.material.dispose();
+                hullMesh = null;
+            }
+
+            // Get approved loan positions
+            const approved = LOAN_DATA.filter(d => d.decision === 'approve');
+            if (approved.length < 4) return;
+
+            // Create vertices for convex hull
+            const vertices = approved.map(d => new THREE.Vector3(d.position[0], d.position[1], d.position[2]));
+
+            // Simple spherical hull visualization - create triangular faces from centroid
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            const indices = [];
+
+            // Calculate centroid
+            const centroid = new THREE.Vector3();
+            vertices.forEach(v => centroid.add(v));
+            centroid.divideScalar(vertices.length);
+            centroid.normalize(); // Project to sphere surface
+
+            // Sort vertices by angle around centroid for better triangulation
+            const up = new THREE.Vector3(0, 1, 0);
+            const right = new THREE.Vector3().crossVectors(up, centroid).normalize();
+            const forward = new THREE.Vector3().crossVectors(centroid, right).normalize();
+
+            const sorted = vertices.map((v, i) => {
+                const local = v.clone().sub(centroid);
+                const x = local.dot(right);
+                const y = local.dot(forward);
+                return { v, angle: Math.atan2(y, x), idx: i };
+            }).sort((a, b) => a.angle - b.angle);
+
+            // Create triangles from centroid to consecutive vertices
+            // This creates a "fan" hull on the sphere surface
+            sorted.forEach((item, i) => {
+                const next = sorted[(i + 1) % sorted.length];
+                positions.push(
+                    centroid.x, centroid.y, centroid.z,
+                    item.v.x, item.v.y, item.v.z,
+                    next.v.x, next.v.y, next.v.z
+                );
+            });
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.computeVertexNormals();
+
+            // Create semi-transparent green hull
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x4ade80,
+                transparent: true,
+                opacity: 0.15,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+            hullMesh = new THREE.Mesh(geometry, material);
+            scene.add(hullMesh);
+
+            // Also add wireframe outline
+            const wireGeo = new THREE.BufferGeometry();
+            const wirePositions = [];
+            sorted.forEach((item, i) => {
+                const next = sorted[(i + 1) % sorted.length];
+                wirePositions.push(item.v.x, item.v.y, item.v.z);
+                wirePositions.push(next.v.x, next.v.y, next.v.z);
+            });
+            wireGeo.setAttribute('position', new THREE.Float32BufferAttribute(wirePositions, 3));
+
+            const wireMat = new THREE.LineBasicMaterial({ color: 0x4ade80, transparent: true, opacity: 0.5 });
+            const wireLine = new THREE.LineSegments(wireGeo, wireMat);
+            hullMesh.add(wireLine);
+
+            // Check hull visibility toggle
+            hullMesh.visible = document.getElementById('show-hull').checked;
+        }
+
+        function updatePoints() {
+            const p = policies[currentPolicy];
+            LOAN_DATA.forEach((d, i) => {
+                const meets = d.creditScore >= p.minCredit && d.dti <= p.maxDTI && d.ltv <= p.maxLTV;
+                d.decision = meets && !d.wasRepurchased ? 'approve' : 'refuse';
+                const c = getColor(d);
+                points[i].material.color.setHex(c);
+                points[i].material.emissive.setHex(c);
+            });
+            updateHull();
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = LOAN_DATA.length;
+            const approved = LOAN_DATA.filter(d => d.decision === 'approve').length;
+            const repurchased = LOAN_DATA.filter(d => d.wasRepurchased).length;
+            const hal = LOAN_DATA.filter(d => d.wasRepurchased && d.decision === 'approve').length;
+            const har = repurchased ? (hal / repurchased * 100).toFixed(1) : '0.0';
+
+            document.getElementById('s-total').textContent = total;
+            document.getElementById('s-approved').textContent = approved;
+            document.getElementById('s-refused').textContent = total - approved;
+            document.getElementById('s-har').textContent = har + '%';
+
+            // Hemisphere check - do all approved loans fit in one hemisphere?
+            const app = LOAN_DATA.filter(d => d.decision === 'approve');
+            let hemisphereExists = true;
+            let minDot = 1;
+
+            if (app.length > 1) {
+                // Check pairwise dot products
+                for (let i = 0; i < app.length && hemisphereExists; i++) {
+                    for (let j = i + 1; j < app.length; j++) {
+                        const dot = app[i].position[0]*app[j].position[0] +
+                                   app[i].position[1]*app[j].position[1] +
+                                   app[i].position[2]*app[j].position[2];
+                        if (dot < minDot) minDot = dot;
+                        if (dot < -0.3) {
+                            hemisphereExists = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Update hemisphere status
+                const hStatus = document.getElementById('h-status');
+                if (hemisphereExists) {
+                    hStatus.textContent = 'Yes';
+                    hStatus.style.color = '#4ade80';
+                } else {
+                    hStatus.textContent = 'No (!)';
+                    hStatus.style.color = '#f87171';
+                }
+
+                // Entropy calculation
+                const mean = [0,0,0];
+                app.forEach(d => { mean[0]+=d.position[0]; mean[1]+=d.position[1]; mean[2]+=d.position[2]; });
+                mean[0]/=app.length; mean[1]/=app.length; mean[2]/=app.length;
+                const norm = Math.sqrt(mean[0]*mean[0]+mean[1]*mean[1]+mean[2]*mean[2]);
+                if (norm > 0.001) {
+                    mean[0]/=norm; mean[1]/=norm; mean[2]/=norm;
+                }
+                let v = 0;
+                app.forEach(d => {
+                    const dot = d.position[0]*mean[0]+d.position[1]*mean[1]+d.position[2]*mean[2];
+                    const ang = Math.acos(Math.max(-1,Math.min(1,dot)));
+                    v += ang*ang;
+                });
+                const ent = Math.min(1, (v/app.length)/(Math.PI*Math.PI));
+                document.getElementById('h-entropy').textContent = ent.toFixed(3);
+                document.getElementById('e-bar').style.width = (ent*100)+'%';
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
