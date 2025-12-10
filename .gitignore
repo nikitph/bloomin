@@ -248,3 +248,8 @@ cython_debug/
 /universal-curvature-experiment/checkpoints/rewa_bert_256d_best.pth
 /universal-curvature-experiment/checkpoints/rewa_gpt2_256d_best.pth
 /universal-curvature-experiment/checkpoints/rewa_newsgroups_256d_best.pth
+/rewa_core/freddie_validation/data/README.md
+/rewa_core/freddie_validation/data/sample_orig_2020.txt
+/rewa_core/freddie_validation/data/sample_orig_2021.txt
+/rewa_core/freddie_validation/data/sample_svcg_2020.txt
+/rewa_core/freddie_validation/data/sample_svcg_2021.txt

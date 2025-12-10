@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-12-10T10:43:58.237187",
+  "policy_version": "FM-2024-15ed0120",
+  "rewa_metrics": {
+    "system": "rewa",
+    "total_evaluated": 8,
+    "decided": 8,
+    "request_more_info": 0,
+    "hallucinated_approval_rate": 0,
+    "hallucinated_approvals": 0,
+    "correct_refusal_rate": 1.0,
+    "false_refusal_rate": 1.0,
+    "true_positives": 0,
+    "true_negatives": 5,
+    "false_positives": 0,
+    "false_negatives": 3,
+    "approval_rate": 0.0,
+    "refusal_rate": 1.0
+  },
+  "baseline_metrics": {
+    "system": "baseline",
+    "total_evaluated": 8,
+    "decided": 8,
+    "request_more_info": 0,
+    "hallucinated_approval_rate": 0.625,
+    "hallucinated_approvals": 5,
+    "correct_refusal_rate": 0.0,
+    "false_refusal_rate": 0.0,
+    "true_positives": 3,
+    "true_negatives": 0,
+    "false_positives": 5,
+    "false_negatives": 0,
+    "approval_rate": 1.0,
+    "refusal_rate": 0.0
+  },
+  "success_criteria": {
+    "Hallucinated Approvals = 0": true,
+    "Correct Refusal Rate > 80%": true,
+    "All decisions deterministic": true,
+    "Policy version tracked": true
+  },
+  "all_passed": true
+}
