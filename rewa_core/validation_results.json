@@ -1,0 +1,134 @@
+{
+  "timestamp": "2025-12-10T10:10:46.011009",
+  "version": "1.0.0",
+  "test_results": {
+    "Suite 1: Geometry Sanity": {
+      "passed": 3,
+      "failed": 1,
+      "tests": [
+        {
+          "name": "Synthetic antipodal detection",
+          "passed": true,
+          "details": "Hemisphere exists: False"
+        },
+        {
+          "name": "Consistent documents hemisphere",
+          "passed": true,
+          "details": "Margin: 0.6940"
+        },
+        {
+          "name": "Hull growth tracking",
+          "passed": true,
+          "details": "Completed successfully"
+        },
+        {
+          "name": "Stability under noise",
+          "passed": false,
+          "details": "Hemisphere=True, Radius=0.6736"
+        }
+      ]
+    },
+    "Suite 2: Policy Independence": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Both policies in admissible region",
+          "passed": true,
+          "details": "Conservative: True, Aggressive: True"
+        },
+        {
+          "name": "Evidence preserved under policy",
+          "passed": true,
+          "details": "Conservative: True, Aggressive: True"
+        },
+        {
+          "name": "Policy selection deterministic",
+          "passed": "True",
+          "details": "Score variance: 0.00e+00"
+        }
+      ]
+    },
+    "Suite 3: Hallucination Prevention": {
+      "passed": 3,
+      "failed": 1,
+      "tests": [
+        {
+          "name": "Contradictory evidence handled",
+          "passed": true,
+          "details": "Approved: False, Entropy: 0.0443"
+        },
+        {
+          "name": "Insufficient evidence refused",
+          "passed": true,
+          "details": "Approved: False"
+        },
+        {
+          "name": "Policy conflict handled",
+          "passed": true,
+          "details": "Score: 0.0570375919342041, Threshold: 0.6"
+        },
+        {
+          "name": "Zero hallucinated approvals",
+          "passed": false,
+          "details": "Hallucinations: 2"
+        }
+      ]
+    },
+    "Suite 4: Regression vs Baseline": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Rewa outperforms baseline on accuracy",
+          "passed": true,
+          "details": "Baseline: 1/4, Rewa: 3/4"
+        },
+        {
+          "name": "Rewa provides full auditability",
+          "passed": true,
+          "details": "Entries: 4"
+        },
+        {
+          "name": "Rewa provides policy control",
+          "passed": true,
+          "details": "Policy registered and applied"
+        }
+      ]
+    },
+    "Suite 5: Drift Detection": {
+      "passed": 3,
+      "failed": 0,
+      "tests": [
+        {
+          "name": "Drift detection operational",
+          "passed": true,
+          "details": "Drift computed for all test cases"
+        },
+        {
+          "name": "Safe region computed",
+          "passed": true,
+          "details": "Safe fraction: 100.0%"
+        },
+        {
+          "name": "Cumulative drift tracked",
+          "passed": true,
+          "details": "Total drift: 66.4\u00b0"
+        }
+      ]
+    }
+  },
+  "statistics": {
+    "total_entries": 3,
+    "session_id": "71e9032d",
+    "state_distribution": {
+      "valid": 3
+    },
+    "refusal_distribution": {
+      "policy_excluded": 3
+    },
+    "mode_b_rate": 0.0,
+    "mean_entropy": 0.03370176443775005,
+    "mean_computation_time_ms": 9.171724319458008
+  }
+}
