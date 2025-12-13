@@ -1,0 +1,42 @@
+{
+  "baseline": {
+    "method": "BASELINE",
+    "mnist_a": 0.92,
+    "mnist_b": 0.18,
+    "fashion_b": 0.8325,
+    "weight_change": 8.470930099487305,
+    "forgetting": 0.74
+  },
+  "ewc": {
+    "method": "EWC (\u03bb=5000.0)",
+    "mnist_a": 0.9125,
+    "mnist_b": 0.3675,
+    "fashion_b": 0.78,
+    "weight_change": 4.134616851806641,
+    "forgetting": 0.5449999999999999
+  },
+  "class_conditional": {
+    "method": "CLASS-CONDITIONAL RICCI (\u03bb=50.0)",
+    "mnist_a": 0.915,
+    "mnist_b": 0.3825,
+    "fashion_b": 0.81,
+    "weight_change": 8.04409122467041,
+    "forgetting": 0.5325
+  },
+  "centroid": {
+    "method": "CENTROID RICCI (\u03bb=50.0)",
+    "mnist_a": 0.915,
+    "mnist_b": 0.3825,
+    "fashion_b": 0.7175,
+    "weight_change": 7.888699531555176,
+    "forgetting": 0.5325
+  },
+  "prototype": {
+    "method": "PROTOTYPE RICCI (\u03bb=50.0)",
+    "mnist_a": 0.9225,
+    "mnist_b": 0.14,
+    "fashion_b": 0.815,
+    "weight_change": 10.208536148071289,
+    "forgetting": 0.7825
+  }
+}

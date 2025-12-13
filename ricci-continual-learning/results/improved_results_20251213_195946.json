@@ -1,0 +1,29 @@
+{
+  "baseline": {
+    "method": "baseline",
+    "mnist_after_a": 0.905,
+    "mnist_after_b": 0.205,
+    "fashion_after_b": 0.8375,
+    "weight_change": 8.558306694030762,
+    "forgetting": 0.7000000000000001
+  },
+  "ewc": {
+    "method": "ewc",
+    "ewc_lambda": 5000.0,
+    "mnist_after_a": 0.93,
+    "mnist_after_b": 0.3825,
+    "fashion_after_b": 0.8075,
+    "weight_change": 3.8982648849487305,
+    "forgetting": 0.5475000000000001
+  },
+  "ricci_improved": {
+    "method": "ricci_improved",
+    "ricci_lambda": 100.0,
+    "k_neighbors": 15,
+    "mnist_after_a": 0.9225,
+    "mnist_after_b": 0.245,
+    "fashion_after_b": 0.315,
+    "weight_change": 9.241915702819824,
+    "forgetting": 0.6775
+  }
+}

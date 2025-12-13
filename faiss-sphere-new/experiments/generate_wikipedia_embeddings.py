@@ -52,12 +52,7 @@ def generate_wikipedia_bert_embeddings(
     model.eval()
     
     # Use GPU if available
-    if torch.cuda.is_available():
-        device = 'cuda'
-    elif torch.backends.mps.is_available():
-        device = 'mps'
-    else:
-        device = 'cpu'
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = model.to(device)
     print(f"Using device: {device}")
     
@@ -157,7 +152,7 @@ def generate_wikipedia_bert_embeddings(
 if __name__ == '__main__':
     # Generate embeddings
     docs, queries = generate_wikipedia_bert_embeddings(
-        n_documents=100000,
+        n_documents=10000,
         n_queries=1000
     )
     
