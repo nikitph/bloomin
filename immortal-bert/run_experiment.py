@@ -3,8 +3,8 @@
 Immortal BERT: Continual Domain Adaptation Without Forgetting
 
 Experiment:
-- Train DistilBERT sequentially on multiple text classification tasks
-- Compare: Baseline (catastrophic forgetting) vs EWC vs REWA-C
+- Train DistilBERT/BERT sequentially on multiple text classification tasks
+- Compare: Baseline vs EWC vs REWA-C vs Subspace-REWA (New)
 
 Tasks (in order):
 1. AG News (4-class news classification)
@@ -14,8 +14,9 @@ Tasks (in order):
 
 Metrics:
 - Accuracy on each task after training on all tasks
-- Forward transfer (how well does prior learning help?)
-- Backward transfer (how much is forgotten?)
+- Worst-Task Accuracy (WTA)
+- Forgetting Index (FI)
+- Performance Variance (PV)
 """
 
 import os
@@ -24,15 +25,17 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Dataset, Subset
-from transformers import DistilBertTokenizer, get_linear_schedule_with_warmup
+from torch.utils.data import DataLoader, Dataset
+from transformers import DistilBertTokenizer, BertTokenizer, get_linear_schedule_with_warmup
 from datasets import load_dataset
 import numpy as np
 from collections import defaultdict
 import json
 from datetime import datetime
+from typing import Dict, List
 
 from src.rewa_bert import REWABert, BaselineBert, EWCBert, train_epoch, evaluate
+from src.subspace_rewa import SubspaceREWABert
 
 
 class TextDataset(Dataset):
@@ -126,6 +129,40 @@ def load_yelp(tokenizer, n_train=2000, n_test=500):
     return train_ds, test_ds, 2, "Yelp"
 
 
+# --- METRICS CALCULATIONS ---
+
+def calculate_wta(task_accuracies: Dict[str, List[float]]) -> float:
+    """Worst-Task Accuracy (final)."""
+    if not task_accuracies:
+        return 0.0
+    final_accs = [accs[-1] for accs in task_accuracies.values()]
+    return min(final_accs)
+
+def calculate_fi(task_accuracies: Dict[str, List[float]]) -> float:
+    """Forgetting Index."""
+    forgettings = []
+    # Skip the last task because it hasn't been "forgotten" yet?
+    # FI formula: Avg over T-1 tasks of (Max_k<=t Acc_k - Acc_T)
+    # i.e. Peak accuracy minus Final accuracy
+    for task_name, accs in task_accuracies.items():
+        if len(accs) > 1:
+            peak = max(accs[:-1])
+            final = accs[-1]
+            forgettings.append(peak - final)
+        else:
+            # If only trained on one task, no forgetting
+            pass
+            
+    if not forgettings:
+        return 0.0
+    return np.mean(forgettings)
+
+def calculate_pv(task_accuracies: Dict[str, List[float]]) -> float:
+    """Performance Variance (of final accuracies)."""
+    final_accs = [accs[-1] for accs in task_accuracies.values()]
+    return np.var(final_accs)
+
+
 def run_continual_learning(
     model_class,
     model_kwargs,
@@ -136,34 +173,20 @@ def run_continual_learning(
     lr=2e-5,
     model_name="Model"
 ):
-    """
-    Run continual learning experiment.
-
-    Args:
-        model_class: Model class to instantiate
-        model_kwargs: Kwargs for model initialization
-        tasks: List of (train_loader, test_loader, num_classes, task_name)
-        device: Device to train on
-        epochs_per_task: Epochs per task
-        batch_size: Batch size
-        lr: Learning rate
-        model_name: Name for logging
-
-    Returns:
-        Dictionary of results
-    """
     print(f"\n{'='*60}")
     print(f"Running: {model_name}")
     print(f"{'='*60}")
 
     results = {
         'model': model_name,
-        'task_accuracies': defaultdict(list),  # task_name -> [acc_after_task1, acc_after_task2, ...]
+        'task_accuracies': defaultdict(list),
         'final_accuracies': {},
     }
 
     model = None
     completed_tasks = []
+    # Store classifier heads: task_name -> dict(weight, bias)
+    task_heads = {}
 
     for task_idx, (train_ds, test_ds, num_classes, task_name) in enumerate(tasks):
         print(f"\n--- Task {task_idx + 1}: {task_name} ({num_classes} classes) ---")
@@ -176,8 +199,8 @@ def run_continual_learning(
             model = model_class(num_classes=num_classes, **model_kwargs).to(device)
         else:
             model.update_classifier(num_classes)
-
-        # Optimizer and scheduler
+        
+        # Optimizer
         optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
         total_steps = len(train_loader) * epochs_per_task
         scheduler = get_linear_schedule_with_warmup(
@@ -189,11 +212,24 @@ def run_continual_learning(
             loss, acc = train_epoch(model, train_loader, optimizer, scheduler, device)
             print(f"  Epoch {epoch + 1}/{epochs_per_task}: Loss={loss:.4f}, Acc={acc:.1%}")
 
-        # Store geometry for REWA model
+        # Save the trained head for this task
+        task_heads[task_name] = {
+            'weight': model.classifier.weight.detach().cpu().clone(),
+            'bias': model.classifier.bias.detach().cpu().clone()
+        }
+
+        # --- SUBSPACE REWA SPECIFIC LIFECYCLE ---
+        if isinstance(model, SubspaceREWABert):
+             # Identify subspaces after Task 1 (AG News)
+             if task_idx == 0:
+                 print("  Task 1 complete. Identifying shared subspaces to preserve...")
+                 model.compute_subspaces(train_loader, device)
+
+        # Store geometry for classic REWA
         if hasattr(model, 'store_task_geometry'):
             model.store_task_geometry(train_loader, task_name)
 
-        # Compute Fisher for EWC model
+        # Compute Fisher for EWC
         if hasattr(model, 'compute_fisher'):
             model.compute_fisher(train_loader)
 
@@ -201,17 +237,29 @@ def run_continual_learning(
 
         # Evaluate on ALL completed tasks
         print(f"\n  Evaluating on all tasks:")
+        # Save current head (just in case training continues or logic changes)
+        current_head_w = model.classifier.weight.detach().clone()
+        current_head_b = model.classifier.bias.detach().clone()
+        current_classes = model.num_classes
+
         for prev_loader, prev_classes, prev_name in completed_tasks:
-            # Temporarily update classifier if needed
-            curr_classes = model.num_classes
+            # 1. Resize classifier to match task
             model.update_classifier(prev_classes)
+            
+            # 2. Load the SAVED head weights
+            saved_head = task_heads[prev_name]
+            model.classifier.weight.data = saved_head['weight'].to(device)
+            model.classifier.bias.data = saved_head['bias'].to(device)
 
             acc = evaluate(model, prev_loader, device)
             results['task_accuracies'][prev_name].append(acc)
             print(f"    {prev_name}: {acc:.1%}")
 
-            # Restore classifier
-            model.update_classifier(curr_classes)
+        # Restore current task head (though we will likely reset it next loop anyway)
+        model.update_classifier(current_classes)
+        model.classifier.weight.data = current_head_w
+        model.classifier.bias.data = current_head_b
+
 
     # Final accuracies
     for task_name, accs in results['task_accuracies'].items():
@@ -219,7 +267,24 @@ def run_continual_learning(
 
     avg_final = np.mean(list(results['final_accuracies'].values()))
     results['average_final_accuracy'] = avg_final
+    
+    # New metrics
+    task_accs = results['task_accuracies']
+    results['WTA'] = min([accs[-1] for accs in task_accs.values()])
+    
+    forgettings = []
+    for accs in task_accs.values():
+        if len(accs) > 1:
+            forgettings.append(max(accs[:-1]) - accs[-1])
+    results['FI'] = np.mean(forgettings) if forgettings else 0.0
+    
+    final_values = [accs[-1] for accs in task_accs.values()]
+    results['PV'] = np.var(final_values)
+
     print(f"\n  Average final accuracy: {avg_final:.1%}")
+    print(f"  Worst-Task Accuracy:    {results['WTA']:.1%}")
+    print(f"  Forgetting Index:       {results['FI']:.1%}")
+    print(f"  Performance Variance:   {results['PV']:.4f}")
 
     return results
 
@@ -238,18 +303,34 @@ def main():
         device = 'cpu'
     print(f"\nDevice: {device}")
 
-    # Tokenizer
-    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-
-    # Load datasets (smaller subsets for faster experimentation)
-    n_train = 1500  # Samples per task
+    # Load datasets
+    n_train = 1500
     n_test = 300
-
-    tasks = [
-        load_ag_news(tokenizer, n_train, n_test),
-        load_imdb(tokenizer, n_train, n_test),
-        load_sst2(tokenizer, n_train, n_test),
-        load_yelp(tokenizer, n_train, n_test),
+    
+    # Note: Using BertTokenizer for SubspaceREWA (uses bert-base) 
+    # and DistilBertTokenizer for others (uses distilbert).
+    # For fair comparison, we should try to keep inputs similar, 
+    # but the models expect different tokenizers.
+    
+    # To save time, we load only one tokenizer for the main experiment, 
+    # but since we compare DistilBert vs Bert, we need both.
+    
+    print("\nPreparing tasks for DistilBERT models...")
+    tokenizer_distil = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    tasks_distil = [
+        load_ag_news(tokenizer_distil, n_train, n_test),
+        load_imdb(tokenizer_distil, n_train, n_test),
+        load_sst2(tokenizer_distil, n_train, n_test),
+        load_yelp(tokenizer_distil, n_train, n_test),
+    ]
+    
+    print("\nPreparing tasks for BERT models...")
+    tokenizer_bert = BertTokenizer.from_pretrained('bert-base-uncased')
+    tasks_bert = [
+        load_ag_news(tokenizer_bert, n_train, n_test),
+        load_imdb(tokenizer_bert, n_train, n_test),
+        load_sst2(tokenizer_bert, n_train, n_test),
+        load_yelp(tokenizer_bert, n_train, n_test),
     ]
 
     # Experiment parameters
@@ -259,16 +340,16 @@ def main():
 
     all_results = []
 
-    # 1. Baseline (no protection)
+    # 1. Baseline
     baseline_results = run_continual_learning(
         model_class=BaselineBert,
         model_kwargs={},
-        tasks=tasks,
+        tasks=tasks_distil,
         device=device,
         epochs_per_task=epochs_per_task,
         batch_size=batch_size,
         lr=lr,
-        model_name="Baseline (No Protection)"
+        model_name="Baseline (DistilBERT)"
     )
     all_results.append(baseline_results)
 
@@ -276,7 +357,7 @@ def main():
     ewc_results = run_continual_learning(
         model_class=EWCBert,
         model_kwargs={'ewc_lambda': 1000.0},
-        tasks=tasks,
+        tasks=tasks_distil,
         device=device,
         epochs_per_task=epochs_per_task,
         batch_size=batch_size,
@@ -285,70 +366,51 @@ def main():
     )
     all_results.append(ewc_results)
 
-    # 3. REWA-C (ours) - test multiple λ values
-    for lambda_geom in [0.1, 1.0, 10.0]:
-        rewa_results = run_continual_learning(
-            model_class=REWABert,
-            model_kwargs={'lambda_geom': lambda_geom},
-            tasks=tasks,
-            device=device,
-            epochs_per_task=epochs_per_task,
-            batch_size=batch_size,
-            lr=lr,
-            model_name=f"REWA-C (λ={lambda_geom})"
-        )
-        all_results.append(rewa_results)
+    # 3. Subspace-REWA (New)
+    print("\nRunning Subspace-REWA (BERT-Base, Layer-wise λ)...")
+    subspace_results = run_continual_learning(
+        model_class=SubspaceREWABert,
+        model_kwargs={
+            'lambda_max': 10.0,
+            'subspace_dim': 64,
+            'layer_focus_start': 7 # Start from layer 7 (0-indexed means layer 8)
+        },
+        tasks=tasks_bert,
+        device=device,
+        epochs_per_task=epochs_per_task,
+        batch_size=batch_size,
+        lr=lr,
+        model_name="Subspace-REWA (λ=10, L≥8)"
+    )
+    all_results.append(subspace_results)
 
     # Summary
-    print("\n" + "="*70)
+    print("\n" + "="*80)
     print("RESULTS SUMMARY")
-    print("="*70)
+    print("="*80)
 
-    print("\nFinal accuracies by task:")
-    task_names = list(tasks[0][3] for tasks in [tasks])
-    task_names = [t[3] for t in tasks]
-
-    header = f"{'Method':<30}"
-    for task_name in task_names:
-        header += f" {task_name:>10}"
-    header += f" {'Average':>10}"
+    header = f"{'Method':<30} {'Avg Acc':<10} {'WTA':<10} {'FI':<10} {'PV':<10}"
     print(header)
     print("-" * len(header))
 
-    for result in all_results:
-        row = f"{result['model']:<30}"
-        for task_name in task_names:
-            acc = result['final_accuracies'].get(task_name, 0)
-            row += f" {acc:>10.1%}"
-        row += f" {result['average_final_accuracy']:>10.1%}"
-        print(row)
-
-    # Forgetting analysis
-    print("\n\nForgetting Analysis (accuracy drop from peak):")
-    for result in all_results:
-        forgetting = []
-        for task_name, accs in result['task_accuracies'].items():
-            if len(accs) > 1:
-                peak = max(accs[:-1]) if len(accs) > 1 else accs[0]
-                final = accs[-1]
-                forgetting.append(peak - final)
-
-        avg_forgetting = np.mean(forgetting) if forgetting else 0
-        print(f"  {result['model']}: {avg_forgetting:.1%} average forgetting")
+    for r in all_results:
+        print(f"{r['model']:<30} {r['average_final_accuracy']:<10.1%} "
+              f"{r['WTA']:<10.1%} {r['FI']:<10.1%} {r['PV']:<10.4f}")
 
     # Save results
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    results_file = f"results_{timestamp}.json"
-
-    # Convert to JSON-serializable format
+    results_file = f"results_subspace_{timestamp}.json"
+    
+    # Make serializable
     json_results = []
     for r in all_results:
-        jr = {
-            'model': r['model'],
-            'task_accuracies': {k: [float(x) for x in v] for k, v in r['task_accuracies'].items()},
-            'final_accuracies': {k: float(v) for k, v in r['final_accuracies'].items()},
-            'average_final_accuracy': float(r['average_final_accuracy'])
-        }
+        jr = r.copy()
+        jr['task_accuracies'] = {k: [float(x) for x in v] for k,v in r['task_accuracies'].items()}
+        jr['final_accuracies'] = {k: float(v) for k,v in r['final_accuracies'].items()}
+        jr['average_final_accuracy'] = float(r['average_final_accuracy'])
+        jr['WTA'] = float(r['WTA'])
+        jr['FI'] = float(r['FI'])
+        jr['PV'] = float(r['PV'])
         json_results.append(jr)
 
     with open(results_file, 'w') as f:

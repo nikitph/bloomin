@@ -306,3 +306,4 @@ cython_debug/
 /ricci-continual-learning/data/MNIST/raw/train-labels-idx1-ubyte
 /ricci-continual-learning/data/MNIST/raw/train-labels-idx1-ubyte.gz
 /ricci-continual-learning/data/cifar-100-python.tar.gz
+/geomind_mvr.pt
