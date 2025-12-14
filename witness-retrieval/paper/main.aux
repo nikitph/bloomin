@@ -1,0 +1,106 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{johnson2019billion}
+\citation{jegou2011product}
+\citation{malkov2018efficient}
+\citation{norouzi2012hamming}
+\citation{gong2013iterative}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Our Contributions.}{1}{section*.1}\protected@file@percent }
+\citation{bentley1975multidimensional}
+\citation{spotify2017annoy}
+\citation{malkov2018efficient}
+\citation{jegou2011product}
+\citation{johnson2019billion}
+\citation{indyk1998approximate}
+\citation{salakhutdinov2009semantic}
+\citation{cao2017hashnet}
+\citation{wang2018survey}
+\citation{gallager1962low}
+\citation{sipser1996expander}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background and Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Background and Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Approximate Nearest Neighbor Search}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Tree-Based Methods.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Graph-Based Methods.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Quantization Methods.}{2}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hashing Methods.}{2}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The Scaling Problem in Binary Codes}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}LDPC Codes and Expander Graphs}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Theoretical Framework}{3}{section.3}\protected@file@percent }
+\newlabel{sec:theory}{{3}{3}{Theoretical Framework}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Setup}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Witness Representation}{3}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Main Scaling Theorem}{3}{subsection.3.3}\protected@file@percent }
+\newlabel{thm:scaling}{{3.2}{3}{Scaling Law for Binary Codes}{theorem.3.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Implications.}{4}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Optimal Scaling Strategy}{4}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}System Design}{4}{section.4}\protected@file@percent }
+\newlabel{sec:system}{{4}{4}{System Design}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Witness-LDPC Encoding}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Witness-LDPC Encoding}}{4}{algorithm.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{alg:encode}{{1}{4}{Witness-LDPC Encoding}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Inverted Index Construction}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Candidate Generation}}{5}{algorithm.2}\protected@file@percent }
+\newlabel{alg:candidates}{{2}{5}{Candidate Generation}{algorithm.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Turbo Search Pipeline}{5}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Optimization 1: SIMD-Friendly Hamming Distance.}{5}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Optimization 2: Early Termination with Top-$k$ Heap.}{5}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Optimization 3: Cache-Optimized Storage.}{6}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Adaptive Code Length}{6}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{6}{section.5}\protected@file@percent }
+\newlabel{sec:experiments}{{5}{6}{Experiments}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Experimental Setup}{6}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Dataset.}{6}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Queries.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Metrics.}{6}{section*.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {The Scaling Wall.} With fixed code length $m=4096$, both recall (left axis) and speedup (right axis) degrade as dataset size increases. At 500K vectors, recall drops to just 33\%.}}{7}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:scaling_wall}{{1}{7}{\textbf {The Scaling Wall.} With fixed code length $m=4096$, both recall (left axis) and speedup (right axis) degrade as dataset size increases. At 500K vectors, recall drops to just 33\%}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{Baselines.}{7}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Hardware.}{7}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}The Scaling Wall}{7}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Adaptive Scaling Results}{7}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Adaptive vs. Fixed Code Length}}{7}{table.caption.16}\protected@file@percent }
+\newlabel{tab:adaptive}{{1}{7}{Adaptive vs. Fixed Code Length}{table.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Turbo Optimizations.} The optimized pipeline achieves dramatically higher speedup than the baseline implementation at all scales.}}{8}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:turbo}{{2}{8}{\textbf {Turbo Optimizations.} The optimized pipeline achieves dramatically higher speedup than the baseline implementation at all scales}{figure.caption.17}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Impact of Individual Optimizations (200K vectors)}}{8}{table.caption.18}\protected@file@percent }
+\newlabel{tab:optimizations}{{2}{8}{Impact of Individual Optimizations (200K vectors)}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Turbo Optimizations}{8}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Comparison with FAISS}{8}{subsection.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Recall-Speedup Tradeoff}{8}{subsection.5.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Code Length Sweep}{8}{subsection.5.7}\protected@file@percent }
+\bibstyle{plain}
+\bibdata{references}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Flash Retriever vs. FAISS-IVF.} At equivalent recall levels, Flash Retriever achieves $3.5\times $ higher throughput.}}{9}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:faiss}{{3}{9}{\textbf {Flash Retriever vs. FAISS-IVF.} At equivalent recall levels, Flash Retriever achieves $3.5\times $ higher throughput}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{9}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{9}{Discussion}{section.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{9}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Broader Impact.}{9}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future Work.}{9}{section*.24}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{9}{section.7}\protected@file@percent }
+\newlabel{sec:conclusion}{{7}{9}{Conclusion}{section.7}{}}
+\bibcite{bentley1975multidimensional}{1}
+\bibcite{spotify2017annoy}{2}
+\bibcite{cao2017hashnet}{3}
+\bibcite{gallager1962low}{4}
+\bibcite{gong2013iterative}{5}
+\bibcite{indyk1998approximate}{6}
+\bibcite{jegou2011product}{7}
+\bibcite{johnson2019billion}{8}
+\bibcite{malkov2018efficient}{9}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {Recall-Speedup Tradeoff.} Flash Retriever achieves an excellent Pareto frontier, with high recall maintained even at extreme speedups.}}{10}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:tradeoff}{{4}{10}{\textbf {Recall-Speedup Tradeoff.} Flash Retriever achieves an excellent Pareto frontier, with high recall maintained even at extreme speedups}{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {paragraph}{Reproducibility.}{10}{section*.25}\protected@file@percent }
+\bibcite{norouzi2012hamming}{10}
+\bibcite{salakhutdinov2009semantic}{11}
+\bibcite{sipser1996expander}{12}
+\bibcite{wang2018survey}{13}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces \textbf  {Code Length Sweep.} Recall improves with $m$ until saturating near 100\%. The required $m$ for target recall scales with $\log N$, confirming Theorem~\ref {thm:scaling}.}}{11}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:sweep}{{5}{11}{\textbf {Code Length Sweep.} Recall improves with $m$ until saturating near 100\%. The required $m$ for target recall scales with $\log N$, confirming Theorem~\ref {thm:scaling}}{figure.caption.21}{}}
+\gdef \@abspage@last{11}

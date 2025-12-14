@@ -1,0 +1,80 @@
+\begin{thebibliography}{10}
+
+\bibitem{bentley1975multidimensional}
+Jon~Louis Bentley.
+\newblock Multidimensional binary search trees used for associative searching.
+\newblock {\em Communications of the ACM}, 18(9):509--517, 1975.
+
+\bibitem{spotify2017annoy}
+Erik Bernhardsson.
+\newblock Annoy: Approximate nearest neighbors in c++/python.
+\newblock \url{https://github.com/spotify/annoy}, 2017.
+
+\bibitem{cao2017hashnet}
+Zhangjie Cao, Mingsheng Long, Jianmin Wang, and Philip~S Yu.
+\newblock Hashnet: Deep learning to hash by continuation.
+\newblock In {\em IEEE International Conference on Computer Vision}, pages
+  5608--5617, 2017.
+
+\bibitem{gallager1962low}
+Robert Gallager.
+\newblock Low-density parity-check codes.
+\newblock {\em IRE Transactions on Information Theory}, 8(1):21--28, 1962.
+
+\bibitem{gong2013iterative}
+Yunchao Gong, Svetlana Lazebnik, Albert Gordo, and Florent Perronnin.
+\newblock Iterative quantization: A procrustean approach to learning binary
+  codes for large-scale image retrieval.
+\newblock In {\em IEEE Conference on Computer Vision and Pattern Recognition},
+  pages 817--824, 2013.
+
+\bibitem{indyk1998approximate}
+Piotr Indyk and Rajeev Motwani.
+\newblock Approximate nearest neighbors: towards removing the curse of
+  dimensionality.
+\newblock In {\em Proceedings of the Thirtieth Annual ACM Symposium on Theory
+  of Computing}, pages 604--613, 1998.
+
+\bibitem{jegou2011product}
+Herv{\'e} J{\'e}gou, Matthijs Douze, and Cordelia Schmid.
+\newblock Product quantization for nearest neighbor search.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  33(1):117--128, 2011.
+
+\bibitem{johnson2019billion}
+Jeff Johnson, Matthijs Douze, and Herv{\'e} J{\'e}gou.
+\newblock Billion-scale similarity search with {GPUs}.
+\newblock {\em IEEE Transactions on Big Data}, 7(3):535--547, 2019.
+
+\bibitem{malkov2018efficient}
+Yury~A Malkov and Dmitry~A Yashunin.
+\newblock Efficient and robust approximate nearest neighbor search using
+  hierarchical navigable small world graphs.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  42(4):824--836, 2018.
+
+\bibitem{norouzi2012hamming}
+Mohammad Norouzi, David~J Fleet, and Ruslan~R Salakhutdinov.
+\newblock Hamming distance metric learning.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~25, 2012.
+
+\bibitem{salakhutdinov2009semantic}
+Ruslan Salakhutdinov and Geoffrey Hinton.
+\newblock Semantic hashing.
+\newblock In {\em International Journal of Approximate Reasoning}, volume~50,
+  pages 969--978, 2009.
+
+\bibitem{sipser1996expander}
+Michael Sipser and Daniel~A Spielman.
+\newblock Expander codes.
+\newblock {\em IEEE Transactions on Information Theory}, 42(6):1710--1722,
+  1996.
+
+\bibitem{wang2018survey}
+Jingdong Wang, Ting Zhang, Jingkuan Song, Nicu Sebe, and Heng~Tao Shen.
+\newblock A survey on learning to hash.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  40(4):769--790, 2018.
+
+\end{thebibliography}
