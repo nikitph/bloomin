@@ -11,6 +11,7 @@
 \usepackage{subcaption}
 \usepackage{multirow}
 \usepackage{wrapfig}
+\usepackage{placeins}  % For \FloatBarrier
 
 % Page setup
 \usepackage[margin=1in]{geometry}
@@ -32,12 +33,12 @@
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\cO}{\mathcal{O}}
 
-\title{Flash Retriever: Breaking the Scaling Wall in Approximate Nearest Neighbor Search via Information-Theoretic Binary Codes}
+\title{REWA-Retriever: Breaking the Scaling Wall in Approximate Nearest Neighbor Search via Information-Theoretic Binary Codes}
 
 \author{
-  Anonymous Authors\\
-  Anonymous Institution\\
-  \texttt{anonymous@example.org}
+  Nikit Phadke\\
+  Independent Researcher\\
+  \texttt{nikitph@gmail.com}
 }
 
 \date{}
@@ -47,7 +48,7 @@
 \maketitle
 
 \begin{abstract}
-We present Flash Retriever, a novel approximate nearest neighbor (ANN) search system that achieves $80\times$ speedup over brute force while maintaining $>97\%$ recall at 500K vectors. Our key insight is an information-theoretic scaling law: the binary code length $m$ must grow as $\cO(\log N)$ with dataset size $N$ to preserve recall. Existing systems use fixed $m$, causing a ``scaling wall'' where recall degrades from 96.4\% to 33\% as $N$ grows from 50K to 500K. We introduce Witness-LDPC codes---binary encodings that capture the most distinctive dimensions of high-dimensional vectors via expander-graph-inspired hashing. Combined with three systems-level optimizations (SIMD-friendly Hamming distance, early termination heaps, and cache-optimized storage), Flash Retriever outperforms FAISS-IVF by $3.5\times$ at equivalent recall. Our theoretical framework provides the first rigorous characterization of the recall-speedup-scale tradeoff in binary code methods, with practical implications for large-scale retrieval systems.
+We present REWA-Retriever, a novel approximate nearest neighbor (ANN) search system that achieves $80\times$ speedup over brute force while maintaining $>97\%$ recall at 500K vectors. Our key insight is an information-theoretic scaling law: the binary code length $m$ must grow as $\cO(\log N)$ with dataset size $N$ to preserve recall. Existing systems use fixed $m$, causing a ``scaling wall'' where recall degrades from 96.4\% to 33\% as $N$ grows from 50K to 500K. We introduce Witness-LDPC codes---binary encodings that capture the most distinctive dimensions of high-dimensional vectors via expander-graph-inspired hashing. Combined with three systems-level optimizations (SIMD-friendly Hamming distance, early termination heaps, and cache-optimized storage), REWA-Retriever outperforms FAISS-IVF by $3.5\times$ at equivalent recall. Our theoretical framework provides the first rigorous characterization of the recall-speedup-scale tradeoff in binary code methods, with practical implications for large-scale retrieval systems.
 \end{abstract}
 
 %==============================================================================
@@ -70,7 +71,7 @@ However, binary code methods face a fundamental challenge that we term the \text
 
     \item \textbf{Systems Optimizations (Section~\ref{sec:system}):} We develop three complementary optimizations that together achieve $14\times$ speedup over baseline implementations: (i) SIMD-friendly Hamming distance with 4-way unrolled loops, (ii) early termination via top-$k$ heaps, and (iii) cache-optimized contiguous storage for batch reranking.
 
-    \item \textbf{Comprehensive Evaluation (Section~\ref{sec:experiments}):} We evaluate Flash Retriever on clustered embeddings at scales from 50K to 500K vectors, demonstrating $32-80\times$ speedup over brute force with consistent $>97\%$ recall, and $3.5\times$ faster than FAISS-IVF at equivalent recall.
+    \item \textbf{Comprehensive Evaluation (Section~\ref{sec:experiments}):} We evaluate REWA-Retriever on clustered embeddings at scales from 50K to 500K vectors, demonstrating $32-80\times$ speedup over brute force with consistent $>97\%$ recall, and $3.5\times$ faster than FAISS-IVF at equivalent recall.
 \end{enumerate}
 
 %==============================================================================
@@ -169,7 +170,7 @@ where $m_0$ is the code length calibrated at reference scale $N_0$. In our imple
 \label{sec:system}
 %==============================================================================
 
-Flash Retriever implements four key components: Witness-LDPC encoding, an inverted index for candidate generation, a turbo search pipeline with three optimizations, and adaptive code length scaling.
+REWA-Retriever implements four key components: Witness-LDPC encoding, an inverted index for candidate generation, a turbo search pipeline with three optimizations, and adaptive code length scaling.
 
 \subsection{Witness-LDPC Encoding}
 
@@ -297,7 +298,7 @@ In practice, we round to the next power of 2 for efficient bit operations and cl
 \label{sec:experiments}
 %==============================================================================
 
-We evaluate Flash Retriever on synthetic clustered embeddings designed to mimic the structure of real semantic embeddings.
+We evaluate REWA-Retriever on synthetic clustered embeddings designed to mimic the structure of real semantic embeddings.
 
 \subsection{Experimental Setup}
 
@@ -394,19 +395,19 @@ The combined optimizations achieve $14\times$ improvement over the baseline impl
 
 \subsection{Comparison with FAISS}
 
-Figure~\ref{fig:faiss} compares Flash Retriever against FAISS-IVF:
+Figure~\ref{fig:faiss} compares REWA-Retriever against FAISS-IVF:
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.8\linewidth]{figures/vs_faiss.pdf}
-    \caption{\textbf{Flash Retriever vs. FAISS-IVF.} At equivalent recall levels, Flash Retriever achieves $3.5\times$ higher throughput.}
+    \caption{\textbf{REWA-Retriever vs. FAISS-IVF.} At equivalent recall levels, REWA-Retriever achieves $3.5\times$ higher throughput.}
     \label{fig:faiss}
 \end{figure}
 
 At 100K vectors with 98\% recall:
 \begin{itemize}
     \item FAISS-IVF: 856 QPS
-    \item Flash Retriever: 2,983 QPS (3.5$\times$ faster)
+    \item REWA-Retriever: 2,983 QPS (3.5$\times$ faster)
 \end{itemize}
 
 The advantage comes from our binary codes being significantly cheaper to compare than FAISS's floating-point distances.
@@ -415,10 +416,10 @@ The advantage comes from our binary codes being significantly cheaper to compare
 
 Figure~\ref{fig:tradeoff} shows the recall-speedup Pareto frontier at different scales:
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{figures/recall_vs_speedup.pdf}
-    \caption{\textbf{Recall-Speedup Tradeoff.} Flash Retriever achieves an excellent Pareto frontier, with high recall maintained even at extreme speedups.}
+    \caption{\textbf{Recall-Speedup Tradeoff.} REWA-Retriever achieves an excellent Pareto frontier, with high recall maintained even at extreme speedups.}
     \label{fig:tradeoff}
 \end{figure}
 
@@ -433,7 +434,7 @@ Key configurations on the Pareto frontier:
 
 Figure~\ref{fig:sweep} explores the $m$-recall relationship empirically:
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{figures/m_sweep.pdf}
     \caption{\textbf{Code Length Sweep.} Recall improves with $m$ until saturating near 100\%. The required $m$ for target recall scales with $\log N$, confirming Theorem~\ref{thm:scaling}.}
@@ -442,12 +443,14 @@ Figure~\ref{fig:sweep} explores the $m$-recall relationship empirically:
 
 At $N=500K$, we require $m \geq 16384$ for 95\%+ recall, while $N=50K$ achieves the same recall with $m=4096$. The ratio $16384/4096 = 4$ matches the theoretical prediction $\log(500K)/\log(50K) \approx 1.22 \times 3.3 \approx 4$.
 
+\FloatBarrier  % Ensure all figures appear before Discussion
+
 %==============================================================================
 \section{Discussion}
 \label{sec:discussion}
 %==============================================================================
 
-\paragraph{Limitations.} Flash Retriever has several limitations:
+\paragraph{Limitations.} REWA-Retriever has several limitations:
 
 \begin{enumerate}
     \item \textbf{Memory overhead}: Adaptive $m$ increases memory usage at large scales. At $N=500K$ with $m=16384$, each code requires 2KB, totaling 1GB for codes alone (vs. 1.5GB for raw vectors).
@@ -472,7 +475,7 @@ At $N=500K$, we require $m \geq 16384$ for 95\%+ recall, while $N=50K$ achieves 
 \label{sec:conclusion}
 %==============================================================================
 
-We presented Flash Retriever, a binary code method for approximate nearest neighbor search that addresses the scaling wall through an information-theoretic lens. Our key contributions are:
+We presented REWA-Retriever, a binary code method for approximate nearest neighbor search that addresses the scaling wall through an information-theoretic lens. Our key contributions are:
 
 \begin{enumerate}
     \item A theoretical scaling law showing $m \geq \cO(\log N)$ is necessary and sufficient for constant recall.
@@ -481,9 +484,9 @@ We presented Flash Retriever, a binary code method for approximate nearest neigh
     \item Comprehensive evaluation demonstrating $80\times$ speedup over brute force and $3.5\times$ over FAISS at equivalent recall.
 \end{enumerate}
 
-The scaling wall is not merely an implementation detail but a fundamental information-theoretic constraint. Systems that ignore this constraint---using fixed code lengths regardless of scale---are doomed to fail at large $N$. Flash Retriever provides both the theoretical framework to understand this phenomenon and the practical tools to overcome it.
+The scaling wall is not merely an implementation detail but a fundamental information-theoretic constraint. Systems that ignore this constraint---using fixed code lengths regardless of scale---are doomed to fail at large $N$. REWA-Retriever provides both the theoretical framework to understand this phenomenon and the practical tools to overcome it.
 
-\paragraph{Reproducibility.} Code and data are available at \url{https://github.com/anonymous/flash-retriever}.
+\paragraph{Reproducibility.} Code and data are available at \url{https://github.com/nikitph/bloomin/tree/master/witness-retrieval}.
 
 %==============================================================================
 % Bibliography
