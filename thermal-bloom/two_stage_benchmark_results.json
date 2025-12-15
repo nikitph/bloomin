@@ -1,0 +1,166 @@
+[
+  {
+    "method": "Thermal_g256_s0.5_r3_k50",
+    "recall_at_1": 0.0007,
+    "recall_at_10": 0.009,
+    "stage1_time_ms": 0.4650913482917531,
+    "stage2_time_ms": 0.03656475109455641,
+    "total_time_ms": 0.5016560993863095,
+    "avg_candidates": 49.2066,
+    "n_queries": 10000,
+    "config": {
+      "grid_size": 256,
+      "sigma": 0.5,
+      "search_radius": 3,
+      "k_coarse": 50
+    }
+  },
+  {
+    "method": "Thermal_g256_s1.0_r5_k100",
+    "recall_at_1": 0.0014,
+    "recall_at_10": 0.0172,
+    "stage1_time_ms": 1.0765883422962361,
+    "stage2_time_ms": 0.0627974826071295,
+    "total_time_ms": 1.1393858249033655,
+    "avg_candidates": 98.8702,
+    "n_queries": 10000,
+    "config": {
+      "grid_size": 256,
+      "sigma": 1.0,
+      "search_radius": 5,
+      "k_coarse": 100
+    }
+  },
+  {
+    "method": "Thermal_g512_s0.5_r3_k50",
+    "recall_at_1": 0.0005,
+    "recall_at_10": 0.0059,
+    "stage1_time_ms": 0.4665329948124054,
+    "stage2_time_ms": 0.034852382986537124,
+    "total_time_ms": 0.5013853777989425,
+    "avg_candidates": 46.4759,
+    "n_queries": 10000,
+    "config": {
+      "grid_size": 512,
+      "sigma": 0.5,
+      "search_radius": 3,
+      "k_coarse": 50
+    }
+  },
+  {
+    "method": "Thermal_g512_s1.0_r5_k100",
+    "recall_at_1": 0.0013,
+    "recall_at_10": 0.0143,
+    "stage1_time_ms": 1.0590798394963712,
+    "stage2_time_ms": 0.062220563397931986,
+    "total_time_ms": 1.1213004028943032,
+    "avg_candidates": 94.4469,
+    "n_queries": 10000,
+    "config": {
+      "grid_size": 512,
+      "sigma": 1.0,
+      "search_radius": 5,
+      "k_coarse": 100
+    }
+  },
+  {
+    "method": "Thermal_g256_s1.0_r5_k200",
+    "recall_at_1": 0.0032,
+    "recall_at_10": 0.031,
+    "stage1_time_ms": 1.074667176904768,
+    "stage2_time_ms": 0.1058191535912556,
+    "total_time_ms": 1.1804863304960236,
+    "avg_candidates": 195.3473,
+    "n_queries": 10000,
+    "config": {
+      "grid_size": 256,
+      "sigma": 1.0,
+      "search_radius": 5,
+      "k_coarse": 200
+    }
+  },
+  {
+    "method": "FAISS_Flat_k50",
+    "recall_at_1": 1.0,
+    "recall_at_10": 1.0,
+    "stage1_time_ms": 3.2752876688984545,
+    "stage2_time_ms": 0.07255586849332758,
+    "total_time_ms": 3.347843537391782,
+    "avg_candidates": 50,
+    "n_queries": 10000,
+    "config": {
+      "method": "Flat",
+      "k_coarse": 50
+    }
+  },
+  {
+    "method": "FAISS_Flat_k100",
+    "recall_at_1": 1.0,
+    "recall_at_10": 1.0,
+    "stage1_time_ms": 3.34026615429957,
+    "stage2_time_ms": 0.10179266060840746,
+    "total_time_ms": 3.442058814907978,
+    "avg_candidates": 100,
+    "n_queries": 10000,
+    "config": {
+      "method": "Flat",
+      "k_coarse": 100
+    }
+  },
+  {
+    "method": "FAISS_Flat_k200",
+    "recall_at_1": 1.0,
+    "recall_at_10": 1.0,
+    "stage1_time_ms": 3.359561576394481,
+    "stage2_time_ms": 0.14998591968851543,
+    "total_time_ms": 3.509547496082996,
+    "avg_candidates": 200,
+    "n_queries": 10000,
+    "config": {
+      "method": "Flat",
+      "k_coarse": 200
+    }
+  },
+  {
+    "method": "FAISS_IVF_k50",
+    "recall_at_1": 0.2412,
+    "recall_at_10": 0.8626,
+    "stage1_time_ms": 0.15641721800511732,
+    "stage2_time_ms": 0.03993171718684607,
+    "total_time_ms": 0.1963489351919634,
+    "avg_candidates": 50,
+    "n_queries": 10000,
+    "config": {
+      "method": "IVF",
+      "k_coarse": 50
+    }
+  },
+  {
+    "method": "FAISS_IVF_k100",
+    "recall_at_1": 0.2412,
+    "recall_at_10": 0.8626,
+    "stage1_time_ms": 0.15490793990102247,
+    "stage2_time_ms": 0.06183795840261155,
+    "total_time_ms": 0.21674589830363403,
+    "avg_candidates": 100,
+    "n_queries": 10000,
+    "config": {
+      "method": "IVF",
+      "k_coarse": 100
+    }
+  },
+  {
+    "method": "FAISS_IVF_k200",
+    "recall_at_1": 0.2412,
+    "recall_at_10": 0.8626,
+    "stage1_time_ms": 0.17468449821462856,
+    "stage2_time_ms": 0.10948313759017765,
+    "total_time_ms": 0.2841676358048062,
+    "avg_candidates": 200,
+    "n_queries": 10000,
+    "config": {
+      "method": "IVF",
+      "k_coarse": 200
+    }
+  }
+]

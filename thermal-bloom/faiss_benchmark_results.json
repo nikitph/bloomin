@@ -1,0 +1,199 @@
+[
+  {
+    "method": "FAISS_Flat",
+    "recall_at_1": 1.0,
+    "recall_at_10": 1.0,
+    "queries_per_second": 40029.62397404085,
+    "build_time_sec": 0.012750864028930664,
+    "index_size_mb": 30.72,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "type": "exact"
+    }
+  },
+  {
+    "method": "FAISS_IVF_nlist100_nprobe10",
+    "recall_at_1": 0.2675,
+    "recall_at_10": 0.937,
+    "queries_per_second": 40481.066290904004,
+    "build_time_sec": 0.07784390449523926,
+    "index_size_mb": 30.72,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "nlist": 100,
+      "nprobe": 10
+    }
+  },
+  {
+    "method": "FAISS_IVF_nlist100_nprobe50",
+    "recall_at_1": 0.755,
+    "recall_at_10": 1.0,
+    "queries_per_second": 9371.856304149886,
+    "build_time_sec": 0.06150507926940918,
+    "index_size_mb": 30.72,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "nlist": 100,
+      "nprobe": 50
+    }
+  },
+  {
+    "method": "FAISS_HNSW_M32_ef64",
+    "recall_at_1": 0.4925,
+    "recall_at_10": 0.9955,
+    "queries_per_second": 13108.736180021097,
+    "build_time_sec": 0.9151959419250488,
+    "index_size_mb": 46.08,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "M": 32,
+      "ef_search": 64
+    }
+  },
+  {
+    "method": "FAISS_HNSW_M32_ef128",
+    "recall_at_1": 0.6755,
+    "recall_at_10": 0.9995,
+    "queries_per_second": 9072.845733865177,
+    "build_time_sec": 0.8775207996368408,
+    "index_size_mb": 46.08,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "M": 32,
+      "ef_search": 128
+    }
+  },
+  {
+    "method": "Thermal_PCA2D_g256_s0.5_r3",
+    "recall_at_1": 0.0085,
+    "recall_at_10": 0,
+    "queries_per_second": 1374.6184964553047,
+    "build_time_sec": 0.13676810264587402,
+    "index_size_mb": 30.982144,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "grid_size": 256,
+      "sigma": 0.5,
+      "search_radius": 3,
+      "projection": "PCA"
+    }
+  },
+  {
+    "method": "Thermal_PCA2D_g256_s1.0_r5",
+    "recall_at_1": 0.0195,
+    "recall_at_10": 0,
+    "queries_per_second": 558.7478667143224,
+    "build_time_sec": 0.1669909954071045,
+    "index_size_mb": 30.982144,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "grid_size": 256,
+      "sigma": 1.0,
+      "search_radius": 5,
+      "projection": "PCA"
+    }
+  },
+  {
+    "method": "Thermal_PCA2D_g512_s0.5_r3",
+    "recall_at_1": 0.0015,
+    "recall_at_10": 0,
+    "queries_per_second": 1870.4977129984147,
+    "build_time_sec": 0.12728619575500488,
+    "index_size_mb": 31.768576,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "grid_size": 512,
+      "sigma": 0.5,
+      "search_radius": 3,
+      "projection": "PCA"
+    }
+  },
+  {
+    "method": "Thermal_PCA2D_g512_s1.0_r5",
+    "recall_at_1": 0.0045,
+    "recall_at_10": 0,
+    "queries_per_second": 819.9154242495772,
+    "build_time_sec": 0.12723779678344727,
+    "index_size_mb": 31.768576,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "grid_size": 512,
+      "sigma": 1.0,
+      "search_radius": 5,
+      "projection": "PCA"
+    }
+  },
+  {
+    "method": "Thermal_Hier_p4_g256_s1.0_r5",
+    "recall_at_1": 0.1855,
+    "recall_at_10": 0,
+    "queries_per_second": 34.388201172892096,
+    "build_time_sec": 0.4524860382080078,
+    "index_size_mb": 31.768576,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "n_projections": 4,
+      "grid_size": 256,
+      "sigma": 1.0,
+      "search_radius": 5
+    }
+  },
+  {
+    "method": "Thermal_Hier_p8_g256_s1.0_r5",
+    "recall_at_1": 0.3455,
+    "recall_at_10": 0,
+    "queries_per_second": 17.644325633533036,
+    "build_time_sec": 0.9357700347900391,
+    "index_size_mb": 32.817152,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "n_projections": 8,
+      "grid_size": 256,
+      "sigma": 1.0,
+      "search_radius": 5
+    }
+  },
+  {
+    "method": "Thermal_Hier_p4_g512_s0.5_r5",
+    "recall_at_1": 0.0535,
+    "recall_at_10": 0,
+    "queries_per_second": 48.09112729637479,
+    "build_time_sec": 0.4660322666168213,
+    "index_size_mb": 34.914304,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "n_projections": 4,
+      "grid_size": 512,
+      "sigma": 0.5,
+      "search_radius": 5
+    }
+  },
+  {
+    "method": "Thermal_Hier_p8_g512_s0.5_r5",
+    "recall_at_1": 0.1045,
+    "recall_at_10": 0,
+    "queries_per_second": 24.42476644963985,
+    "build_time_sec": 0.963568925857544,
+    "index_size_mb": 39.108608,
+    "n_index": 20000,
+    "n_query": 2000,
+    "config": {
+      "n_projections": 8,
+      "grid_size": 512,
+      "sigma": 0.5,
+      "search_radius": 5
+    }
+  }
+]

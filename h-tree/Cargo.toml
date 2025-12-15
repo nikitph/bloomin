@@ -1,0 +1,51 @@
+[package]
+name = "h_tree"
+version = "0.1.0"
+edition = "2021"
+description = "Holographic B-Tree: Thermodynamic Indexing for High-Dimensional Vector Search"
+authors = ["H-Tree Research Team"]
+
+[dependencies]
+# Random number generation
+rand = "0.8"
+rand_distr = "0.4"
+
+# SIMD and performance
+rayon = "1.10"
+
+# Hashing
+sha2 = "0.10"
+xxhash-rust = { version = "0.8", features = ["xxh3"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+bincode = "1.3"
+
+# Memory mapping for disk-based operations
+memmap2 = "0.9"
+
+# Statistics and benchmarking
+criterion = { version = "0.5", features = ["html_reports"] }
+
+# Progress bars for benchmarks
+indicatif = "0.17"
+
+# Time measurements
+instant = "0.1"
+
+[[bin]]
+name = "benchmark"
+path = "src/bin/benchmark.rs"
+
+[[bench]]
+name = "htree_benchmark"
+harness = false
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.bench]
+opt-level = 3
+lto = true
