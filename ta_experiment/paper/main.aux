@@ -1,0 +1,54 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Contributions}{1}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Problem Formulation}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Setting and Notation}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Thresholded Accumulation}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Theoretical Analysis}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Statistical Model for Random Embeddings}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Accumulated Score Distribution}{2}{subsection.3.2}\protected@file@percent }
+\newlabel{lem:no_match}{{3.2}{2}{Accumulated Score Without Match}{theorem.3.2}{}}
+\newlabel{lem:single_match}{{3.3}{3}{Accumulated Score With Single Match}{theorem.3.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Signal-to-Noise Ratio}{3}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}The Fundamental Limitation Theorem}{3}{subsection.3.4}\protected@file@percent }
+\newlabel{thm:fundamental}{{3.6}{3}{Single-Match Indistinguishability}{theorem.3.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Phase Transition at SNR = 1}{4}{subsection.3.5}\protected@file@percent }
+\newlabel{thm:phase}{{3.8}{4}{SNR Phase Transition}{theorem.3.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Multi-Match Analysis}{4}{subsection.3.6}\protected@file@percent }
+\newlabel{thm:multi}{{3.9}{4}{Multi-Match Recall}{theorem.3.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Algorithms and Complexity}{5}{section.4}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Thresholded Accumulation}}{5}{algorithm.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{alg:ta}{{1}{5}{Thresholded Accumulation}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Two-Stage Pre-Filtering Architecture}{5}{section.5}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Two-Stage Similarity Decision}}{5}{algorithm.2}\protected@file@percent }
+\newlabel{alg:twostage}{{2}{5}{Two-Stage Similarity Decision}{algorithm.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experimental Validation}{6}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Experimental Setup}{6}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Validation of Fundamental Limitation}{6}{subsection.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces K-Sweep Results ($n=10,000$): Recall $\approx $ FPR at all $k$}}{6}{table.caption.1}\protected@file@percent }
+\newlabel{tab:ksweep}{{1}{6}{K-Sweep Results ($n=10,000$): Recall $\approx $ FPR at all $k$}{table.caption.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Fundamental Limitation: Recall $\approx $ FPR.} For single-match detection, the recall and false positive rate track each other across all calibration values $k$. This confirms Theorem~\ref {thm:fundamental}: when SNR $\ll 1$, TA cannot distinguish signal from noise.}}{7}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:ksweep}{{1}{7}{\textbf {Fundamental Limitation: Recall $\approx $ FPR.} For single-match detection, the recall and false positive rate track each other across all calibration values $k$. This confirms Theorem~\ref {thm:fundamental}: when SNR $\ll 1$, TA cannot distinguish signal from noise}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Validation of Phase Transition}{7}{subsection.6.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Multi-Match Results: SNR Phase Transition}}{7}{table.caption.3}\protected@file@percent }
+\newlabel{tab:multi}{{2}{7}{Multi-Match Results: SNR Phase Transition}{table.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {SNR Phase Transition: Multi-Match Detection.} Recall vs. SNR shows a clear phase transition at SNR = 1 (dashed red line). Below this threshold, detection is unreliable; above it, recall increases rapidly with the number of matches. At 100 matches (SNR $\approx $ 17), recall reaches 93\%.}}{8}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:multimatch}{{2}{8}{\textbf {SNR Phase Transition: Multi-Match Detection.} Recall vs. SNR shows a clear phase transition at SNR = 1 (dashed red line). Below this threshold, detection is unreliable; above it, recall increases rapidly with the number of matches. At 100 matches (SNR $\approx $ 17), recall reaches 93\%}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Speedup Validation}{8}{subsection.6.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Speedup vs Cache Size}}{8}{table.caption.5}\protected@file@percent }
+\newlabel{tab:speedup}{{3}{8}{Speedup vs Cache Size}{table.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Complexity Separation: $O(n)$ vs $O(1)$.} Log-scale plot showing query time vs. cache size. Exhaustive search (red) exhibits linear $O(n)$ scaling, while TA (green) maintains constant $O(1)$ time regardless of cache size. At $n=100{,}000$, this corresponds to over $1000\times $ speedup.}}{9}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:complexity}{{3}{9}{\textbf {Complexity Separation: $O(n)$ vs $O(1)$.} Log-scale plot showing query time vs. cache size. Exhaustive search (red) exhibits linear $O(n)$ scaling, while TA (green) maintains constant $O(1)$ time regardless of cache size. At $n=100{,}000$, this corresponds to over $1000\times $ speedup}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Practical Recommendations}{9}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When to Use TA}{9}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}When NOT to Use TA}{9}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{9}{section.8}\protected@file@percent }
+\bibstyle{plain}
+\bibcite{jl}{1}
+\bibcite{concentration}{2}
+\bibcite{ann}{3}
+\gdef \@abspage@last{10}

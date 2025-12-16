@@ -1,0 +1,79 @@
+[
+  {
+    "cache_size": 100,
+    "search_time_mean": 0.00031800860160728915,
+    "search_time_std": 0.000196859538418493,
+    "ta_time_mean": 3.179180057486519e-05,
+    "ta_time_std": 1.1162491219877965e-05,
+    "speedup": 10.002849661139006,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 500,
+    "search_time_mean": 0.0005682499991962686,
+    "search_time_std": 6.88118121761402e-05,
+    "ta_time_mean": 3.768339956877753e-05,
+    "ta_time_std": 1.1181486662910446e-05,
+    "speedup": 15.07958426519168,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 1000,
+    "search_time_mean": 0.0009166416013613344,
+    "search_time_std": 0.0001665484368252283,
+    "ta_time_mean": 3.005820035468787e-05,
+    "ta_time_std": 1.2192424869308895e-06,
+    "speedup": 30.495558301725644,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 5000,
+    "search_time_mean": 0.004455016598512884,
+    "search_time_std": 0.0010646344693172089,
+    "ta_time_mean": 6.510000093840063e-05,
+    "ta_time_std": 1.1345870627611367e-05,
+    "speedup": 68.433433706527,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 10000,
+    "search_time_mean": 0.009079283398750703,
+    "search_time_std": 0.0022475344433977172,
+    "ta_time_mean": 6.848320044809953e-05,
+    "ta_time_std": 6.837609267235573e-06,
+    "speedup": 132.57679751155177,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 50000,
+    "search_time_mean": 0.04083669179963181,
+    "search_time_std": 0.009479027498726507,
+    "ta_time_mean": 6.827500037616119e-05,
+    "ta_time_std": 3.4950499551361763e-06,
+    "speedup": 598.12071145576,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  },
+  {
+    "cache_size": 100000,
+    "search_time_mean": 0.08122563320066548,
+    "search_time_std": 0.019515822599125248,
+    "ta_time_mean": 7.00582007993944e-05,
+    "ta_time_std": 1.6985009432361774e-06,
+    "speedup": 1159.402215213149,
+    "accuracy": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+  }
+]
