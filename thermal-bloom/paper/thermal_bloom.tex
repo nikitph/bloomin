@@ -53,9 +53,9 @@ Nikit Phadke\\
 \maketitle
 
 \begin{abstract}
-Can hash tables have gradients? We show that controlled thermodynamic diffusion transforms discrete storage into a continuous optimization landscape, enabling gradient-guided retrieval. Unlike traditional bloom filters which provide binary set membership, our \emph{thermal bloom filters} create a potential field that guides queries toward stored items via gradient ascent---transforming the question ``is there anything nearby?'' into ``which way is up?''
+Can hash tables have gradients? We show that controlled thermodynamic diffusion transforms discrete storage into a continuous optimization landscape, enabling gradient-guided retrieval. While graph neural networks achieve similar effects through discrete message passing on learned graphs \cite{chamberlain2021grand}, we demonstrate that continuous spatial diffusion provides an analytically tractable alternative for grid-structured data. Unlike traditional bloom filters which provide binary set membership, our \emph{thermal bloom filters} create a potential field that guides queries toward stored items via gradient ascent---transforming the question ``is there anything nearby?'' into ``which way is up?''
 
-On synthetic 2D benchmarks, we achieve \textbf{99.6\% recall@1} compared to 17.6\% for discrete bloom filters---a \textbf{5.7$\times$ improvement}. We derive a universal scaling law showing that the optimal ratio $\sigma/\Delta x$ remains constant across grid sizes, a hallmark of fundamental physical principles. Our analysis establishes thermal diffusion as a general technique for making discrete data structures differentiable, with applications to spatial indexing, semantic caching, and neural-symbolic integration.
+On synthetic 2D benchmarks, we achieve \textbf{99.6\% recall@1} compared to 17.6\% for discrete bloom filters---a \textbf{5.7$\times$ improvement}. We derive a universal scaling law showing that the optimal ratio $\sigma/\Delta x$ remains constant across grid sizes, a hallmark of fundamental physical principles. Our analysis establishes thermal diffusion as a general technique for making discrete data structures differentiable, with applications to spatial indexing, semantic caching, and as a continuous analogue to graph neural networks for spatial data.
 \end{abstract}
 
 \section{Introduction}
@@ -67,7 +67,7 @@ We propose a radically different approach: \textbf{make the hash table itself di
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{../figure1_thermal_bloom.png}
-    \caption{\textbf{Thermal Bloom Filter principle.} (A) A discrete bloom filter provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item.}
+    \caption{\textbf{Thermal Bloom Filter principle.} (A) A discrete bloom filter (equivalent to a spatial graph with no message passing) provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion (analogous to continuous message passing on the spatial graph) creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item.}
     \label{fig:principle}
 \end{figure}
 
@@ -92,6 +92,9 @@ The key contributions of this work are:
 \paragraph{Differentiable Data Structures.} Recent work has explored neural data structures including Neural Turing Machines \cite{graves2014neural}, differentiable memory \cite{sukhbaatar2015end}, and learned indexes \cite{kraska2018case}. Our approach differs by making a \emph{classical} data structure differentiable through physical principles rather than neural network parameterization.
 
 \paragraph{Heat Equation in Machine Learning.} Diffusion processes appear in graph neural networks \cite{chamberlain2021grand}, score-based generative models \cite{song2020score}, and Gaussian processes \cite{rasmussen2006gaussian}. We apply diffusion to create navigable index structures rather than for generation or inference.
+
+\paragraph{Graph Neural Networks and Diffusion.}
+Graph Neural Networks (GNNs) perform message passing on discrete graph structures \cite{kipf2017semi}. Recent work has shown that diffusion processes improve GNN performance through multi-hop aggregation \cite{klicpera2019predict, chamberlain2021grand}. While GNNs operate on arbitrary discrete graphs with learned aggregation functions, our thermal bloom filters apply continuous heat diffusion to regular spatial grids. The grid can be viewed as a special case of a spatial graph with fixed topology, where the heat equation provides analytical navigation gradients rather than learned message passing. This connection suggests potential extensions incorporating adaptive diffusion kernels or attention mechanisms from the GNN literature.
 
 \section{Method}
 \label{sec:method}
@@ -489,13 +492,46 @@ The thermal bloom filter has a natural interpretation in statistical physics. St
     \item \textbf{Entropy regularization}: Trading off sharpness vs.\ coverage
 \end{itemize}
 
+\subsection{Connections to Graph Neural Networks}
+
+The thermal bloom filter has deep connections to graph neural networks (GNNs). A 2D grid is a regular spatial graph, and Gaussian diffusion is equivalent to message passing with fixed Gaussian kernels. Table~\ref{tab:gnn_comparison} summarizes the relationship.
+
+\begin{table}[h]
+\centering
+\caption{Relationship between GNNs and Thermal Bloom Filters}
+\label{tab:gnn_comparison}
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Aspect} & \textbf{Graph Neural Networks} & \textbf{Thermal Bloom} \\
+\midrule
+Topology & Arbitrary discrete graph & Regular 2D grid \\
+Message passing & Learned aggregation & Heat equation (PDE) \\
+Training required & Yes (supervised) & No (parameter-free) \\
+Query mechanism & GNN forward pass & Gradient ascent \\
+Resolution & Graph-dependent & Continuous field \\
+Primary use & Node classification & Spatial indexing \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This connection opens several promising directions:
+
+\textbf{Attention-based diffusion.} Graph attention networks \cite{velivckovic2018graph} use learned attention to weight messages from neighbors. A spatial analogue would use query-dependent diffusion kernels---heat spreads differently based on query features. This could handle heterogeneous data where different query types benefit from different diffusion scales.
+
+\textbf{Multi-scale message passing.} Graph U-Nets \cite{gao2019graph} perform hierarchical pooling to capture structure at multiple scales. The thermal analogue would maintain diffusion fields at multiple $\sigma$ values and adaptively select the appropriate scale based on local heat topology.
+
+\textbf{Temporal dynamics.} Temporal GNNs \cite{rossi2020temporal} model evolving graphs. For streaming spatial data, an advection-diffusion formulation could track moving items (e.g., vehicles) by storing velocity fields alongside heat values.
+
+We leave these extensions to future work, focusing here on establishing the core continuous diffusion primitive.
+
 \section{Conclusion}
 
 We introduced thermal bloom filters, a novel data structure that makes hash tables differentiable through thermodynamic diffusion. By allowing stored information to ``leak'' into neighboring cells according to the heat equation, we transform discrete storage into a continuous optimization landscape navigable via gradient ascent.
 
 On 2D benchmarks, thermal bloom filters achieve 99.6\% recall@1---a 5.7$\times$ improvement over discrete methods---establishing the viability of physics-inspired approaches to data structure design. The key insight is general: \textbf{controlled information diffusion can make any discrete structure differentiable}.
 
-We believe this work opens new directions at the intersection of data structures, optimization, and physics, with applications to spatial computing, neural-symbolic systems, and beyond.
+We believe this work opens new directions at the intersection of data structures, optimization, and physics. The connection to graph neural networks---where our continuous heat equation corresponds to discrete message passing---suggests rich opportunities for hybrid methods combining learned graph structure with physical diffusion. Applications span spatial computing, neural-symbolic systems, temporal forecasting, and adaptive indexing.
 
 
 \bibliographystyle{plain}
@@ -531,6 +567,11 @@ Cong Fu, Chao Xiang, Changxu Wang, and Deng Cai.
 \newblock Fast approximate nearest neighbor search with the navigating spreading-out graph.
 \newblock {\em Proceedings of the VLDB Endowment}, 12(5):461--474, 2019.
 
+\bibitem{gao2019graph}
+Hongyang Gao and Shuiwang Ji.
+\newblock Graph u-nets.
+\newblock In {\em International Conference on Machine Learning}, pages 2083--2092, 2019.
+
 \bibitem{graves2014neural}
 Alex Graves, Greg Wayne, and Ivo Danihelka.
 \newblock Neural turing machines.
@@ -540,6 +581,16 @@ Alex Graves, Greg Wayne, and Ivo Danihelka.
 Piotr Indyk and Rajeev Motwani.
 \newblock Approximate nearest neighbors: Towards removing the curse of dimensionality.
 \newblock In {\em Proceedings of the Thirtieth Annual ACM Symposium on Theory of Computing}, pages 604--613, 1998.
+
+\bibitem{kipf2017semi}
+Thomas~N Kipf and Max Welling.
+\newblock Semi-supervised classification with graph convolutional networks.
+\newblock In {\em International Conference on Learning Representations}, 2017.
+
+\bibitem{klicpera2019predict}
+Johannes Klicpera, Aleksandar Bojchevski, and Stephan G{\"u}nnemann.
+\newblock Predict then propagate: Graph neural networks meet personalized pagerank.
+\newblock In {\em International Conference on Learning Representations}, 2019.
 
 \bibitem{kraska2018case}
 Tim Kraska, Alex Beutel, Ed~H Chi, Jeffrey Dean, and Neoklis Polyzotis.
@@ -556,6 +607,11 @@ Carl~Edward Rasmussen and Christopher~KI Williams.
 \newblock {\em Gaussian Processes for Machine Learning}.
 \newblock MIT Press, 2006.
 
+\bibitem{rossi2020temporal}
+Emanuele Rossi, Ben Chamberlain, Fabrizio Frasca, Davide Eynard, Federico Monti, and Michael Bronstein.
+\newblock Temporal graph networks for deep learning on dynamic graphs.
+\newblock {\em arXiv preprint arXiv:2006.10637}, 2020.
+
 \bibitem{song2020score}
 Yang Song, Jascha Sohl-Dickstein, Diederik~P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole.
 \newblock Score-based generative modeling through stochastic differential equations.
@@ -565,6 +621,11 @@ Yang Song, Jascha Sohl-Dickstein, Diederik~P Kingma, Abhishek Kumar, Stefano Erm
 Sainbayar Sukhbaatar, Arthur Szlam, Jason Weston, and Rob Fergus.
 \newblock End-to-end memory networks.
 \newblock In {\em Advances in Neural Information Processing Systems}, pages 2440--2448, 2015.
+
+\bibitem{velivckovic2018graph}
+Petar Veli{\v{c}}kovi{\'c}, Guillem Cucurull, Arantxa Casanova, Adriana Romero, Pietro Li{\`o}, and Yoshua Bengio.
+\newblock Graph attention networks.
+\newblock In {\em International Conference on Learning Representations}, 2018.
 
 \bibitem{weiss2008spectral}
 Yair Weiss, Antonio Torralba, and Rob Fergus.

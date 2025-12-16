@@ -2,6 +2,7 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{chamberlain2021grand}
 \citation{malkov2018efficient}
 \citation{bloom1970space}
 \citation{fan2000summary}
@@ -19,25 +20,29 @@
 \citation{chamberlain2021grand}
 \citation{song2020score}
 \citation{rasmussen2006gaussian}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Thermal Bloom Filter principle.} (A) A discrete bloom filter provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item.}}{2}{figure.caption.1}\protected@file@percent }
+\citation{kipf2017semi}
+\citation{klicpera2019predict}
+\citation{chamberlain2021grand}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Thermal Bloom Filter principle.} (A) A discrete bloom filter (equivalent to a spatial graph with no message passing) provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion (analogous to continuous message passing on the spatial graph) creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item.}}{2}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:principle}{{1}{2}{\textbf {Thermal Bloom Filter principle.} (A) A discrete bloom filter provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item}{figure.caption.1}{}}
+\newlabel{fig:principle}{{1}{2}{\textbf {Thermal Bloom Filter principle.} (A) A discrete bloom filter (equivalent to a spatial graph with no message passing) provides no gradient information when a query lands in an empty cell. (B) Thermodynamic diffusion (analogous to continuous message passing on the spatial graph) creates a continuous potential field around stored items, with gradient vectors pointing toward data concentrations. (C) A query follows the heat gradient via gradient ascent, automatically navigating to the nearest stored item}{figure.caption.1}{}}
 \newlabel{fig:principle@cref}{{[figure][1][]1}{[1][1][]2}{}{}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Bloom Filters.}{2}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Approximate Nearest Neighbor Search.}{2}{section*.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Differentiable Data Structures.}{2}{section*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Heat Equation in Machine Learning.}{2}{section*.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{2}{section.3}\protected@file@percent }
-\newlabel{sec:method}{{3}{2}{Method}{section.3}{}}
-\newlabel{sec:method@cref}{{[section][3][]3}{[1][2][]2}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Setting}{2}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Graph Neural Networks and Diffusion.}{2}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{Method}{section.3}{}}
+\newlabel{sec:method@cref}{{[section][3][]3}{[1][2][]3}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Setting}{3}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Discrete Bloom Filter Baseline}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Thermal Bloom Filter}{3}{subsection.3.3}\protected@file@percent }
 \@writefile{loe}{\contentsline {definition}{\ifthmt@listswap Definition~3.1\else \numberline {3.1}Definition\fi \thmtformatoptarg {Thermal Bloom Filter}}{3}{definition.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Initialization.}{3}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Diffusion.}{3}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Query via Gradient Ascent.}{3}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Initialization.}{3}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Diffusion.}{3}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Query via Gradient Ascent.}{4}{section*.9}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Multi-Item Storage}{4}{subsection.3.4}\protected@file@percent }
 \@writefile{loe}{\contentsline {definition}{\ifthmt@listswap Definition~3.2\else \numberline {3.2}Definition\fi \thmtformatoptarg {Multi-Item Thermal Bloom}}{4}{definition.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Theoretical Analysis}{4}{section.4}\protected@file@percent }
@@ -45,58 +50,66 @@
 \newlabel{sec:theory@cref}{{[section][4][]4}{[1][4][]4}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Heat Kernel and Information Propagation}{4}{subsection.4.1}\protected@file@percent }
 \@writefile{loe}{\contentsline {lemma}{\ifthmt@listswap Lemma~4.1\else \numberline {4.1}Lemma\fi \thmtformatoptarg {Gradient Magnitude}}{4}{lemma.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Convergence Analysis}{4}{subsection.4.2}\protected@file@percent }
-\@writefile{loe}{\contentsline {theorem}{\ifthmt@listswap Theorem~4.2\else \numberline {4.2}Theorem\fi \thmtformatoptarg {Gradient Ascent Convergence}}{4}{theorem.2}\protected@file@percent }
-\newlabel{thm:convergence}{{4.2}{4}{Gradient Ascent Convergence}{theorem.2}{}}
-\newlabel{thm:convergence@cref}{{[theorem][2][4]4.2}{[1][4][]4}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Convergence Analysis}{5}{subsection.4.2}\protected@file@percent }
+\@writefile{loe}{\contentsline {theorem}{\ifthmt@listswap Theorem~4.2\else \numberline {4.2}Theorem\fi \thmtformatoptarg {Gradient Ascent Convergence}}{5}{theorem.2}\protected@file@percent }
+\newlabel{thm:convergence}{{4.2}{5}{Gradient Ascent Convergence}{theorem.2}{}}
+\newlabel{thm:convergence@cref}{{[theorem][2][4]4.2}{[1][4][]5}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Universal Scaling Law}{5}{subsection.4.3}\protected@file@percent }
 \newlabel{eq:scaling}{{14}{5}{Universal Scaling Law}{equation.14}{}}
-\newlabel{eq:scaling@cref}{{[equation][14][]14}{[1][4][]5}{}{}{}}
+\newlabel{eq:scaling@cref}{{[equation][14][]14}{[1][5][]5}{}{}{}}
 \@writefile{loe}{\contentsline {proposition}{\ifthmt@listswap Proposition~4.3\else \numberline {4.3}Proposition\fi \thmtformatoptarg {Scale Invariance}}{5}{proposition.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Recall Analysis}{5}{subsection.4.4}\protected@file@percent }
 \@writefile{loe}{\contentsline {theorem}{\ifthmt@listswap Theorem~4.4\else \numberline {4.4}Theorem\fi \thmtformatoptarg {Recall Lower Bound}}{5}{theorem.4}\protected@file@percent }
 \newlabel{thm:recall}{{4.4}{5}{Recall Lower Bound}{theorem.4}{}}
 \newlabel{thm:recall@cref}{{[theorem][4][4]4.4}{[1][5][]5}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Algorithm}{5}{section.5}\protected@file@percent }
-\newlabel{sec:algorithm}{{5}{5}{Algorithm}{section.5}{}}
-\newlabel{sec:algorithm@cref}{{[section][5][]5}{[1][5][]5}{}{}{}}
-\@writefile{toc}{\contentsline {paragraph}{Complexity Analysis.}{5}{section*.9}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Thermal Bloom Filter Construction}}{6}{algorithm.1}\protected@file@percent }
 \newlabel{alg:construction}{{1}{6}{Thermal Bloom Filter Construction}{algorithm.1}{}}
 \newlabel{alg:construction@cref}{{[algorithm][1][]1}{[1][5][]6}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison on 2D clustered data (8,000 index / 2,000 query points)}}{6}{table.caption.13}\protected@file@percent }
-\newlabel{tab:main_results}{{1}{6}{Performance comparison on 2D clustered data (8,000 index / 2,000 query points)}{table.caption.13}{}}
-\newlabel{tab:main_results@cref}{{[table][1][]1}{[1][6][]6}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Algorithm}{6}{section.5}\protected@file@percent }
+\newlabel{sec:algorithm}{{5}{6}{Algorithm}{section.5}{}}
+\newlabel{sec:algorithm@cref}{{[section][5][]5}{[1][5][]6}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Complexity Analysis.}{6}{section*.10}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {6}Experiments}{6}{section.6}\protected@file@percent }
 \newlabel{sec:experiments}{{6}{6}{Experiments}{section.6}{}}
-\newlabel{sec:experiments@cref}{{[section][6][]6}{[1][5][]6}{}{}{}}
+\newlabel{sec:experiments@cref}{{[section][6][]6}{[1][6][]6}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Experimental Setup}{6}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Dataset.}{6}{section*.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Baselines.}{6}{section*.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Metrics.}{6}{section*.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Main Results}{6}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Dataset.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Baselines.}{6}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Metrics.}{6}{section*.13}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Thermal Bloom Filter Query}}{7}{algorithm.2}\protected@file@percent }
 \newlabel{alg:query}{{2}{7}{Thermal Bloom Filter Query}{algorithm.2}{}}
-\newlabel{alg:query@cref}{{[algorithm][2][]2}{[1][5][]7}{}{}{}}
+\newlabel{alg:query@cref}{{[algorithm][2][]2}{[1][6][]7}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Performance comparison on 2D clustered data (8,000 index / 2,000 query points)}}{7}{table.caption.14}\protected@file@percent }
+\newlabel{tab:main_results}{{1}{7}{Performance comparison on 2D clustered data (8,000 index / 2,000 query points)}{table.caption.14}{}}
+\newlabel{tab:main_results@cref}{{[table][1][]1}{[1][6][]7}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Main Results}{7}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Parameter Sensitivity}{7}{subsection.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Scaling Behavior}{7}{subsection.6.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Parameter sensitivity.} Recall@1 as a function of grid size, diffusion $\sigma $, and search radius $r$. Optimal performance occurs at small $\sigma $ with moderate search radius, confirming the scaling law $\sigma /\Delta x \approx \text  {const}$.}}{8}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:heatmap}{{2}{8}{\textbf {Parameter sensitivity.} Recall@1 as a function of grid size, diffusion $\sigma $, and search radius $r$. Optimal performance occurs at small $\sigma $ with moderate search radius, confirming the scaling law $\sigma /\Delta x \approx \text {const}$}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Parameter sensitivity.} Recall@1 as a function of grid size, diffusion $\sigma $, and search radius $r$. Optimal performance occurs at small $\sigma $ with moderate search radius, confirming the scaling law $\sigma /\Delta x \approx \text  {const}$.}}{8}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:heatmap}{{2}{8}{\textbf {Parameter sensitivity.} Recall@1 as a function of grid size, diffusion $\sigma $, and search radius $r$. Optimal performance occurs at small $\sigma $ with moderate search radius, confirming the scaling law $\sigma /\Delta x \approx \text {const}$}{figure.caption.15}{}}
 \newlabel{fig:heatmap@cref}{{[figure][2][]2}{[1][7][]8}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Recall and convergence vs.\ diffusion parameter.} Left: Recall@1 decreases with larger $\sigma $ as heat fields overlap. Right: Average gradient steps decrease with larger $\sigma $ due to smoother gradients. The optimal operating point balances these effects.}}{8}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:recall_sigma}{{3}{8}{\textbf {Recall and convergence vs.\ diffusion parameter.} Left: Recall@1 decreases with larger $\sigma $ as heat fields overlap. Right: Average gradient steps decrease with larger $\sigma $ due to smoother gradients. The optimal operating point balances these effects}{figure.caption.15}{}}
-\newlabel{fig:recall_sigma@cref}{{[figure][3][]3}{[1][7][]8}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Recall and convergence vs.\ diffusion parameter.} Left: Recall@1 decreases with larger $\sigma $ as heat fields overlap. Right: Average gradient steps decrease with larger $\sigma $ due to smoother gradients. The optimal operating point balances these effects.}}{8}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:recall_sigma}{{3}{8}{\textbf {Recall and convergence vs.\ diffusion parameter.} Left: Recall@1 decreases with larger $\sigma $ as heat fields overlap. Right: Average gradient steps decrease with larger $\sigma $ due to smoother gradients. The optimal operating point balances these effects}{figure.caption.16}{}}
+\newlabel{fig:recall_sigma@cref}{{[figure][3][]3}{[1][8][]8}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Scaling Behavior}{8}{subsection.6.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Dataset Size Scaling}{8}{subsection.6.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{8}{section.7}\protected@file@percent }
-\newlabel{sec:discussion}{{7}{8}{Discussion}{section.7}{}}
-\newlabel{sec:discussion@cref}{{[section][7][]7}{[1][8][]8}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When to Use Thermal Bloom Filters}{8}{subsection.7.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Scaling with dataset size (grid 512$\times $512, $\sigma =1.0$, $r=3$)}}{9}{table.caption.16}\protected@file@percent }
-\newlabel{tab:scaling}{{2}{9}{Scaling with dataset size (grid 512$\times $512, $\sigma =1.0$, $r=3$)}{table.caption.16}{}}
-\newlabel{tab:scaling@cref}{{[table][2][]2}{[1][7][]9}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Scaling with dataset size (grid 512$\times $512, $\sigma =1.0$, $r=3$)}}{9}{table.caption.17}\protected@file@percent }
+\newlabel{tab:scaling}{{2}{9}{Scaling with dataset size (grid 512$\times $512, $\sigma =1.0$, $r=3$)}{table.caption.17}{}}
+\newlabel{tab:scaling@cref}{{[table][2][]2}{[1][8][]9}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{9}{section.7}\protected@file@percent }
+\newlabel{sec:discussion}{{7}{9}{Discussion}{section.7}{}}
+\newlabel{sec:discussion@cref}{{[section][7][]7}{[1][8][]9}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When to Use Thermal Bloom Filters}{9}{subsection.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Limitations and Higher Dimensions}{9}{subsection.7.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Case Study: Real-Time Geospatial Indexing}{9}{subsection.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Connection to Physics}{9}{subsection.7.4}\protected@file@percent }
+\citation{velivckovic2018graph}
+\citation{gao2019graph}
+\citation{rossi2020temporal}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}Connection to Physics}{10}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Connections to Graph Neural Networks}{10}{subsection.7.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Relationship between GNNs and Thermal Bloom Filters}}{10}{table.caption.18}\protected@file@percent }
+\newlabel{tab:gnn_comparison}{{3}{10}{Relationship between GNNs and Thermal Bloom Filters}{table.caption.18}{}}
+\newlabel{tab:gnn_comparison@cref}{{[table][3][]3}{[1][10][]10}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{10}{section.8}\protected@file@percent }
 \bibstyle{plain}
 \bibcite{bentley1975multidimensional}{1}
 \bibcite{bloom1970space}{2}
@@ -104,15 +117,19 @@
 \bibcite{cohen2003spectral}{4}
 \bibcite{fan2000summary}{5}
 \bibcite{fu2019fast}{6}
-\bibcite{graves2014neural}{7}
-\bibcite{indyk1998approximate}{8}
-\bibcite{kraska2018case}{9}
-\bibcite{malkov2018efficient}{10}
-\bibcite{rasmussen2006gaussian}{11}
-\bibcite{song2020score}{12}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{10}{section.8}\protected@file@percent }
-\bibcite{sukhbaatar2015end}{13}
-\bibcite{weiss2008spectral}{14}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Proof of Theorem~\ref {thm:recall}}{11}{appendix.A}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {B}Implementation Details}{11}{appendix.B}\protected@file@percent }
-\gdef \@abspage@last{11}
+\bibcite{gao2019graph}{7}
+\bibcite{graves2014neural}{8}
+\bibcite{indyk1998approximate}{9}
+\bibcite{kipf2017semi}{10}
+\bibcite{klicpera2019predict}{11}
+\bibcite{kraska2018case}{12}
+\bibcite{malkov2018efficient}{13}
+\bibcite{rasmussen2006gaussian}{14}
+\bibcite{rossi2020temporal}{15}
+\bibcite{song2020score}{16}
+\bibcite{sukhbaatar2015end}{17}
+\bibcite{velivckovic2018graph}{18}
+\bibcite{weiss2008spectral}{19}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Proof of Theorem~\ref {thm:recall}}{12}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Implementation Details}{12}{appendix.B}\protected@file@percent }
+\gdef \@abspage@last{13}
