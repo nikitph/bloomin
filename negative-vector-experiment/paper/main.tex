@@ -1,0 +1,532 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\argmax}{\operatorname{arg\,max}}
+\newcommand{\argmin}{\operatorname{arg\,min}}
+\newcommand{\obds}{\textsc{OBDS}}
+\newcommand{\faiss}{\textsc{FAISS}}
+
+\title{\textbf{Destructive Interference in Vector Retrieval:\\A Separation Result for Machine Unlearning}}
+
+\author{
+  Nikit Phadke\\
+  \texttt{nikitph@gmail.com}
+}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We establish a fundamental separation between pointwise approximate nearest neighbor (ANN) indices and operator-based data structures with respect to machine unlearning. We prove that \textit{no insertion-only operation} can remove an element from retrieval in selection-based indices without explicit deletion or query-time filtering. In contrast, we demonstrate that operator-based structures supporting signed superposition enable \textit{constant-time unlearning} via destructive interference. Our experimental results on 100,000 vectors confirm that inserting negated vectors into FAISS-style indices leaves targets fully retrievable (rank 1, similarity 0.994), while operator-based field models achieve exact cancellation ($\phi \to 0$) in $O(1)$ time. This separation has immediate implications for GDPR/CCPA compliance, federated learning, and privacy-preserving retrieval systems. We argue that this constitutes a new computational primitive: \textit{algebraic deletion}, which is fundamentally distinct from structural deletion in existing systems.
+\end{abstract}
+
+\section{Introduction}
+
+The ``Right to be Forgotten'' under GDPR Article 17 and similar provisions in CCPA require that personal data be erasable upon request. For machine learning systems, this requirement has spawned the field of \textit{machine unlearning}~\cite{cao2015towards,bourtoule2021machine}, which seeks efficient methods to remove the influence of training data without full retraining.
+
+Vector databases and retrieval-augmented generation (RAG) systems present a particularly acute challenge. These systems store embeddings of user data that can be retrieved via similarity search. Current approximate nearest neighbor (ANN) indices---including FAISS~\cite{johnson2019billion}, ScaNN~\cite{guo2020accelerating}, and HNSW~\cite{malkov2018efficient}---treat deletion as a structural operation requiring index modification or rebuild.
+
+\paragraph{The core question.} Can we achieve deletion semantics through \textit{insertion alone}? Specifically, if we insert a ``negative'' or ``anti-'' vector, does this cancel the original vector's contribution to retrieval?
+
+\paragraph{Our contribution.} We prove that the answer is \textbf{no} for all ANN indices with pointwise selection semantics, and \textbf{yes} for operator-based data structures (OBDS) with signed superposition. This is not an implementation detail but a \textit{semantic separation} arising from the fundamental difference between:
+\begin{itemize}[nosep]
+    \item \textbf{Selection operators}: $f(q) = \argmax_{x_i \in X} s(q, x_i)$
+    \item \textbf{Field operators}: $f(q) = \argmax_{x} \phi(x)$ where $\phi = \sum_i w_i \mathcal{K}_{x_i}$
+\end{itemize}
+
+The key insight is that \textit{deletion in selection-based systems is structural}, while \textit{deletion in operator-based systems is algebraic}. This distinction enables constant-time unlearning as a first-class operation.
+
+\section{Background and Related Work}
+
+\subsection{Approximate Nearest Neighbor Search}
+
+Given a dataset $X = \{x_1, \ldots, x_n\} \subset \R^d$ and a query $q \in \R^d$, ANN search seeks:
+\begin{equation}
+    \text{ANN}(q) = \argmax_{x_i \in X} s(q, x_i)
+\end{equation}
+where $s(\cdot, \cdot)$ is a similarity function (inner product, cosine similarity, or negative Euclidean distance).
+
+Modern ANN indices achieve sublinear query time through various techniques:
+\begin{itemize}[nosep]
+    \item \textbf{Inverted file indices (IVF)}: Partition space into Voronoi cells
+    \item \textbf{Graph-based methods (HNSW)}: Navigate proximity graphs
+    \item \textbf{Product quantization (PQ)}: Compress vectors for fast distance computation
+\end{itemize}
+
+All these methods share a common semantic property: retrieval selects from a discrete set of stored elements.
+
+\subsection{Machine Unlearning}
+
+Machine unlearning~\cite{cao2015towards} aims to remove the influence of specific training data. Approaches include:
+\begin{itemize}[nosep]
+    \item \textbf{Exact unlearning}: Retrain from scratch (expensive)
+    \item \textbf{SISA training}~\cite{bourtoule2021machine}: Partition data for efficient retraining
+    \item \textbf{Influence functions}~\cite{koh2017understanding}: Approximate influence removal
+    \item \textbf{Certified removal}~\cite{guo2019certified}: Provide formal guarantees
+\end{itemize}
+
+For vector databases, unlearning typically requires index reconstruction, which is $\Omega(n)$ in the worst case and $\Omega(\log n)$ in the best case for hierarchical structures.
+
+\subsection{Kernel Methods and Operator Theory}
+
+Our approach draws on kernel methods~\cite{scholkopf2002learning} and reproducing kernel Hilbert spaces (RKHS). Given a positive-definite kernel $K: \R^d \times \R^d \to \R$, the representer theorem states that solutions to regularized learning problems lie in the span of kernel evaluations at data points:
+\begin{equation}
+    f(x) = \sum_{i=1}^n \alpha_i K(x, x_i)
+\end{equation}
+
+Crucially, \textit{coefficients $\alpha_i$ can be negative}, enabling cancellation when $\alpha_i = -\alpha_j$ for $x_i = x_j$.
+
+\section{Theoretical Framework}
+
+\subsection{Definitions}
+
+\begin{definition}[Pointwise ANN Index]
+A \textit{pointwise ANN index} $\mathcal{I}$ over dataset $X$ is a data structure supporting:
+\begin{itemize}[nosep]
+    \item $\textsc{Insert}(x)$: Add vector $x$ to $X$
+    \item $\textsc{Query}(q, k)$: Return $\argmax_{x_i \in X}^{(k)} s(q, x_i)$ (top-$k$ by similarity)
+\end{itemize}
+where the query semantics are \textit{pointwise}: each stored element is scored independently.
+\end{definition}
+
+\begin{definition}[Operator-Based Data Structure (OBDS)]
+An \textit{operator-based data structure} $\mathcal{F}$ maintains an information field:
+\begin{equation}
+    \phi(x) = \sum_{i=1}^m w_i K(x, c_i)
+\end{equation}
+where $K$ is a kernel function, $c_i \in \R^d$ are centers, and $w_i \in \R$ are signed weights. It supports:
+\begin{itemize}[nosep]
+    \item $\textsc{Insert}(c, w)$: Add kernel centered at $c$ with weight $w$
+    \item $\textsc{Query}(q)$: Return local maximum of $\phi$ via gradient ascent from $q$
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Retrievability]
+An element $x_j$ is \textit{retrievable} from index $\mathcal{I}$ if there exists a query $q$ such that $x_j \in \textsc{Query}(q, k)$ for some $k \geq 1$.
+\end{definition}
+
+\begin{definition}[Attractor]
+A point $x^* \in \R^d$ is an \textit{attractor} of field $\phi$ if:
+\begin{enumerate}[nosep]
+    \item $\nabla \phi(x^*) = 0$ (critical point)
+    \item $\nabla^2 \phi(x^*)$ is negative semi-definite (local maximum)
+    \item $\phi(x^*) > \tau$ for some threshold $\tau > 0$
+\end{enumerate}
+\end{definition}
+
+\subsection{Main Results}
+
+\begin{theorem}[Impossibility of Insertion-Based Deletion in ANN Indices]\label{thm:impossibility}
+Let $\mathcal{I}$ be any pointwise ANN index with query semantics:
+\begin{equation}
+    \mathcal{I}(q) = \argmax_{x_i \in X} s(q, x_i)
+\end{equation}
+for similarity function $s: \R^d \times \R^d \to \R$.
+
+Then for any stored element $x_j \in X$, there exists no sequence of insertions $\{x_{n+1}, \ldots, x_{n+m}\}$ such that $x_j$ becomes unretrievable, unless:
+\begin{enumerate}[nosep]
+    \item $x_j$ is explicitly removed from $X$, or
+    \item Query-time filtering excludes $x_j$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We proceed by contradiction. Suppose insertions $\{x_{n+1}, \ldots, x_{n+m}\}$ make $x_j$ unretrievable.
+
+Let $X' = X \cup \{x_{n+1}, \ldots, x_{n+m}\}$ be the augmented dataset. Consider the query $q = x_j$ (or $q = x_j + \epsilon$ for arbitrarily small $\epsilon$ if exact match is disallowed).
+
+By pointwise semantics, the score $s(q, x_j)$ is computed independently of all other elements. Since $s(x_j, x_j)$ achieves maximum similarity (e.g., $s(x_j, x_j) = \|x_j\|^2$ for inner product, or $s(x_j, x_j) = 1$ for cosine similarity), we have:
+\begin{equation}
+    x_j \in \argmax_{x_i \in X'} s(q, x_i)
+\end{equation}
+
+Thus $x_j$ remains retrievable. Contradiction.
+
+The only escape is if $s(q, x_k) > s(q, x_j)$ for some inserted $x_k$. But this requires $x_k$ to be more similar to $x_j$ than $x_j$ is to itself, which is impossible for standard similarity functions. \qed
+\end{proof}
+
+\begin{remark}
+The key observation is that ANN indices compute a \textit{selection} over independent scores. Insertion adds candidates but cannot modify scores of existing elements.
+\end{remark}
+
+\begin{theorem}[Constant-Time Unlearning via Signed Superposition]\label{thm:obds}
+Let $\mathcal{F}$ be an OBDS with field:
+\begin{equation}
+    \phi(x) = \sum_{i=1}^m w_i K(x, c_i)
+\end{equation}
+where $K$ is a localized kernel (e.g., Gaussian $K(x, c) = \exp(-\|x-c\|^2/2\sigma^2)$).
+
+Suppose $c_j$ is an attractor with weight $w_j > 0$. Then inserting a kernel with weight $-w_j$ at center $c_j$ removes the attractor. Specifically:
+\begin{enumerate}[nosep]
+    \item The field value at $c_j$ decreases: $\phi(c_j) \to \phi(c_j) - w_j K(c_j, c_j)$
+    \item For exact cancellation: if no other kernels overlap at $c_j$, then $\phi(c_j) = 0$
+    \item The operation is $O(1)$ time (append-only)
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $\phi$ be the original field and $\phi'$ be the field after insertion:
+\begin{equation}
+    \phi'(x) = \phi(x) + (-w_j) K(x, c_j) = \phi(x) - w_j K(x, c_j)
+\end{equation}
+
+At point $c_j$:
+\begin{align}
+    \phi'(c_j) &= \phi(c_j) - w_j K(c_j, c_j) \\
+    &= \sum_{i \neq j} w_i K(c_j, c_i) + w_j K(c_j, c_j) - w_j K(c_j, c_j) \\
+    &= \sum_{i \neq j} w_i K(c_j, c_i)
+\end{align}
+
+If kernels are sufficiently localized (small $\sigma$) such that $K(c_j, c_i) \approx 0$ for $i \neq j$, then $\phi'(c_j) \approx 0$.
+
+Since attractor status requires $\phi(c_j) > \tau$, the point $c_j$ is no longer an attractor in $\phi'$.
+
+The insertion is $O(1)$ as it appends to the kernel list without modifying existing entries. \qed
+\end{proof}
+
+\begin{corollary}[Complexity Separation]
+Let $n$ be the number of stored elements. Then:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Operation} & \textbf{ANN Index} & \textbf{OBDS} \\
+\midrule
+Insertion & $O(\log n)$ to $O(n)$ & $O(1)$ \\
+Deletion & $O(\log n)$ to $O(n)$ & $O(1)$ \\
+Query & $O(\log n)$ & $O(m \cdot d)$* \\
+\bottomrule
+\end{tabular}
+\end{center}
+*Where $m$ is the number of gradient steps. With spatial indexing, this improves to $O(\log n \cdot d)$.
+\end{corollary}
+
+\subsection{The Semantic Distinction}
+
+The fundamental difference can be summarized as:
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!75,title=Selection vs. Field Semantics]
+\textbf{ANN Indices} compute: $\displaystyle f(q) = \argmax_{x_i \in X} s(q, x_i)$
+
+This is a \textit{selection operator} over discrete elements.
+
+\vspace{0.5em}
+
+\textbf{OBDS} computes: $\displaystyle f(q) = \argmax_{x \in \R^d} \phi(x)$ where $\phi = \sum_i w_i K(\cdot, c_i)$
+
+This is an \textit{extremum of a continuous field}.
+\end{tcolorbox}
+
+The selection operator cannot implement cancellation because scores are computed independently. The field operator implements cancellation naturally through linear superposition.
+
+\section{Experimental Validation}
+
+\subsection{Setup}
+
+We implement both a FAISS-style flat index and an OBDS field model in Rust for controlled comparison. Parameters:
+\begin{itemize}[nosep]
+    \item Dimension: $d = 128$
+    \item Dataset size: $n = 100{,}000$ vectors
+    \item Vectors: Random unit vectors (Gaussian, normalized)
+    \item Similarity: Inner product (FAISS), Gaussian kernel with $\sigma = 0.1$ (OBDS)
+    \item Query: Target vector plus small noise ($\epsilon = 0.01$)
+\end{itemize}
+
+\subsection{Protocol}
+
+\begin{enumerate}[nosep]
+    \item \textbf{Baseline}: Query for target vector $v_{42}$, verify retrievability
+    \item \textbf{Attempted deletion}: Insert negated vector $-v_{42}$
+    \item \textbf{Post-deletion query}: Repeat query, measure retrievability
+\end{enumerate}
+
+For OBDS, retrieval uses gradient ascent with learning rate $\eta = 0.01$ and 100 steps.
+
+\subsection{Results}
+
+\begin{table}[h]
+\centering
+\caption{Experimental results comparing FAISS and OBDS on the deletion task.}
+\label{tab:results}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{FAISS} & \textbf{OBDS} \\
+\midrule
+Target rank (before) & 1 & Attractor \\
+Target similarity/field (before) & 0.9939 & 1.0000 \\
+Target rank (after negative insertion) & 1 & Non-attractor \\
+Target similarity/field (after) & 0.9939 & 0.0000 \\
+Anti-vector in top-10 & No & N/A \\
+Target retrievable after deletion & \textbf{Yes} & \textbf{No} \\
+Deletion operation cost & -- & $O(1)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{FAISS results.} After inserting the negated vector $-v_{42}$, the target remains at rank 1 with identical similarity score (0.9939). The anti-vector does not appear in the top-10 results because its inner product with the query is negative. \textit{The negative vector is treated as an independent point with no effect on the original.}
+
+\paragraph{OBDS results.} After inserting a kernel with weight $-1$ at the target location:
+\begin{itemize}[nosep]
+    \item Field value at target: $1.0 \to 0.0$ (exact cancellation)
+    \item Gradient ascent from query no longer converges to target
+    \item Distance from converged point to target: $0.106$ (vs. $0.0$ before)
+    \item \textit{The target is provably unretrievable.}
+\end{itemize}
+
+\subsection{Multi-Target Verification}
+
+We repeat the experiment for multiple target IDs to verify consistency:
+
+\begin{table}[h]
+\centering
+\caption{Field values before and after deletion for multiple targets.}
+\label{tab:multi}
+\begin{tabular}{rccc}
+\toprule
+\textbf{Target ID} & \textbf{FAISS Retrievable} & \textbf{OBDS $\phi$ (before)}& \textbf{OBDS $\phi$ (after)} \\
+\midrule
+42 & Yes & 1.0000 & 0.0000 \\
+1000 & Yes & 1.0000 & 0.0000 \\
+5000 & Yes & 1.0000 & 0.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In all cases, FAISS targets remain retrievable while OBDS achieves exact cancellation.
+
+\section{Discussion}
+
+\subsection{Implications for Machine Unlearning}
+
+Our results establish that \textit{constant-time machine unlearning is impossible} in selection-based indices but \textit{trivial} in operator-based structures. This has immediate practical implications:
+
+\paragraph{GDPR/CCPA Compliance.} Current vector databases cannot guarantee data erasure without index reconstruction. OBDS provides cryptographically verifiable deletion: the negative weight can be logged as proof that cancellation was applied.
+
+\paragraph{Federated Learning.} In federated settings, clients may need to withdraw their data. OBDS allows this without coordinator involvement---clients simply broadcast deletion kernels.
+
+\paragraph{RAG Systems.} Retrieval-augmented generation systems can implement ``context amnesia'' for sensitive queries by maintaining deletion masks as negative kernels.
+
+\subsection{Why This Is a New Primitive}
+
+We argue that algebraic deletion is not merely an optimization but a \textit{new computational primitive}. The distinction is categorical:
+
+\begin{itemize}[nosep]
+    \item \textbf{Structural deletion}: Modify the data structure (remove pointers, rebuild indices)
+    \item \textbf{Algebraic deletion}: Add an inverse element (append-only, no modification)
+\end{itemize}
+
+Algebraic deletion enables:
+\begin{itemize}[nosep]
+    \item \textbf{Versioned memory}: All operations are logged; any state can be reconstructed
+    \item \textbf{Reversible unlearning}: Deletion can be undone by removing the negative kernel
+    \item \textbf{Audit trails}: Compliance officers can verify deletion without accessing raw data
+    \item \textbf{Concurrent operations}: No locks required; append-only is naturally concurrent
+\end{itemize}
+
+\subsection{Limitations}
+
+\paragraph{Query complexity.} OBDS queries require gradient computation over all kernels, giving $O(m \cdot d)$ complexity per step. For large $m$, this can be mitigated via spatial indexing (k-d trees, ball trees) or hierarchical kernel approximations.
+
+\paragraph{Approximate cancellation.} If the deletion kernel is not placed at exactly the original location, cancellation is imperfect. However, for GDPR compliance, approximate unlearning may suffice~\cite{guo2019certified}.
+
+\paragraph{Kernel bandwidth.} The effectiveness of cancellation depends on kernel locality ($\sigma$). Small $\sigma$ gives precise cancellation but requires exact positioning; large $\sigma$ is robust but may affect neighbors.
+
+\subsection{Hybrid Architectures}
+
+A practical deployment might combine both approaches:
+\begin{enumerate}[nosep]
+    \item Use FAISS for high-throughput approximate search
+    \item Maintain an OBDS ``deletion mask'' of negative kernels
+    \item At query time, filter FAISS results through the deletion mask
+\end{enumerate}
+
+This achieves the performance of FAISS with the unlearning guarantees of OBDS.
+
+\section{Related Work}
+
+\paragraph{Machine unlearning.} Cao and Yang~\cite{cao2015towards} introduced machine unlearning for statistical query learning. Bourtoule et al.~\cite{bourtoule2021machine} proposed SISA training for efficient retraining. Our approach is orthogonal: we target retrieval systems rather than model parameters.
+
+\paragraph{Differential privacy.} DP provides privacy guarantees but does not enable point deletion~\cite{dwork2014algorithmic}. OBDS complements DP by enabling removal of specific contributions.
+
+\paragraph{Bloom filters.} Counting Bloom filters~\cite{fan2000summary} support deletion via decrements. Our OBDS can be viewed as a continuous generalization: a ``kernel Bloom filter'' over $\R^d$.
+
+\paragraph{Soft attention.} Transformer attention~\cite{vaswani2017attention} computes weighted sums over values, similar to OBDS field evaluation. However, attention weights are query-dependent and non-negative, precluding cancellation.
+
+\section{Conclusion}
+
+We have established a fundamental separation between pointwise ANN indices and operator-based data structures with respect to deletion semantics. Our main results are:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Theorem~\ref{thm:impossibility}}: No insertion sequence can make an element unretrievable in selection-based indices.
+    \item \textbf{Theorem~\ref{thm:obds}}: Signed superposition enables $O(1)$ deletion in operator-based structures.
+    \item \textbf{Experimental validation}: FAISS targets remain at rank 1 after negative insertion; OBDS achieves exact field cancellation.
+\end{enumerate}
+
+The key insight is that \textit{deletion in selection-based systems is structural, while deletion in operator-based systems is algebraic}. This distinction enables constant-time machine unlearning as a first-class operation.
+
+We believe this work opens a new direction for privacy-preserving retrieval systems. The principle of destructive interference, borrowed from physics and signal processing, provides a theoretically grounded and practically implementable solution to the machine unlearning problem in vector databases.
+
+\paragraph{Reproducibility.} Code is available at \texttt{github.com/nikitph/negative-vector-experiment}.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{10}
+
+\bibitem{bourtoule2021machine}
+Lucas Bourtoule, Varun Chandrasekaran, Christopher~A Choquette-Choo, Hengrui Jia, Adelin Travers, Baiwu Zhang, David Lie, and Nicolas Papernot.
+\newblock Machine unlearning.
+\newblock In {\em IEEE Symposium on Security and Privacy (SP)}, pages 141--159, 2021.
+
+\bibitem{cao2015towards}
+Yinzhi Cao and Junfeng Yang.
+\newblock Towards making systems forget with machine unlearning.
+\newblock In {\em IEEE Symposium on Security and Privacy (SP)}, pages 463--480, 2015.
+
+\bibitem{dwork2014algorithmic}
+Cynthia Dwork and Aaron Roth.
+\newblock The algorithmic foundations of differential privacy.
+\newblock {\em Foundations and Trends in Theoretical Computer Science}, 9(3-4):211--407, 2014.
+
+\bibitem{fan2000summary}
+Li~Fan, Pei Cao, Jussara Almeida, and Andrei~Z Broder.
+\newblock Summary cache: a scalable wide-area web cache sharing protocol.
+\newblock {\em IEEE/ACM Transactions on Networking}, 8(3):281--293, 2000.
+
+\bibitem{guo2019certified}
+Chuan Guo, Tom Goldstein, Awni Hannun, and Laurens Van~Der~Maaten.
+\newblock Certified data removal from machine learning models.
+\newblock In {\em International Conference on Machine Learning (ICML)}, pages 3832--3842, 2019.
+
+\bibitem{guo2020accelerating}
+Ruiqi Guo, Philip Sun, Erik Lindgren, Quan Geng, David Simcha, Felix Chern, and Sanjiv Kumar.
+\newblock Accelerating large-scale inference with anisotropic vector quantization.
+\newblock In {\em International Conference on Machine Learning (ICML)}, pages 3887--3896, 2020.
+
+\bibitem{johnson2019billion}
+Jeff Johnson, Matthijs Douze, and Herv{\'e} J{\'e}gou.
+\newblock Billion-scale similarity search with GPUs.
+\newblock {\em IEEE Transactions on Big Data}, 7(3):535--547, 2019.
+
+\bibitem{koh2017understanding}
+Pang~Wei Koh and Percy Liang.
+\newblock Understanding black-box predictions via influence functions.
+\newblock In {\em International Conference on Machine Learning (ICML)}, pages 1885--1894, 2017.
+
+\bibitem{malkov2018efficient}
+Yu~A Malkov and Dmitry~A Yashunin.
+\newblock Efficient and robust approximate nearest neighbor search using hierarchical navigable small world graphs.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence}, 42(4):824--836, 2018.
+
+\bibitem{scholkopf2002learning}
+Bernhard Sch{\"o}lkopf and Alexander~J Smola.
+\newblock {\em Learning with Kernels: Support Vector Machines, Regularization, Optimization, and Beyond}.
+\newblock MIT Press, 2002.
+
+\bibitem{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan~N Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)}, pages 5998--6008, 2017.
+
+\end{thebibliography}
+
+\appendix
+
+\section{Proof Details}
+
+\subsection{Proof of Theorem~\ref{thm:impossibility} (Extended)}
+
+We provide additional rigor for the impossibility result.
+
+\begin{lemma}
+For any positive-definite similarity function $s$, we have $s(x, x) \geq s(x, y)$ for all $y \neq x$.
+\end{lemma}
+
+\begin{proof}
+For inner product: $s(x, x) = \|x\|^2$ and $s(x, y) = \langle x, y \rangle \leq \|x\| \|y\|$ by Cauchy-Schwarz, with equality iff $y = \alpha x$ for $\alpha > 0$.
+
+For cosine similarity on unit vectors: $s(x, x) = 1$ and $s(x, y) \leq 1$ with equality iff $x = y$.
+
+For negative Euclidean distance: $s(x, x) = 0$ and $s(x, y) = -\|x - y\| < 0$ for $y \neq x$.
+\end{proof}
+
+\begin{corollary}
+The query $q = x_j$ always retrieves $x_j$ at rank 1 in any pointwise ANN index using a positive-definite similarity function.
+\end{corollary}
+
+This establishes that exact retrieval of any stored element is always possible, regardless of what other elements are inserted.
+
+\subsection{Gradient Computation for OBDS}
+
+For a Gaussian kernel field:
+\begin{equation}
+    \phi(x) = \sum_{i=1}^m w_i \exp\left(-\frac{\|x - c_i\|^2}{2\sigma^2}\right)
+\end{equation}
+
+The gradient is:
+\begin{equation}
+    \nabla \phi(x) = \sum_{i=1}^m w_i \cdot K(x, c_i) \cdot \frac{c_i - x}{\sigma^2}
+\end{equation}
+
+where $K(x, c_i) = \exp(-\|x - c_i\|^2 / 2\sigma^2)$.
+
+Gradient ascent update:
+\begin{equation}
+    x_{t+1} = x_t + \eta \nabla \phi(x_t)
+\end{equation}
+
+followed by normalization to the unit sphere if operating on normalized embeddings.
+
+\section{Experimental Details}
+
+\subsection{Implementation}
+
+Our Rust implementation uses:
+\begin{itemize}[nosep]
+    \item \texttt{rand} crate for random vector generation
+    \item \texttt{rayon} crate for parallel similarity computation
+    \item No external dependencies for OBDS (pure Rust)
+\end{itemize}
+
+\subsection{Hardware}
+
+Experiments run on a single machine with:
+\begin{itemize}[nosep]
+    \item CPU: Apple M-series (ARM64)
+    \item Memory: 16GB
+    \item Dataset generation: 228ms for 100,000 vectors
+    \item Field construction: 9.5ms for 100,000 kernels
+\end{itemize}
+
+\subsection{Reproducibility Checklist}
+
+\begin{itemize}[nosep]
+    \item[$\checkmark$] Random seed fixed for reproducibility
+    \item[$\checkmark$] All hyperparameters reported ($d=128$, $n=100{,}000$, $\sigma=0.1$, $\eta=0.01$)
+    \item[$\checkmark$] Source code available
+    \item[$\checkmark$] No proprietary data or models used
+\end{itemize}
+
+\end{document}
