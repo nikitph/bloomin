@@ -175,10 +175,10 @@ Nikit Phadke (nikitph@gmail.com)
 ### Citation
 
 ```bibtex
-@article{phadke2024destructive,
+@article{phadke2025destructive,
   title={Destructive Interference in Vector Retrieval: A Separation Result for Machine Unlearning},
   author={Phadke, Nikit},
-  year={2024}
+  year={2025}
 }
 ```
 
