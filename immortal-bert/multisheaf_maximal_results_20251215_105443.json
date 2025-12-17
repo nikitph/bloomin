@@ -1,0 +1,99 @@
+{
+  "model": "MultiSheaf-Maximal-Combined",
+  "num_tasks": 4,
+  "task_order": [
+    "SST2",
+    "IMDB",
+    "Yelp",
+    "AG_News"
+  ],
+  "task_accuracies": {
+    "SST2": [
+      0.8666666666666667,
+      0.85,
+      0.8266666666666667,
+      0.8566666666666667
+    ],
+    "IMDB": [
+      0.9833333333333333,
+      0.9966666666666667,
+      0.9833333333333333
+    ],
+    "Yelp": [
+      0.7933333333333333,
+      0.8266666666666667
+    ],
+    "AG_News": [
+      0.8733333333333333
+    ]
+  },
+  "final_accuracies": {
+    "SST2": 0.8566666666666667,
+    "IMDB": 0.9833333333333333,
+    "Yelp": 0.8266666666666667,
+    "AG_News": 0.8733333333333333
+  },
+  "per_task_forgetting": {
+    "SST2": 0.010000000000000009,
+    "IMDB": 0.01333333333333342,
+    "Yelp": -0.033333333333333326
+  },
+  "per_sheaf_fi": {
+    "Sentiment": -0.0033333333333332993,
+    "Paraphrase": 0.0,
+    "Entailment": 0.0,
+    "Syntax": 0.0,
+    "Topic": 0.0
+  },
+  "sheaf_metrics": {
+    "Sentiment": {
+      "fi": -0.0033333333333332993,
+      "avg_accuracy": 0.8888888888888888,
+      "tasks": [
+        "SST2",
+        "IMDB",
+        "Yelp"
+      ],
+      "invariant": "polarity"
+    },
+    "Paraphrase": {
+      "fi": 0.0,
+      "avg_accuracy": 0.0,
+      "tasks": [
+        "QQP",
+        "MRPC"
+      ],
+      "invariant": "symmetry"
+    },
+    "Entailment": {
+      "fi": 0.0,
+      "avg_accuracy": 0.0,
+      "tasks": [
+        "RTE",
+        "QNLI",
+        "MNLI"
+      ],
+      "invariant": "directionality"
+    },
+    "Syntax": {
+      "fi": 0.0,
+      "avg_accuracy": 0.0,
+      "tasks": [
+        "CoLA"
+      ],
+      "invariant": "grammar"
+    },
+    "Topic": {
+      "fi": 0.0,
+      "avg_accuracy": 0.8733333333333333,
+      "tasks": [
+        "AG_News"
+      ],
+      "invariant": "clustering"
+    }
+  },
+  "average_final_accuracy": 0.885,
+  "WTA": 0.8266666666666667,
+  "FI_global": -0.0033333333333332993,
+  "PV": 0.0035027777777777752
+}
