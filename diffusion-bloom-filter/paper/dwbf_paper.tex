@@ -1,0 +1,192 @@
+\documentclass[twocolumn]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{hyperref}
+
+\title{The REWA Diffusion Bloom Filter: Constant-Space Approximate Membership in Semantic Manifolds}
+\author{
+  Nikit Phadke \\
+  \texttt{nikitph@gmail.com}
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Modern systems increasingly operate on semantic objects---embeddings of text, images, code, and queries---rather than exact keys. While Bloom filters provide constant-space exact membership checks, they destroy semantic locality. Conversely, vector search systems preserve semantics but require heavy indexing structures or linear scans.
+
+We introduce the \textbf{REWA Diffusion Bloom Filter (RDBF)}, a probabilistic data structure that answers the question: \textit{``Is anything semantically close to this present?''} in $O(1)$ space and $O(1)$ query time.
+
+RDBF maps high-dimensional embeddings to a fixed-size cyclic array using locality-sensitive hashing (LSH), then replaces the discrete bit flip of a Bloom filter with a localized kernel update. Queries recover approximate semantic membership by measuring local bit density. We further introduce \textbf{stochastic dithering}, allowing RDBF to be implemented as a standard bitset while preserving continuous behavior in expectation.
+
+RDBF serves as a lightweight semantic gate for systems such as RAG pipelines, semantic caches, deduplication layers, and abuse detection, reducing reliance on expensive vector indexes.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{The Gap in Current Systems}
+
+Systems today rely on two fundamentally different mechanisms:
+\begin{enumerate}
+    \item \textbf{Exact membership} (Hash maps, Bloom filters): These offer $O(1)$ memory per element but have no notion of similarity.
+    \item \textbf{Semantic membership} (Vector databases like HNSW, IVF, FAISS): These preserve similarity structure but require $O(N)$ storage, complex indexing, and non-trivial query costs.
+\end{enumerate}
+
+There is no standard data structure that provides a constant-space, constant-time answer to the following common question:
+\begin{quote}
+    \textit{Does there exist any stored item within semantic distance $\epsilon$ of this query?}
+\end{quote}
+
+This question appears repeatedly in real systems:
+\begin{itemize}
+    \item Should we run expensive retrieval?
+    \item Is this input out-of-distribution?
+    \item Have we seen something like this before?
+    \item Is this query probing known semantic territory?
+\end{itemize}
+
+RDBF is designed specifically to answer this question efficiently.
+
+\section{Design Overview}
+
+RDBF extends the Bloom filter abstraction from exact keys to semantic neighborhoods. The key idea is simple: \textbf{Map semantic similarity to physical adjacency, then store density, not bits.}
+
+Core components:
+\begin{enumerate}
+    \item Locality-preserving hashing
+    \item Kernel-based insertion
+    \item Density-based querying
+    \item Bit-efficient stochastic implementation
+\end{enumerate}
+
+\section{Data Structure}
+
+\subsection{Topological Hashing}
+
+Let embeddings live in $\mathbb{R}^d$. We construct a locality-sensitive hash:
+\begin{equation}
+\mathcal{L} : \mathbb{R}^d \rightarrow \{0, \dots, M-1\}
+\end{equation}
+such that:
+\begin{equation}
+\|x - y\| \text{ small} \Rightarrow |\mathcal{L}(x) - \mathcal{L}(y)| \text{ small (mod } M)
+\end{equation}
+
+In our implementation, we project to $\mathbb{R}^2$ using random projection, compute the angular coordinate, and map the angle to a cyclic array. This produces a 1D ring where semantic neighbors are physically adjacent.
+
+\subsection{Insertion: Kernel Splat}
+
+Instead of setting a single bit, RDBF applies a localized update. For an array $A$ of size $M$, inserting vector $v$:
+\begin{equation}
+A[i] \leftarrow \min\left(1,\; A[i] + e^{-\frac{(i - \mathcal{L}(v))^2}{2\sigma^2}}\right)
+\end{equation}
+for indices in a local neighborhood.
+
+This spreads influence smoothly, ensuring exact matches peak, near neighbors receive partial signal, and distant elements remain unaffected.
+
+\subsection{Query: Density Readout}
+
+To query probe $p$:
+\begin{enumerate}
+    \item Compute index $\mathcal{L}(p)$
+    \item Read local intensity (float RDBF) or compute bit density in a window (bitset RDBF):
+\end{enumerate}
+\begin{equation}
+\text{Density}(p) = \frac{1}{|W|} \sum_{j \in W} A[j]
+\end{equation}
+If density exceeds threshold $\tau$, a semantic neighbor is present.
+
+\section{Bitset Implementation via Stochastic Dithering}
+
+Storing floating-point arrays defeats Bloom filter efficiency. We recover bit-level storage using \textbf{stochastic dithering}:
+\begin{itemize}
+    \item For kernel intensity $I \in [0,1]$
+    \item Flip bit with probability proportional to $I$:
+\end{itemize}
+\begin{equation}
+P(A[i] = 1) = I
+\end{equation}
+
+At query time, density over a window estimates the underlying continuous signal via the Law of Large Numbers. \textit{Result: A standard bitset approximates a continuous semantic field.}
+
+\section{Complexity and Guarantees}
+
+\paragraph{Time Complexity}
+Insert and Query are both $O(\sigma)$, where $\sigma$ is the kernel width. This is independent of the number of stored elements.
+
+\paragraph{Space Complexity}
+Fixed $O(M)$ bits. This provides the same asymptotic memory benefits as standard Bloom filters.
+
+\paragraph{Error Characteristics}
+\begin{itemize}
+    \item No false negatives within kernel radius (in expectation).
+    \item False positives are geometric, not combinatorial.
+    \item Saturation is gradual and detectable.
+\end{itemize}
+Unlike Bloom filters, RDBF degrades gracefully.
+
+\section{Experimental Results}
+
+We evaluate RDBF with $M = 1024, d = 256, \sigma = 30$.
+\textbf{Setup:}
+\begin{itemize}
+    \item Insert one concept embedding (e.g., ``Cat'')
+    \item Query: Exact match, Perturbed neighbors (dist $\approx 0.15$), Unrelated concept (dist $\approx 1.4$)
+\end{itemize}
+
+\textbf{Results:}
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Query} & \textbf{Float RDBF} & \textbf{Bitset RDBF} \\
+\hline
+Exact & 1.000 & 0.852 \\
+Neighbor & 0.85 & 0.79 \\
+Far & 0.00 & 0.00 \\
+\hline
+\end{tabular}
+\caption{Bitset RDBF closely tracks float behavior.}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{../dbf_visualization.png}
+    \caption{Visualizing the Heat Diffusion in the cyclic array. Top: Ideal Float Intensity. Bottom: Stochastic Dithering in Bitset (Red line is smoothed density).}
+    \label{fig:heatmap}
+\end{figure}
+
+\section{Practical Applications}
+
+\subsection{Semantic Gate Before ANN / RAG}
+Avoid expensive retrieval when RDBF is cold.
+
+\subsection{Semantic Deduplication}
+Detect near-duplicates without vector indexes.
+
+\subsection{OOD Detection}
+Check semantic coverage of training data.
+
+\subsection{Abuse \& Spam Detection}
+Throttle semantically repeated inputs. RDBF complements---not replaces---vector search.
+
+\section{Limitations}
+
+\begin{enumerate}
+    \item \textbf{Hash collisions}: Mitigated via multiple RDBFs or larger arrays.
+    \item \textbf{Ghost density}: Overlapping kernels can create false warmth. Downstream systems disambiguate.
+    \item \textbf{Saturation}: Requires decay or rotation in streaming settings.
+\end{enumerate}
+
+These trade-offs are explicit and tunable.
+
+\section{Conclusion}
+
+RDBF introduces a new point in the design space between Bloom filters and vector databases. It provides constant space, constant time, and semantic awareness. By replacing point membership with density-based semantic presence, RDBF enables lightweight semantic reasoning at system boundaries. This makes it a practical primitive for modern AI-heavy systems.
+
+\end{document}
