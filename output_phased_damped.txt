@@ -1,0 +1,7 @@
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 0.1536     | 0.1536     | 2.8032
+Adam                 | 0.1536     | 0.1536     | 2.8032
+Phased-NSFO          | 125.8258     | -1.6220     | 16.2437
+
+Comparison plot saved to nsfo_phased_comparison.png

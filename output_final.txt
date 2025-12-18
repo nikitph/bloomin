@@ -1,0 +1,8 @@
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 0.1536     | 0.1536     | 2.8032
+Adam                 | 0.1536     | 0.1536     | 2.8032
+NSFO                 | nan     | 4.5532     | nan
+Schrodinger-Only     | 132.3663     | -3.4000     | 16.3580
+
+Comparison plot saved to nsfo_comparison.png

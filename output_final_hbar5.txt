@@ -1,0 +1,9 @@
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 0.1536     | 0.1536     | 2.8032
+Adam                 | 0.1536     | 0.1536     | 2.8032
+[Delayed-NSFO] End Exploration. Best Loss A: -3.9720. Switching to Exploitation (Settling).
+[Delayed-NSFO] Settling complete. Loss: -3.9574. Anchoring and Locking.
+Delayed-NSFO         | -4.0000     | -4.0000     | 0.0004
+
+Comparison plot saved to nsfo_final_closed_comparison.png

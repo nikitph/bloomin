@@ -1,0 +1,61 @@
+control_flow:
+  - conditional
+  - loop
+  - recursion
+  - early_return
+  - exception_handling
+  - yield
+  - async_await
+
+algorithms:
+  - quicksort
+  - mergesort
+  - insertion_sort
+  - binary_search
+  - bfs
+  - dfs
+  - dynamic_programming
+
+data_structures:
+  - array
+  - hashmap
+  - set
+  - linked_list
+  - tree
+  - graph
+  - queue
+  - stack
+
+performance:
+  - small_input_optimization
+  - divide_and_conquer
+  - tail_recursion
+  - memoization
+  - caching
+
+safety:
+  - bounds_check
+  - input_validation
+  - null_check
+  - type_check
+
+arithmetic_ops:
+  - add
+  - sub
+  - mul
+  - div
+  - mod
+  - pow
+
+comparison_ops:
+  - eq
+  - neq
+  - lt
+  - gt
+  - lte
+  - gte
+
+logical_ops:
+  - and
+  - or
+  - not
