@@ -1,0 +1,40 @@
+transport:
+  - http_get
+  - http_post
+  - http_put
+  - http_delete
+  - route_params
+  - query_params
+
+validation:
+  - zod_schema
+  - body_validation
+  - param_validation
+  - type_guard
+
+logic:
+  - async_handler
+  - controller_method
+  - service_injection
+  - error_boundary
+  - early_return
+
+security:
+  - jwt_auth
+  - role_protected
+  - api_key_required
+  - cors_enabled
+
+data:
+  - json_response
+  - typed_interface
+  - list_response
+  - pagination_metadata
+  - resource_id
+
+optimization:
+  - low_latency
+  - compute_optimized
+  - batch_processing
+  - low_cost
+

@@ -1,7 +1,7 @@
 import mmh3
 from bitarray import bitarray
 
-M = 256   # bits
+M = 1024   # bits
 K = 3     # hashes
 
 def encode(witnesses: set[str]) -> bitarray:

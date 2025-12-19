@@ -1,17 +1,22 @@
-from .ast_extractor import extract_witnesses as extract_witnesses_ast
+from .ast_extractor import extract_witnesses as extract_witnesses_code
+from .iam_extractor import extract_witnesses_iam
+from .k8s_extractor import extract_witnesses_k8s
+from .api_extractor import extract_witnesses_api
 from .encoder import encode
 from .decoder import decode
 import yaml
 import os
 
-# Load vocabulary
-# Assuming running from the project root or relative import
-# Let's try to find the witnesses.yaml dynamically or assume standard pos
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-VOCAB_PATH = os.path.join(BASE_DIR, "witnesses.yaml")
 
-def load_vocabulary():
-    with open(VOCAB_PATH, "r") as f:
+def load_vocabulary(domain="code"):
+    filename = "witnesses.yaml" # Default
+    if domain == "iam": filename = "witnesses_iam.yaml"
+    elif domain == "k8s": filename = "witnesses_k8s.yaml"
+    elif domain == "api": filename = "witnesses_api.yaml"
+        
+    vocab_path = os.path.join(BASE_DIR, filename)
+    with open(vocab_path, "r") as f:
         data = yaml.safe_load(f)
     
     vocab = set()
@@ -21,11 +26,18 @@ def load_vocabulary():
                 vocab.add(item)
     return list(vocab)
 
-VOCAB = load_vocabulary()
+def get_extractor(domain="code"):
+    if domain == "iam": return extract_witnesses_iam
+    if domain == "k8s": return extract_witnesses_k8s
+    if domain == "api": return extract_witnesses_api
+    return extract_witnesses_code
 
-def semantic_diff(code_before: str, code_after: str):
-    w1 = extract_witnesses_ast(code_before)
-    w2 = extract_witnesses_ast(code_after)
+def semantic_diff(input_before: str, input_after: str, domain="code"):
+    extractor = get_extractor(domain)
+    vocab = load_vocabulary(domain)
+    
+    w1 = extractor(input_before)
+    w2 = extractor(input_after)
 
     b1 = encode(w1)
     b2 = encode(w2)
@@ -33,23 +45,15 @@ def semantic_diff(code_before: str, code_after: str):
     delta = b1 ^ b2
     
     # added: bits present in AFTER but not BEFORE
-    # delta & b2  => (b1 ^ b2) & b2 => (b1 & b2) ^ b2... wait.
-    # Truth table:
-    # b1 b2 | delta | delta & b2
-    # 0  0  | 0     | 0
-    # 0  1  | 1     | 1  <-- Added
-    # 1  0  | 1     | 0  <-- Removed
-    # 1  1  | 0     | 0
-    # Correct.
-    
     added_bits = delta & b2
     removed_bits = delta & b1
 
-    added = decode(added_bits, VOCAB)
-    removed = decode(removed_bits, VOCAB)
+    added = decode(added_bits, vocab)
+    removed = decode(removed_bits, vocab)
 
     return {
         "added_semantics": added,
         "removed_semantics": removed,
-        "semantic_distance": delta.count()
+        "semantic_distance": delta.count(),
+        "domain": domain
     }
