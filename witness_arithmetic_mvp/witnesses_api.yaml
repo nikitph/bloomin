@@ -1,0 +1,26 @@
+methods:
+  - get
+  - post
+  - put
+  - delete
+  - patch
+
+security:
+  - auth_required
+  - api_key
+  - oauth
+  - basic_auth
+  - no_auth
+
+data:
+  - pagination
+  - file_upload
+  - json_body
+  - xml_body
+  - required_field
+
+pii:
+  - pii_email
+  - pii_ssn
+  - pii_phone
+  - pii_credit_card

@@ -1,0 +1,27 @@
+effect:
+  - allow
+  - deny
+
+actions:
+  - s3_list
+  - s3_read
+  - s3_write
+  - s3_delete
+  - ec2_run
+  - ec2_term
+  - ec2_describe
+  - iam_create_user
+  - iam_delete_user
+  - admin_all
+
+resources:
+  - resource_wildcard
+  - specific_bucket
+  - specific_instance
+
+risks:
+  - public_access
+  - admin_privilege
+  - data_exfiltration
+  - privilege_escalation
+  - cross_account_access

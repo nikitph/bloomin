@@ -1,0 +1,7 @@
+Running Experiment in 20 Dimensions
+Global Minimum Value: -40.0
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 1.5356     | 1.5356     | 8.8645
+Adam                 | 1.5356     | 1.5356     | 8.8645
+Scaled-NSFO          | nan     | 5.3773     | nan

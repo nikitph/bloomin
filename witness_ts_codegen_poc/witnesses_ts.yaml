@@ -1,0 +1,24 @@
+control_flow:
+  - loop
+  - conditional
+  - async_await
+  - recursion
+  - early_return
+
+types:
+  - typed_interface
+  - generic_type
+  - union_type
+  - optional_field
+
+safety:
+  - input_validation
+  - error_handling
+  - null_safety
+  - authorization_check
+
+platform:
+  - api_call
+  - db_save
+  - pagination
+  - side_effect

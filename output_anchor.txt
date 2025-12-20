@@ -1,0 +1,8 @@
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 0.1536     | 0.1536     | 2.8032
+Adam                 | 0.1536     | 0.1536     | 2.8032
+[Anchor-NSFO] Switching to Exploitation at step 200. Capturing Anchor.
+Anchor-NSFO          | 111.8002     | -3.6803     | 14.6314
+
+Comparison plot saved to nsfo_anchor_comparison.png

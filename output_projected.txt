@@ -1,0 +1,8 @@
+Optimizer            | Final Loss | Min Loss   | Dist to Global
+------------------------------------------------------------
+SGD                  | 0.1536     | 0.1536     | 2.8032
+Adam                 | 0.1536     | 0.1536     | 2.8032
+[Projected-NSFO] Switching to Exploitation at step 200. Anchoring and Projecting.
+Projected-NSFO       | 14.6857     | -1.6894     | 6.2415
+
+Comparison plot saved to nsfo_projected_comparison.png

@@ -1,0 +1,26 @@
+workloads:
+  - Deployment
+  - Pod
+  - Service
+  - HorizontalPodAutoscaler
+  - ConfigMap
+  - Secret
+
+reliability:
+  - liveness_probe
+  - readiness_probe
+  - replicas_ha
+  - strategy_rolling_update
+
+security:
+  - privileged
+  - run_as_root
+  - read_only_root_filesystem
+  - allow_privilege_escalation
+  - encryption_at_rest
+
+resources:
+  - cpu_limit
+  - memory_limit
+  - cpu_request
+  - memory_request

@@ -1,0 +1,34 @@
+sinks:
+  destructive:
+    - delete
+    - delete_all
+    - drop
+    - truncate
+    - revoke
+    - destroy
+    - remove
+  mutation:
+    - archive
+    - archive_all
+    - update
+    - save
+    - patch
+    - put
+    - create
+    - createMany
+  external:
+    - fetch
+    - axios
+    - request
+    - send_email
+    - publish_event
+
+sources:
+  request_payload:
+    - body
+    - data
+    - payload
+  request_params:
+    - params
+    - query
+    - headers
