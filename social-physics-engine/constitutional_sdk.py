@@ -43,12 +43,10 @@ class Boundary:
     gradient_fn: Callable
     description: str = ""
     
-    # Derived quantities (computed on init)
-    rs: float = field(init=False)  # Schwarzschild radius
-    
-    def __post_init__(self):
+    @property
+    def rs(self) -> float:
         """Compute Schwarzschild radius from empirical formula"""
-        self.rs = 0.16 * self.strength + 0.09
+        return 0.16 * self.strength + 0.09
         
     def distance(self, state: np.ndarray) -> float:
         """
