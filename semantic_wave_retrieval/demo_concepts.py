@@ -107,8 +107,8 @@ class FlagshipDemo:
             
             # Wave Base
             w_base, _ = self.engine.retrieve(clean_vec_t, top_k=10, 
-                                           wave_params={'T_wave': 30, 'c': 0.5, 'sigma': 5.0}, 
-                                           telegrapher_params={'T_damp': 30, 'gamma': 0.5},
+                                           wave_params={'T_wave': 10, 'c': 1.0, 'sigma': 1.0}, 
+                                           telegrapher_params={'T_damp': 15, 'gamma': 0.8},
                                            poisson_params={'alpha': 0.1})
             
             # FAISS Base
@@ -127,8 +127,8 @@ class FlagshipDemo:
                 # Wave Engine expects 'sigma' in exp(-dist^2/sigma^2).
                 # If dist ~ 1, sigma=1 is good.
                 w_corr, _ = self.engine.retrieve(corr_vec_t, top_k=10, 
-                                               wave_params={'T_wave': 30, 'c': 0.5, 'sigma': 5.0},
-                                               telegrapher_params={'T_damp': 30, 'gamma': 0.5},
+                                               wave_params={'T_wave': 10, 'c': 1.0, 'sigma': 1.0},
+                                               telegrapher_params={'T_damp': 15, 'gamma': 0.8},
                                                poisson_params={'alpha': 0.1})
                 
                 # FAISS Corrupted
@@ -138,6 +138,16 @@ class FlagshipDemo:
                 # Jaccard
                 w_jaccard = self._jaccard(w_base, w_corr)
                 f_jaccard = self._jaccard(f_base, f_corr)
+                
+                # Verify Correctness (Debug)
+                # w_base indices. If concept is French Rev (30-59), w_base should be in that range.
+                if q_type == "Level 1": # Just print once per concept
+                     w_base_indices = w_base.cpu().numpy()
+                     # Determine majority concept
+                     concepts_found = [self.labels[idx] for idx in w_base_indices]
+                     from collections import Counter
+                     most_common = Counter(concepts_found).most_common(1)[0][0]
+                     print(f"DEBUG: {concept} clean query retrieved mostly: {most_common}")
                 
                 print(f"{q_type:<20} | {concept:<20} | {f_jaccard:.2f}            | {w_jaccard:.2f}")
 
