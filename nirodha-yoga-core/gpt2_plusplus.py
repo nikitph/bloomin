@@ -34,6 +34,7 @@ class NirodhaTransformerBlock(nn.Module):
         self.beta = beta
         self.anchor = None
         self.is_res = True # Default to residual for depth expansion
+        self.last_drift = 0.0
 
     def set_anchor(self):
         """Snapshots current weights as the stable anchor."""
@@ -100,8 +101,15 @@ class NirodhaTransformerBlock(nn.Module):
         x = F.linear(x, params['mlp.2.weight'], params['mlp.2.bias'])
         
         if self.is_res:
-            return residual + x
-        return x
+            output = residual + x
+        else:
+            output = x
+            
+        # Log drift: ||h_post - h_pre|| / ||h_pre||
+        with torch.no_grad():
+            self.last_drift = torch.norm(output - residual) / (torch.norm(residual) + 1e-6)
+            
+        return output
 
 class GPT2PlusPlus(nn.Module):
     """
@@ -131,7 +139,12 @@ class GPT2PlusPlus(nn.Module):
         for block in self.nirodha_blocks:
             block.set_anchor()
             
-    def forward(self, input_ids, attention_mask=None, task=None):
+    def update_beta(self, new_beta):
+        """Updates beta for all nirodha blocks."""
+        for block in self.nirodha_blocks:
+            block.beta = new_beta
+            
+    def forward(self, input_ids, attention_mask=None, loop_k=1):
         # 1. Base Embeddings
         hidden_states = self.base.transformer.wte(input_ids)
         position_ids = torch.arange(0, input_ids.size(1), device=input_ids.device)
@@ -144,8 +157,11 @@ class GPT2PlusPlus(nn.Module):
             hidden_states = block(hidden_states)[0]
             
         # 3. Nirodha Layers (Trainable)
-        for block in self.nirodha_blocks:
-            hidden_states = block(hidden_states)
+        self.drifts = []
+        for _ in range(loop_k):
+            for block in self.nirodha_blocks:
+                hidden_states = block(hidden_states)
+                self.drifts.append(block.last_drift.item())
             
         # 4. Final Output
         hidden_states = self.base.transformer.ln_f(hidden_states)

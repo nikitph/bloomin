@@ -1,0 +1,224 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+% Page geometry
+\geometry{margin=1in}
+
+% Colors
+\definecolor{alertred}{RGB}{220,53,69}
+\definecolor{forestgreen}{RGB}{34,139,34}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Forest Watch Report}
+\lhead{Thane Range Analysis}
+\rfoot{Page \thepage}
+
+\title{Satellite-Based Vegetation Change Detection Report\\[0.3em]
+\large Thane Range, Maharashtra}
+\author{Amul Rangnekar \\ Nikit Phadke}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report presents the findings of a satellite-based vegetation change detection analysis conducted on the Thane Range forest area in Maharashtra, India. Using Sentinel-2 imagery and NDVI (Normalized Difference Vegetation Index) analysis, we compared vegetation conditions between December 2023 and November-December 2024 to identify potential deforestation or land-use changes. The analysis revealed approximately 177 hectares of significant vegetation loss, warranting field verification.
+\end{abstract}
+
+\section{Introduction}
+
+Deforestation and illegal land-use changes pose significant threats to forest ecosystems in India. The Thane Range, located near Mumbai in Maharashtra, is part of the ecologically sensitive Western Ghats region and requires continuous monitoring to detect and prevent unauthorized activities.
+
+This analysis employs remote sensing techniques using freely available Sentinel-2 satellite imagery accessed through Google Earth Engine. The NDVI metric provides a reliable indicator of vegetation health, with significant decreases potentially indicating deforestation, fire damage, or land clearing.
+
+\section{Study Area}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Location & Thane Range, Maharashtra \\
+Region & Western Ghats / Sanjay Gandhi National Park vicinity \\
+Bounding Box & 73.0034°E, 19.0777°N to 73.0545°E, 19.2060°N \\
+Total Area & Approximately 81 sq km \\
+\bottomrule
+\end{tabular}
+\caption{Study Area Parameters}
+\end{table}
+
+\section{Methodology}
+
+\subsection{Data Source}
+Sentinel-2 Surface Reflectance (SR) imagery from the Copernicus program was used for this analysis. Images with cloud cover less than 30\% were selected and cloud-masked using the QA60 band.
+
+\subsection{Time Periods}
+\begin{itemize}
+    \item \textbf{Baseline Period:} December 1-31, 2023 (4 images)
+    \item \textbf{Current Period:} November 1 - December 15, 2024 (9 images)
+\end{itemize}
+
+\subsection{NDVI Calculation}
+NDVI was computed using the standard formula:
+\[
+NDVI = \frac{NIR - Red}{NIR + Red} = \frac{B8 - B4}{B8 + B4}
+\]
+
+Median composites were created for each period to reduce noise and cloud artifacts. Change was calculated as:
+\[
+\Delta NDVI = NDVI_{current} - NDVI_{baseline}
+\]
+
+\subsection{Alert Thresholds}
+\begin{itemize}
+    \item \textbf{Significant Loss:} $\Delta NDVI < -0.15$
+    \item \textbf{Moderate Loss:} $\Delta NDVI < -0.10$
+\end{itemize}
+
+\section{Results}
+
+\subsection{Change Statistics}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lrl}
+\toprule
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\midrule
+Mean NDVI Change & +0.0196 & Slight overall vegetation gain \\
+Standard Deviation & 0.0759 & Moderate variability \\
+Minimum Change & -0.7234 & Severe localized loss \\
+Maximum Change & +0.6287 & Significant localized gain \\
+\midrule
+Significant Loss Area & \textbf{176.67 ha} & NDVI drop $>$ 0.15 \\
+Moderate Loss Area & 322.67 ha & NDVI drop $>$ 0.10 \\
+\midrule
+\textbf{Alert Level} & \multicolumn{2}{c}{\textcolor{alertred}{\textbf{HIGH}}} \\
+\bottomrule
+\end{tabular}
+\caption{Vegetation Change Detection Results}
+\end{table}
+
+\subsection{Visualization}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{dec2023.png}
+    \caption{Baseline NDVI (December 2023)}
+    \label{fig:baseline}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{dec2024.png}
+    \caption{Current NDVI (Nov-Dec 2024)}
+    \label{fig:current}
+\end{subfigure}
+\caption{NDVI Composites: Baseline vs Current Period}
+\label{fig:ndvi_comparison}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{change.png}
+    \caption{NDVI Change Map (Red=Loss, Green=Gain)}
+    \label{fig:change}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{changeonly.png}
+    \caption{Significant Loss Areas Only (Red)}
+    \label{fig:loss}
+\end{subfigure}
+\caption{Change Detection Results: Full change map and areas with significant vegetation loss highlighted.}
+\label{fig:change_maps}
+\end{figure}
+
+\section{Discussion}
+
+\subsection{Key Findings}
+
+While the overall mean NDVI change is slightly positive (+0.0196), indicating general vegetation stability or growth across the study area, the analysis reveals \textbf{localized hotspots of significant vegetation loss} totaling approximately 177 hectares.
+
+The presence of extreme negative values (minimum change of -0.7234) indicates areas where vegetation has been almost completely removed, which is characteristic of:
+\begin{itemize}
+    \item Clear-cutting or deforestation
+    \item Construction and development activities
+    \item Fire damage
+    \item Quarrying or mining operations
+    \item Landslides (given the hilly terrain)
+\end{itemize}
+
+\subsection{Spatial Distribution}
+
+The loss areas appear to be distributed across specific locations rather than uniformly spread, suggesting targeted anthropogenic activity rather than natural seasonal variation. The moderate loss zone (322 hectares) surrounding the significant loss areas may indicate:
+\begin{itemize}
+    \item Edge effects from clearing activities
+    \item Gradual degradation
+    \item Areas at risk of future loss
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item Seasonal variations between December and November may affect NDVI values
+    \item Cloud masking may not capture all atmospheric interference
+    \item 10-meter resolution may miss small-scale changes
+    \item Phenological differences in vegetation types not accounted for
+\end{itemize}
+
+\section{Recommendations}
+
+\begin{enumerate}
+    \item \textbf{Field Verification:} Deploy personnel to verify the 176.67 hectares of significant loss areas and determine the cause of vegetation change.
+
+    \item \textbf{Hotspot Prioritization:} Focus initial investigation on areas showing the most severe NDVI decline (approaching -0.7).
+
+    \item \textbf{Continuous Monitoring:} Establish monthly monitoring cycles to detect new changes early.
+
+    \item \textbf{Historical Analysis:} Conduct multi-year trend analysis to distinguish between seasonal patterns and permanent land-use changes.
+
+    \item \textbf{Cross-Reference:} Compare findings with:
+    \begin{itemize}
+        \item Approved development permits
+        \item Fire incident reports
+        \item Encroachment complaints
+    \end{itemize}
+\end{enumerate}
+
+\section{Conclusion}
+
+The satellite-based analysis of Thane Range reveals a \textcolor{alertred}{\textbf{HIGH alert}} condition due to approximately 177 hectares of significant vegetation loss detected between December 2023 and late 2024. While the overall forest cover remains stable, the localized loss areas require immediate field investigation to determine causation and appropriate response measures.
+
+This automated monitoring approach demonstrates the feasibility of using freely available satellite imagery for regular forest surveillance, enabling early detection of potential illegal activities or environmental threats.
+
+\vspace{1cm}
+
+\noindent\rule{\textwidth}{0.4pt}
+
+\small
+\noindent\textbf{Data Sources:} Copernicus Sentinel-2 via Google Earth Engine \\
+\textbf{Analysis Platform:} Forest Watch API v0.1.0 \\
+\textbf{Report Generated:} \today
+
+\end{document}
