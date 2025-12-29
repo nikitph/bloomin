@@ -466,3 +466,4 @@ cython_debug/
 /forest-watch/boundary_tiles/tile_09_before.png
 /forest-watch/boundary_tiles/tile_10_after.png
 /forest-watch/boundary_tiles/tile_10_before.png
+/hallucination_impedance_test/dataset.json
