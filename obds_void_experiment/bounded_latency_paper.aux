@@ -9,27 +9,27 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3}Method: Distance Field Void Detection}{2}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Representation}{2}{subsection.3.1}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces GPU Distance Transform}}{2}{algorithm.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Void detection scaling.} Query time vs number of points for classical Delaunay (red) and GPU distance transform (green). Classical time grows rapidly while GPU time remains bounded. At $N=10^6$, speedup is 683$\times $. Log-log scale.}}{3}{figure.1}\protected@file@percent }
+\newlabel{fig:scaling}{{1}{3}{\textbf {Void detection scaling.} Query time vs number of points for classical Delaunay (red) and GPU distance transform (green). Classical time grows rapidly while GPU time remains bounded. At $N=10^6$, speedup is 683$\times $. Log-log scale}{figure.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Query Semantics}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Complexity Analysis}{3}{subsection.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{3}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Synthetic Scaling Benchmark}{3}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Speedup Growth}{3}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}LiDAR Validation}{3}{subsection.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Void detection scaling.} Query time vs number of points for classical Delaunay (red) and GPU distance transform (green). Classical time grows rapidly while GPU time remains bounded. At $N=10^6$, speedup is 683$\times $. Log-log scale.}}{4}{figure.1}\protected@file@percent }
-\newlabel{fig:scaling}{{1}{4}{\textbf {Void detection scaling.} Query time vs number of points for classical Delaunay (red) and GPU distance transform (green). Classical time grows rapidly while GPU time remains bounded. At $N=10^6$, speedup is 683$\times $. Log-log scale}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {GPU speedup growth.} Speedup (Classical / GPU) vs number of points. Speedup grows rapidly, reaching 683$\times $ at $N=10^6$. Crossover at $N \approx 50k$ where GPU overhead is amortized.}}{4}{figure.2}\protected@file@percent }
+\newlabel{fig:speedup}{{2}{4}{\textbf {GPU speedup growth.} Speedup (Classical / GPU) vs number of points. Speedup grows rapidly, reaching 683$\times $ at $N=10^6$. Crossover at $N \approx 50k$ where GPU overhead is amortized}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Speedup Growth}{4}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}LiDAR Validation}{4}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Extreme-Scale Validation (10M Points)}{4}{subsection.4.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{4}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Complexity Shift}{4}{subsection.5.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {GPU speedup growth.} Speedup (Classical / GPU) vs number of points. Speedup grows superlinearly, reaching 683$\times $ at $N=10^6$. Crossover at $N \approx 50k$ where GPU overhead is amortized.}}{5}{figure.2}\protected@file@percent }
-\newlabel{fig:speedup}{{2}{5}{\textbf {GPU speedup growth.} Speedup (Classical / GPU) vs number of points. Speedup grows superlinearly, reaching 683$\times $ at $N=10^6$. Crossover at $N \approx 50k$ where GPU overhead is amortized}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Why Classical Methods Fail}{5}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Generalization Beyond Voids}{5}{subsection.5.3}\protected@file@percent }
 \bibstyle{plain}
 \bibdata{references}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {LiDAR real-time validation.} (Left) Query time per frame. Classical (red) exceeds real-time threshold (orange dashed) for all frames. GPU (green) achieves 4--10ms, meeting 30 Hz requirement for 14/15 frames. (Right) Speedup per frame, average 62.9$\times $.}}{6}{figure.3}\protected@file@percent }
-\newlabel{fig:lidar}{{3}{6}{\textbf {LiDAR real-time validation.} (Left) Query time per frame. Classical (red) exceeds real-time threshold (orange dashed) for all frames. GPU (green) achieves 4--10ms, meeting 30 Hz requirement for 14/15 frames. (Right) Speedup per frame, average 62.9$\times $}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Limitations}{6}{subsection.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{6}{section.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {Extreme-scale validation.} GPU query time vs number of points up to 10 million. From $N=10^5$ to $N=10^7$ (100$\times $ increase), query time grows from 33ms to 63ms (1.9$\times $ increase). Mean query time for $N \geq 10^6$ is 54ms (green dashed line). This near-constant behavior definitively proves $O(1)$ query complexity.}}{7}{figure.4}\protected@file@percent }
-\newlabel{fig:extreme}{{4}{7}{\textbf {Extreme-scale validation.} GPU query time vs number of points up to 10 million. From $N=10^5$ to $N=10^7$ (100$\times $ increase), query time grows from 33ms to 63ms (1.9$\times $ increase). Mean query time for $N \geq 10^6$ is 54ms (green dashed line). This near-constant behavior definitively proves $O(1)$ query complexity}{figure.4}{}}
-\gdef \@abspage@last{7}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {LiDAR real-time validation.} (Left) Query time per frame. Classical (red) exceeds the real-time threshold (33ms) for all frames. GPU (green) achieves 4–10ms, meeting 30 Hz requirements for 14/15 frames. (Right) Speedup per frame, average 62.9$\times $.}}{5}{figure.3}\protected@file@percent }
+\newlabel{fig:lidar}{{3}{5}{\textbf {LiDAR real-time validation.} (Left) Query time per frame. Classical (red) exceeds the real-time threshold (33ms) for all frames. GPU (green) achieves 4–10ms, meeting 30 Hz requirements for 14/15 frames. (Right) Speedup per frame, average 62.9$\times $}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Why Classical Methods Fail}{5}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Generalization Beyond Voids}{5}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Limitations}{5}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{5}{section.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {Extreme-scale validation.} GPU query time vs number of points up to 10 million. From $N=10^5$ to $N=10^7$ (100$\times $ increase), query time grows from 33ms to 63ms (1.9$\times $ increase). Mean query time for $N \geq 10^6$ is 54ms. This demonstrates bounded query time with no observable dependence on $N$ over the tested range.}}{6}{figure.4}\protected@file@percent }
+\newlabel{fig:extreme}{{4}{6}{\textbf {Extreme-scale validation.} GPU query time vs number of points up to 10 million. From $N=10^5$ to $N=10^7$ (100$\times $ increase), query time grows from 33ms to 63ms (1.9$\times $ increase). Mean query time for $N \geq 10^6$ is 54ms. This demonstrates bounded query time with no observable dependence on $N$ over the tested range}{figure.4}{}}
+\gdef \@abspage@last{6}
