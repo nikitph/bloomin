@@ -1,0 +1,24 @@
+[package]
+name = "braid-fold-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ndarray = "0.17.1"
+rand = "0.9.2"
+
+[[bin]]
+name = "braid-fold-rs"
+path = "src/main.rs"
+
+[[bin]]
+name = "sub-angstrom"
+path = "src/sub_angstrom.rs"
+
+[[bin]]
+name = "quenched"
+path = "src/quenched.rs"
+
+[[bin]]
+name = "skeptic-elimination"
+path = "src/skeptic_elimination.rs"
