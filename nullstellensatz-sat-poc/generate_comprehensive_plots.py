@@ -103,31 +103,30 @@ print("Generated: blackbox_vs_whitebox.png")
 plt.close()
 
 # 2. Complexity Comparison
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(11, 7))
 
 N = np.arange(10, 200, 10)
-stochastic = 3**N / 1e80  # Scaled down for visualization
-hamiltonian = N * 10  # Linear scaling
+# Rescale to make both curves visible
+stochastic = np.exp(N * 0.15)  # Exponential growth
+hamiltonian = N  # Linear growth
 
 ax.semilogy(N, stochastic, 'r-', linewidth=3, label='Stochastic Search: $O(3^N)$')
 ax.semilogy(N, hamiltonian, 'g-', linewidth=3, label='Hamiltonian Flow: $O(N)$')
 
-ax.set_xlabel('Sequence Length (N)', fontsize=13, fontweight='bold')
-ax.set_ylabel('Computational States (log scale)', fontsize=13, fontweight='bold')
-ax.set_title('Levinthal\'s Paradox: Exponential vs Linear Complexity', fontsize=14, fontweight='bold')
-ax.legend(fontsize=12, loc='upper left')
+ax.set_xlabel('Sequence Length (N)', fontsize=14, fontweight='bold')
+ax.set_ylabel('Computational Complexity (log scale)', fontsize=14, fontweight='bold')
+ax.set_title('Levinthal\'s Paradox: Exponential vs Linear Complexity', fontsize=15, fontweight='bold', pad=20)
+ax.legend(fontsize=13, loc='upper left')
 ax.grid(True, alpha=0.3)
 
-# Add annotation
-ax.annotate('Levinthal\'s Barrier\n$3^{300}$ states', 
-           xy=(100, 1e20), xytext=(130, 1e30),
-           arrowprops=dict(arrowstyle='->', lw=2, color='red'),
-           fontsize=11, color='red', fontweight='bold')
+# Labels positioned near their curves
+ax.text(140, 3e7, 'Exponential\nBarrier', ha='center', fontsize=12, 
+        color='red', fontweight='bold',
+        bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='red', alpha=0.95, linewidth=2))
 
-ax.annotate('Topological Snap\n$N$ states', 
-           xy=(150, 150*10), xytext=(120, 1e10),
-           arrowprops=dict(arrowstyle='->', lw=2, color='green'),
-           fontsize=11, color='green', fontweight='bold')
+ax.text(170, 120, 'Linear\nFlow', ha='center', fontsize=12, 
+        color='green', fontweight='bold',
+        bbox=dict(boxstyle='round,pad=0.5', facecolor='white', edgecolor='green', alpha=0.95, linewidth=2))
 
 plt.tight_layout()
 plt.savefig('complexity_comparison.png', dpi=300, bbox_inches='tight')
