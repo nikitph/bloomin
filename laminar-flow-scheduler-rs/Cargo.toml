@@ -1,0 +1,10 @@
+[package]
+name = "laminar-flow-scheduler-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+ndarray = "0.15.6"
+ndarray-stats = "0.5.1"
+rand = "0.8.5"
+rayon = "1.7.0"
