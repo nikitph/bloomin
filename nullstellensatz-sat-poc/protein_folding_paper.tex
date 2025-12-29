@@ -1,7 +1,7 @@
 \documentclass[10pt,twocolumn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath, amsfonts, amssymb, amsthm}
-\usepackage{graphicx, booktabs, geometry, xcolor, multicol}
+\usepackage{graphicx, booktabs, hyperref, geometry, xcolor, multicol}
 \geometry{margin=0.7in}
 
 \newtheorem{theorem}{Theorem}
@@ -10,7 +10,14 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}{Definition}
 
-% Hyperref removed to avoid font issues with BasicTeX
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={The Topological Snap: Solving Levinthal's Paradox},
+    pdfauthor={Advanced Protein Dynamics Laboratory},
+}
 
 \title{\textbf{\LARGE The Topological Snap: \\ \large Solving Levinthal's Paradox via Hamiltonian Manifold Flow}}
 \author{\textbf{Advanced Protein Dynamics Laboratory}}
@@ -272,7 +279,9 @@ We have demonstrated that protein folding is a solved problem of symplectic geom
 \section*{Data and Code Availability}
 Implementation available at: github.com/ouroboros-sieve/topological-snap
 
-% Bibliography removed to avoid font issues with BasicTeX
-% References: Levinthal (1969), Jumper et al. (2021)
+\begin{thebibliography}{9}
+\bibitem{levinthal1969} Levinthal, C. (1969). How to fold graciously. \textit{Mossbauer Spectroscopy in Biological Systems}, 22-24.
+\bibitem{jumper2021} Jumper, J., et al. (2021). Highly accurate protein structure prediction with AlphaFold. \textit{Nature}, 596(7873), 583-589.
+\end{thebibliography}
 
 \end{document}
