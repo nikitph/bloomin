@@ -23,3 +23,12 @@ The framework now includes a built-in benchmark that measures:
 - **False Positive Rate (FPR)**
 - **Query Latency (µs)**
 - **Memory Consumption (Bytes)**
+
+## Mechanistic Interpretability (Shadow Theory)
+The MVC framework now supports "Shadow Theory" based mechanistic interpretability.
+- **LIFT → DECOMPOSE → INTERPRET**: Map neural network weights to parent structures in Representation Theory, Differential Geometry, and RG Flow.
+- **Interpretable by Design**: Build networks using compositional primitives that are interpretable by construction.
+- **Circuit Discovery**: Automatically discover and visualize the irreducible circuits within a model.
+
+See `mechanistic.py` and `interpretable_transformer.py` for implementation details.
+Run `verify_mechanistic.py` for a full demonstration.

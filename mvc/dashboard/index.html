@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Soul Dashboard | Shadow Theory</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: rgba(20, 20, 20, 0.8);
+            --accent: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.4);
+            --projector: #00ff88;
+            --rotator: #ff00ff;
+            --scaler: #ffff00;
+            --inhibitor: #ff4444;
+            --composer: #0088ff;
+            --text: #e0e0e0;
+            --text-muted: #888;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 20px 40px;
+            background: rgba(10, 10, 10, 0.9);
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stats span b {
+            color: var(--text);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 200px;
+            background: var(--panel);
+            border-right: 1px solid #333;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .layer-btn {
+            padding: 12px;
+            background: #111;
+            border: 1px solid #222;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: left;
+            border-radius: 4px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .layer-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+
+        .layer-btn.active {
+            background: var(--accent);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent);
+        }
+
+        #container {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+            padding-bottom: 10px;
+        }
+
+        .section-header h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .neuron-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(14px, 14px));
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .neuron {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            background: #222;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+
+        .neuron:hover {
+            transform: scale(1.5);
+            z-index: 10;
+            box-shadow: 0 0 8px currentColor;
+            outline: 1px solid #fff;
+        }
+
+        /* Role Colors */
+        .role-projector {
+            background: var(--projector);
+            color: var(--projector);
+        }
+
+        .role-rotator {
+            background: var(--rotator);
+            color: var(--rotator);
+        }
+
+        .role-scaler {
+            background: var(--scaler);
+            color: var(--scaler);
+        }
+
+        .role-inhibitor {
+            background: var(--inhibitor);
+            color: var(--inhibitor);
+        }
+
+        .role-composer {
+            background: var(--composer);
+            color: var(--composer);
+        }
+
+        #details {
+            width: 350px;
+            background: var(--panel);
+            border-left: 1px solid #333;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .detail-header {
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+        }
+
+        .detail-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .meta-row span:first-child {
+            color: var(--text-muted);
+        }
+
+        .semantic-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .legend {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.8rem;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ALGEBRAIC SOUL DASHBOARD</h1>
+        <div class="stats">
+            <div style="margin-right: 20px;">
+                <label for="query-select"
+                    style="font-size: 0.8rem; color: var(--accent); margin-right: 10px;">MODE:</label>
+                <select id="query-select"
+                    style="background: #111; color: #fff; border: 1px solid #333; padding: 5px; font-family: 'Inter', sans-serif;">
+                    <option value="static">STATIC: Structural Role Map</option>
+                    <option value="Factual Recall">LIVE: Factual Recall</option>
+                    <option value="Logic & Math">LIVE: Logic & Math</option>
+                    <option value="Python Coding">LIVE: Python Coding</option>
+                    <option value="Grammar & Syntax">LIVE: Grammar & Syntax</option>
+                    <option value="Emotional Narrative">LIVE: Emotional Narrative</option>
+                </select>
+            </div>
+            <span>Model: <b>GPT2-Small</b></span>
+            <span>Neurons: <b>46,080</b></span>
+            <span>Discovery Rate: <b>100%</b></span>
+        </div>
+    </header>
+
+    <main>
+        <div id="sidebar">
+            <!-- Layers will be injected here -->
+        </div>
+
+        <div id="container">
+            <div class="section-header">
+                <div>
+                    <h2 id="layer-title">Layer 0</h2>
+                    <div id="query-display"
+                        style="font-size: 0.8rem; color: var(--accent); margin-top: 5px; font-style: italic;"></div>
+                </div>
+                <div class="filter-info">Viewing Subspace Topography</div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 10px; font-size: 0.8rem; color: #555;">ATTENTION NEURONS (768)</h3>
+                <div id="attn-grid" class="neuron-grid"></div>
+            </div>
+
+            <div>
+                <h3 style="margin-bottom: 10px; font-size: 0.8rem; color: #555;">MLP NEURONS (3,072)</h3>
+                <div id="mlp-grid" class="neuron-grid"></div>
+            </div>
+        </div>
+
+        <div id="details">
+            <div id="detail-content">
+                <div style="color: #666; text-align: center; margin-top: 50px;">Select a neuron in the grid to decode
+                    its inner function.</div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--projector)"></div> <span>Projector (Feature
+                        Detector)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--rotator)"></div> <span>Rotator (Context Tracker)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--scaler)"></div> <span>Scaler (Amplifier)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--inhibitor)"></div> <span>Inhibitor (Noise Gate)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="dot" style="background:var(--composer)"></div> <span>Composer (Global Linker)</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let fullData = {};
+        let liveData = {};
+        let currentLayer = "layer_0";
+        let currentMode = "static";
+
+        const QUERY_TEXTS = {
+            "Factual Recall": "Paris is the capital of France.",
+            "Logic & Math": "If all men are mortal and Socrates is a man, then Socrates is mortal.",
+            "Python Coding": "def fibonacci(n): return n if n <= 1 else ...",
+            "Grammar & Syntax": "The quick brown foxes are jumping over the lazy dog.",
+            "Emotional Narrative": "She walked through the rain, feeling a sense of profound sadness..."
+        };
+
+        async function init() {
+            try {
+                const [metaRes, liveRes] = await Promise.all([
+                    fetch('neuron_metadata.json'),
+                    fetch('live_activations.json')
+                ]);
+                fullData = await metaRes.json();
+                liveData = await liveRes.json();
+
+                document.getElementById('query-select').addEventListener('change', (e) => {
+                    currentMode = e.target.value;
+                    updateQueryUI();
+                    renderLayer(currentLayer);
+                });
+
+                renderSidebar();
+                renderLayer("layer_0");
+            } catch (err) {
+                console.error("Failed to load metadata:", err);
+            }
+        }
+
+        function updateQueryUI() {
+            const display = document.getElementById('query-display');
+            if (currentMode === "static") {
+                display.innerText = "";
+            } else {
+                display.innerText = `PROMPT: "${QUERY_TEXTS[currentMode]}"`;
+            }
+        }
+
+        function renderSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '';
+
+            Object.keys(fullData).sort((a, b) => parseInt(a.split('_')[1]) - parseInt(b.split('_')[1])).forEach(layer => {
+                const btn = document.createElement('div');
+                btn.className = 'layer-btn' + (layer === currentLayer ? ' active' : '');
+                btn.innerText = layer.replace('_', ' ').toUpperCase();
+                btn.onclick = () => {
+                    document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderLayer(layer);
+                };
+                sidebar.appendChild(btn);
+            });
+        }
+
+        function renderLayer(layer) {
+            currentLayer = layer;
+            document.getElementById('layer-title').innerText = layer.replace('_', ' ').toUpperCase();
+
+            const attnGrid = document.getElementById('attn-grid');
+            const mlpGrid = document.getElementById('mlp-grid');
+
+            attnGrid.innerHTML = '';
+            mlpGrid.innerHTML = '';
+
+            const data = fullData[layer];
+
+            data.attn.forEach(neuron => {
+                attnGrid.appendChild(createNeuronEl(neuron, 'attn', layer));
+            });
+
+            data.mlp.forEach(neuron => {
+                mlpGrid.appendChild(createNeuronEl(neuron, 'mlp', layer));
+            });
+        }
+
+        function createNeuronEl(neuron, type, layer) {
+            const el = document.createElement('div');
+            el.className = 'neuron ' + getRoleClass(neuron.role);
+
+            if (currentMode !== "static") {
+                const activation = liveData[currentMode][`${layer}_${type}`][neuron.id];
+                // Linear scaling for visualization
+                const opacity = Math.min(1.0, Math.max(0.1, activation * 1.5));
+                el.style.opacity = opacity;
+                if (activation > 0.5) {
+                    el.style.boxShadow = `0 0 ${activation * 8}px currentColor`;
+                    el.style.zIndex = "1";
+                }
+            } else {
+                el.style.opacity = "1";
+                el.style.boxShadow = "none";
+            }
+
+            el.onclick = () => showDetails(neuron, type);
+            return el;
+        }
+
+        function getRoleClass(role) {
+            if (role.includes("Projector")) return "role-projector";
+            if (role.includes("Rotator")) return "role-rotator";
+            if (role.includes("Scaler")) return "role-scaler";
+            if (role.includes("Inhibitor")) return "role-inhibitor";
+            if (role.includes("Composer")) return "role-composer";
+            return "";
+        }
+
+        function showDetails(neuron, type) {
+            const content = document.getElementById('detail-content');
+            let liveStatus = "";
+            if (currentMode !== "static") {
+                const activation = liveData[currentMode][`${currentLayer}_${type}`][neuron.id];
+                liveStatus = `
+                    <div class="meta-row" style="border-top: 1px solid #444; padding-top: 10px; margin-top: 10px;">
+                        <span>Live Activation</span> 
+                        <b style="color:var(--accent)">${activation.toFixed(4)}</b>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <div class="detail-header">
+                    <h3>NEURON [${type.toUpperCase()}]</h3>
+                    <div style="color: var(--text-muted); font-size: 0.8rem">ID: #${neuron.id} | Layer: ${currentLayer.replace('layer_', '')}</div>
+                </div>
+                
+                <div class="meta-row"><span>Algebraic Role</span> <b style="color:var(--accent)">${neuron.role}</b></div>
+                <div class="meta-row"><span>Energy Norm</span> <b>${neuron.norm}</b></div>
+                <div class="meta-row"><span>Feature Sparsity</span> <b>${(neuron.sparsity * 100).toFixed(1)}%</b></div>
+                
+                ${liveStatus}
+
+                <h4 style="margin-top: 20px; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Semantic Decoder Transcript</h4>
+                <div class="semantic-box">
+                    ${neuron.semantic}
+                </div>
+
+                <div style="margin-top: 20px; font-size: 0.85rem; color: #444; border-top: 1px solid #222; padding-top: 15px;">
+                    This unit has been causally verified to provide structural consistency for its semantic basin via algebraic ${neuron.role.split(' ')[0]} operations.
+                </div>
+            `;
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

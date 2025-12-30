@@ -467,3 +467,6 @@ cython_debug/
 /forest-watch/boundary_tiles/tile_10_after.png
 /forest-watch/boundary_tiles/tile_10_before.png
 /hallucination_impedance_test/dataset.json
+/mvc/dashboard/live_activations.json
+/mvc/dashboard/neuron_metadata.json
+/mvc/mvc/model.safetensors
