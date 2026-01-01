@@ -66,7 +66,7 @@ class DualBenchmark:
 
 def run_dual_experiment():
     bench = DualBenchmark()
-    bench.train(length=3, epochs=200) # Little more training
+    bench.train(length=3, epochs=1000) # Extended training for deeper generalization
     results = bench.evaluate()
     print("\n--- Experiment 3c: Dual State Results ---")
     print(results)
