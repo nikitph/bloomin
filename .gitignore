@@ -470,3 +470,14 @@ cython_debug/
 /mvc/dashboard/live_activations.json
 /mvc/dashboard/neuron_metadata.json
 /mvc/mvc/model.safetensors
+/checkpoints/obds_diffusion_mnist.pt
+/pei/data/cifar-10-batches-py/batches.meta
+/pei/data/cifar-10-batches-py/data_batch_1
+/pei/data/cifar-10-batches-py/data_batch_2
+/pei/data/cifar-10-batches-py/data_batch_3
+/pei/data/cifar-10-batches-py/data_batch_4
+/pei/data/cifar-10-batches-py/data_batch_5
+/pei/data/cifar-10-batches-py/readme.html
+/pei/data/cifar-10-batches-py/test_batch
+/pei/data/cifar-10-python.tar.gz
+/pei/data/cifar_pei.json

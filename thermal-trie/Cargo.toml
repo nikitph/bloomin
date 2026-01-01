@@ -1,0 +1,16 @@
+[package]
+name = "thermal-trie"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# We'll stick to std where possible for minimal deps, as requested.
+# But for random numbers if needed? The algo is deterministic.
+# We might need `rustc-hash` for faster HashMaps if needed, but std is fine for now.
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "trie_benchmark"
+harness = false

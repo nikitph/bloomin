@@ -1,0 +1,21 @@
+[package]
+name = "pei"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bit-set = "0.5"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "search_benchmark"
+harness = false
+
+[[bench]]
+name = "advanced_benchmark"
+harness = false
