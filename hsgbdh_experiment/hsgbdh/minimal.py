@@ -80,15 +80,24 @@ class MinimalHSGBDH(nn.Module):
             if targets is not None and t < seq_len - 1:
                 # Use next token from targets as positive signal
                 target_next = targets[:, t+1, :] # (B, d)
-                # Map target to neurons?
+                # Map target to neurons
                 tv_t = F.layer_norm(target_next @ self.E, normalized_shape=(self.n,))
                 target_neurons = F.relu(tv_t)
                 update_signal = target_neurons
-            else:
-                update_signal = y_t
-            
-            update_matrix = torch.bmm(x_neurons.unsqueeze(2), update_signal.unsqueeze(1)) # (B, n, n)
-            G = torch.max(G, update_matrix * 0.5)
+                
+                # Update G
+                update_matrix = torch.bmm(x_neurons.unsqueeze(2), update_signal.unsqueeze(1)) # (B, n, n)
+                G = torch.max(G, update_matrix * 0.5)
+            elif targets is None:
+                # Use prediction y_t as signal
+                # Project y_t (B, d) back to neuron space (B, n)
+                tv_t = F.layer_norm(y_t @ self.E, normalized_shape=(self.n,))
+                pred_neurons = F.relu(tv_t)
+                update_signal = pred_neurons
+                
+                # Update G
+                update_matrix = torch.bmm(x_neurons.unsqueeze(2), update_signal.unsqueeze(1)) # (B, n, n)
+                G = torch.max(G, update_matrix * 0.5)
         
         # Store G for inspection if needed
         self.last_G = G

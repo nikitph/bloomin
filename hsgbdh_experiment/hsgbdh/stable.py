@@ -169,6 +169,79 @@ def damped_closure(G, max_hops=10, self_loop_penalty=0.5, temperature=1.0, decay
     # Reconstruct
     G_damped = G_transition + G_self
     
-    # Compute closure on damped graph
     return stable_transitive_closure(G_damped, max_hops=max_hops, temperature=temperature, decay=decay)
+
+def multi_timescale_closure(G, max_hops=10, temperature=1.0):
+    """
+    Apply distance-dependent decay using iterative power method.
+    Decay schedule: [0.95, 0.90, 0.85, 0.80, 0.75, 0.70...]
+    """
+    semiring = LogSpaceTropicalSemiring(base=10.0)
+    
+    # Check inputs
+    if torch.isnan(G).any():
+        print("NaN in input G (multiscale)!")
+    
+    G_log = semiring.to_log_space(G)
+    
+    # G_power tracks paths of length 'hop' exactly
+    G_power_log = G_log.clone()
+    
+    # G_star tracks best path found so far (of any length)
+    G_star_log = G_log.clone()
+    
+    # Hardcoded schedule for the experiment
+    # decay_schedule = [0.95, 0.90, 0.85, 0.80, 0.75, 0.70]
+    # Log decay values
+    schedule = [0.95, 0.90, 0.85, 0.80, 0.75, 0.70]
+    log_schedule = [torch.log(torch.tensor(d + 1e-18)) / torch.log(torch.tensor(10.0)) for d in schedule]
+    last_decay = log_schedule[-1]
+    
+    # Pre-apply decay to 1-hop? 
+    # User's code applies decay inside loop (starts hop=1).
+    # If hop=1 (initial G), decay is 0.95.
+    # So G_star should be decayed too? 
+    # Let's apply decay to G_star initially for consistency? 
+    # Or just let G_star be raw G (hop 1) and assume G_power loop starts from hop 2?
+    # User loop: for hop in range(1, max_hops).
+    # hop=1 implies we are computing G^2 (from G^1 * G).
+    # decay index: min(hop-1, ...). If hop=1, index 0 (0.95).
+    # So G^2 gets 0.95 decay. G^1 (initial) has NO decay.
+    # This preserves immediate signals.
+    
+    for hop in range(1, max_hops):
+        # Compose G_power * G -> Next Power
+        # G_power represents G^hop. We want G^{hop+1}.
+        G_next_log = semiring.compose(G_power_log, G_log)
+        
+        # Apply decay
+        s_idx = min(hop - 1, len(log_schedule) - 1)
+        decay = log_schedule[s_idx]
+        G_next_log = G_next_log + decay
+        
+        # Normalize G_next?
+        # User code: G_star = G_star / max.
+        # Stabilizing the POWER matrix prevents it from exploding/vanishing.
+        # If we effectively track probability mass, we should normalize.
+        if temperature > 0:
+             max_val, _ = torch.max(G_next_log, dim=-1, keepdim=True)
+             G_next_log = G_next_log - max_val
+        
+        # Update Accumulator
+        G_star_log = semiring.max_op(G_star_log, G_next_log)
+        
+        # Move forward
+        G_power_log = G_next_log
+        
+    # Reconstruct
+    G_star = semiring.from_log_space(G_star_log)
+    
+    # Final Norm
+    if torch.isinf(G_star).any():
+        G_star[torch.isinf(G_star)] = 1e38
+    global_max = G_star.max()
+    if global_max > 0:
+        G_star = G_star / global_max
+        
+    return G_star
 
