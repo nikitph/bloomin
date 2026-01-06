@@ -207,3 +207,85 @@ class HyperedgeReasoner:
                 adj[t, s] = h['weight'] # Directed or undirected? Correlation is symmetric
                 
         return adj
+
+class TuringVoidDetector:
+    """
+    Detects knowledge gaps (voids) using accelerated Gray-Scott reaction-diffusion.
+    Voids are low-density regions in the generated Turing pattern.
+    """
+    def __init__(self, size=64):
+        self.size = size
+        
+    def detect_voids(self, field, threshold=0.3):
+        """
+        Run Gray-Scott on the field and find voids.
+        Args:
+            field: RADSField instance (used for initial seed)
+        Returns:
+            List of (r, c) coordinates of voids.
+        """
+        # 1. Initialize U, V from field
+        # U = background (1.0), V = pattern (0.0 + perturbations)
+        # Assume field.phi [1, d, H, W]
+        # Map to 2D activation for seeding
+        if field.phi.shape[1] > 1:
+            seed = torch.norm(field.phi[0], dim=0)
+        else:
+            seed = field.phi[0,0]
+            
+        # Initialize GS state
+        device = field.phi.device
+        u = torch.ones((self.size, self.size), device=device)
+        v = torch.zeros((self.size, self.size), device=device)
+        
+        # Inject seed into V
+        # Normalize seed to 0-1
+        v = seed * 0.5 + torch.rand_like(seed) * 0.01
+        # Sparsify!
+        vmin = v.min()
+        mask_sparse = torch.rand_like(v) > 0.95 # Only 5% active
+        v = v * mask_sparse
+        
+        # GS Parameters (Standard: F=0.055, k=0.062)
+        # Revert to standard since we fixed sparsity?
+        Du, Dv = 0.16, 0.08
+        F, k = 0.055, 0.062
+        dt = 0.2 # Stable step for sparse spikes
+        
+        # Evolve
+        for t in range(2000): # More steps due to smaller dt
+            # Laplacian
+            lu = self.laplacian(u)
+            lv = self.laplacian(v)
+            
+            uvv = u * v * v
+            du = Du * lu - uvv + F * (1 - u)
+            dv = Dv * lv + uvv - (F + k) * v
+            
+            u += dt * du
+            v += dt * dv
+            
+        # Detect Voids -> Centers of V spots
+        v_np = v.detach().cpu().numpy()
+        print(f"DEBUG: GS Max V: {v_np.max():.4f}, Mean: {v_np.mean():.4f}")
+        import scipy.ndimage as ndimage
+        
+        mask = v_np > threshold
+        labeled, num_features = ndimage.label(mask)
+        centers = ndimage.center_of_mass(v_np, labeled, range(1, num_features+1))
+        
+        if not isinstance(centers, list):
+            if isinstance(centers, tuple) and len(centers) == 2 and isinstance(centers[0], float):
+                 centers = [centers] # Single point
+            elif num_features == 0:
+                 centers = []
+                 
+        return centers
+
+    def laplacian(self, x):
+        # Simple finite difference laplacian with periodic BC
+        top = torch.roll(x, 1, 0)
+        bottom = torch.roll(x, -1, 0)
+        left = torch.roll(x, 1, 1)
+        right = torch.roll(x, -1, 1)
+        return top + bottom + left + right - 4 * x
