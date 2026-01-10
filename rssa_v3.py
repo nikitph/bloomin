@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import Optional, Tuple, List
 import math
+import numpy as np
 
 # ============================================================================
 # Core Architecture
@@ -39,38 +40,72 @@ class RSSA(nn.Module):
         self,
         vocab_size: int,
         d_model: int = 512,
-        d_observer: int = 128,
+        d_obs_fast: int = 16,
+        d_obs_slow: int = 64,
         n_layers: int = 6,
         n_heads: int = 8,
         processor_window: int = 256,
-        observer_tau: float = 0.99,
+        tau_fast: float = 0.7,
+        tau_slow: float = 0.95,
         chunk_size: int = 64,
-        dropout: float = 0.1
+        dropout: float = 0.1,
+        use_ssm: bool = True,
+        use_deep_decoder: bool = True
     ):
         super().__init__()
         
         self.vocab_size = vocab_size
         self.d_model = d_model
-        self.d_observer = d_observer
+        self.d_obs_fast = d_obs_fast
+        self.d_obs_slow = d_obs_slow
+        self.d_observer = d_obs_fast + d_obs_slow
         self.processor_window = processor_window
-        self.observer_tau = observer_tau
+        self.tau_fast = tau_fast
+        self.tau_slow = tau_slow
         self.chunk_size = chunk_size
+        self.use_ssm = use_ssm
+        self.use_deep_decoder = use_deep_decoder
         
         # Token embedding
         self.embedding = nn.Embedding(vocab_size, d_model)
         self.pos_encoding = PositionalEncoding(d_model, max_len=8192)
         
-        # Observer interface
-        self.obs_to_proc = nn.Linear(d_observer, d_model)
-        self.proc_to_obs = nn.Sequential(
+        # Hierarchical Observer interface
+        # Ingestion paths (stays same)
+        self.proc_to_obs_fast = nn.Sequential(
             nn.Linear(d_model, d_model),
             nn.GELU(),
-            nn.Linear(d_model, d_observer)
+            nn.Linear(d_model, d_obs_fast)
         )
-        self.update_gate = nn.Sequential(
-            nn.Linear(d_model, d_observer),
+        self.fast_gate = nn.Sequential(
+            nn.Linear(d_model, d_obs_fast),
             nn.Sigmoid()
         )
+        
+        self.proc_to_obs_slow = nn.Sequential(
+            nn.Linear(d_model, d_model),
+            nn.GELU(),
+            nn.Linear(d_model, d_obs_slow)
+        )
+        self.slow_gate = nn.Sequential(
+            nn.Linear(d_model, d_obs_slow),
+            nn.Sigmoid()
+        )
+        
+        # Decompression (Decoder) paths
+        if use_deep_decoder:
+            # Deep Decoder: Multi-layer MLP to map compressed state to context
+            self.decoder = nn.Sequential(
+                nn.Linear(d_obs_fast + d_obs_slow, d_model * 2),
+                nn.GELU(),
+                nn.Linear(d_model * 2, d_model),
+                nn.LayerNorm(d_model)
+            )
+        else:
+            # Shallow Baseline: Simple linear projection (per-state)
+            self.obs_fast_to_proc = nn.Linear(d_obs_fast, d_model // 2)
+            self.obs_slow_to_proc = nn.Linear(d_obs_slow, d_model // 2)
+            self.integrate_ctx = nn.Linear(d_model, d_model)
         
         # Processor layers
         self.layers = nn.ModuleList([
@@ -78,7 +113,8 @@ class RSSA(nn.Module):
                 d_model=d_model,
                 n_heads=n_heads,
                 window_size=processor_window,
-                dropout=dropout
+                dropout=dropout,
+                use_ssm=use_ssm
             )
             for _ in range(n_layers)
         ])
@@ -87,11 +123,9 @@ class RSSA(nn.Module):
         self.output_norm = nn.LayerNorm(d_model)
         self.output_proj = nn.Linear(d_model, vocab_size)
         
-        # Observer state (persistent across batches)
-        self.register_buffer(
-            'observer_state',
-            torch.zeros(1, 1, d_observer)
-        )
+        # Hierarchical observer states (persistent across batches)
+        self.register_buffer('obs_fast_state', torch.zeros(1, 1, d_obs_fast))
+        self.register_buffer('obs_slow_state', torch.zeros(1, 1, d_obs_slow))
         
         self._reset_parameters()
     
@@ -104,14 +138,16 @@ class RSSA(nn.Module):
     def forward(
         self,
         input_ids: torch.Tensor,
-        reset_observer: bool = False
+        reset_observer: bool = True,
+        ablate_observer: bool = False
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Forward pass with emergent observer
         
         Args:
             input_ids: [batch, seq_len] token indices
-            reset_observer: Whether to reset observer (for new sequences)
+            reset_observer: Whether to reset observer (for training/independent samples)
+            ablate_observer: Whether to zero out observer influence (for validation)
         
         Returns:
             logits: [batch, seq_len, vocab_size]
@@ -119,8 +155,14 @@ class RSSA(nn.Module):
         """
         batch_size, seq_len = input_ids.shape
         
+        # Per-batch observer states (prevents cross-sample contamination during training)
         if reset_observer:
-            self.observer_state.zero_()
+            curr_fast = torch.zeros(batch_size, 1, self.d_obs_fast, device=input_ids.device)
+            curr_slow = torch.zeros(batch_size, 1, self.d_obs_slow, device=input_ids.device)
+        else:
+            # Carry over from persistent buffers
+            curr_fast = self.obs_fast_state.expand(batch_size, -1, -1)
+            curr_slow = self.obs_slow_state.expand(batch_size, -1, -1)
         
         # Embed tokens
         x = self.embedding(input_ids)  # [batch, seq, d_model]
@@ -130,27 +172,27 @@ class RSSA(nn.Module):
         chunks = self._split_into_chunks(x)
         
         outputs = []
-        observer_history = []
-        
-        current_observer = self.observer_state.expand(batch_size, -1, -1)
+        observer_history = []  # We'll store concatenated (fast, slow) for history
         
         for chunk in chunks:
-            # Process chunk with observer
-            chunk_output, new_observer = self._process_chunk(
-                chunk, current_observer
+            # Process chunk with hierarchical observer
+            chunk_output, next_fast, next_slow = self._process_chunk(
+                chunk, curr_fast, curr_slow, ablate_observer=ablate_observer
             )
             
             outputs.append(chunk_output)
-            observer_history.append(new_observer)
+            observer_history.append(torch.cat([next_fast, next_slow], dim=-1))
             
-            current_observer = new_observer
+            curr_fast = next_fast
+            curr_slow = next_slow
+        
+        # Update persistent observers
+        if not reset_observer:
+            self.obs_fast_state = curr_fast.mean(dim=0, keepdim=True).detach()
+            self.obs_slow_state = curr_slow.mean(dim=0, keepdim=True).detach()
         
         # Concatenate outputs
         h = torch.cat(outputs, dim=1)  # [batch, seq, d_model]
-        
-        # Update persistent observer (detached for next batch)
-        # Take mean across batch to keep it batch-independent
-        self.observer_state = current_observer.mean(dim=0, keepdim=True).detach()
         
         # Project to vocabulary
         h = self.output_norm(h)
@@ -176,41 +218,55 @@ class RSSA(nn.Module):
     def _process_chunk(
         self,
         chunk: torch.Tensor,
-        observer: torch.Tensor
-    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        obs_fast: torch.Tensor,
+        obs_slow: torch.Tensor,
+        ablate_observer: bool = False
+    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
-        Process a chunk with observer context
+        Process a chunk with hierarchical observer context
         
         Args:
             chunk: [batch, chunk_len, d_model]
-            observer: [batch, 1, d_observer]
-        
-        Returns:
-            output: [batch, chunk_len, d_model]
-            new_observer: [batch, 1, d_observer]
+            obs_fast: [batch, 1, d_obs_fast]
+            obs_slow: [batch, 1, d_obs_slow]
         """
-        # Inject observer context
-        obs_context = self.obs_to_proc(observer)  # [batch, 1, d_model]
-        h = chunk + obs_context
+        # Inject hierarchical context
+        if not ablate_observer:
+            if self.use_deep_decoder:
+                # Deep Decompression
+                combined_obs = torch.cat([obs_fast, obs_slow], dim=-1) # [batch, 1, total_d_obs]
+                h = chunk + self.decoder(combined_obs)
+            else:
+                # Shallow Integration
+                fast_ctx = self.obs_fast_to_proc(obs_fast) 
+                slow_ctx = self.obs_slow_to_proc(obs_slow)
+                combined_ctx = torch.cat([fast_ctx, slow_ctx], dim=-1)
+                h = chunk + self.integrate_ctx(combined_ctx)
+        else:
+            h = chunk
         
         # Process through layers
         for layer in self.layers:
             h = layer(h)
         
-        # Extract observer update
-        candidate_update = self.proc_to_obs(h)  # [batch, chunk_len, d_obs]
-        gate = self.update_gate(h)  # [batch, chunk_len, d_obs]
+        # Extract dual state updates
+        if not ablate_observer:
+            # Update Fast State (tau_fast=0.7)
+            fast_candidate = self.proc_to_obs_fast(h)
+            fast_gate = self.fast_gate(h)
+            fast_summary = (fast_candidate * fast_gate).mean(dim=1, keepdim=True)
+            new_fast = self.tau_fast * obs_fast + (1 - self.tau_fast) * fast_summary
+            
+            # Update Slow State (tau_slow=0.95)
+            slow_candidate = self.proc_to_obs_slow(h)
+            slow_gate = self.slow_gate(h)
+            slow_summary = (slow_candidate * slow_gate).mean(dim=1, keepdim=True)
+            new_slow = self.tau_slow * obs_slow + (1 - self.tau_slow) * slow_summary
+        else:
+            new_fast = torch.zeros_like(obs_fast)
+            new_slow = torch.zeros_like(obs_slow)
         
-        # Aggregate over chunk (compression to invariants)
-        chunk_summary = (candidate_update * gate).mean(dim=1, keepdim=True)
-        
-        # EMA update (dissipative dynamics)
-        new_observer = (
-            self.observer_tau * observer +
-            (1 - self.observer_tau) * chunk_summary
-        )
-        
-        return h, new_observer
+        return h, new_fast, new_slow
     
     def get_observer_stats(self) -> dict:
         """Get statistics about current observer state"""
@@ -232,12 +288,16 @@ class ProcessorLayer(nn.Module):
         d_model: int,
         n_heads: int = 8,
         window_size: int = 256,
-        dropout: float = 0.1
+        dropout: float = 0.1,
+        use_ssm: bool = True
     ):
         super().__init__()
         
-        # SSM component (simplified - use real S4 in production)
-        self.ssm = SSMBlock(d_model, dropout=dropout)
+        # Toggleable memory component
+        if use_ssm:
+            self.memory = SSMBlock(d_model, dropout=dropout)
+        else:
+            self.memory = nn.Identity()
         
         # Local windowed attention
         self.attention = WindowedAttention(
@@ -259,8 +319,8 @@ class ProcessorLayer(nn.Module):
         self.norm3 = nn.LayerNorm(d_model)
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # SSM path
-        x = x + self.ssm(self.norm1(x))
+        # Memory path (SSM or Identity)
+        x = x + self.memory(self.norm1(x))
         
         # Attention path
         x = x + self.attention(self.norm2(x))
@@ -297,24 +357,25 @@ class SSMBlock(nn.Module):
         """
         batch, length, d_model = u.shape
         
-        # Simplified implementation (real S4 uses FFT)
+        # Pre-compute projections to speed up loop
+        # u @ B -> [batch, length, d_state]
+        u_proj = torch.einsum('ij,blj->bli', self.B.T, u)
+        
         x = torch.zeros(batch, self.d_state, device=u.device)
         outputs = []
         
+        # Recurrent loop (bottleneck, but necessary for sequential logic)
         for t in range(length):
             # x[t+1] = x[t] + dt * (A @ x[t] + B @ u[t])
-            dx = torch.einsum('ij,bj->bi', self.A, x)
-            dx += torch.einsum('ij,bj->bi', self.B.T, u[:, t])
+            dx = torch.einsum('ij,bj->bi', self.A, x) + u_proj[:, t]
             x = x + self.dt * dx
-            
-            # y[t] = C @ x[t] + D * u[t]
-            y = torch.einsum('ij,bj->bi', self.C.T, x)
-            y += self.D * u[:, t]
-            
-            outputs.append(y)
+            outputs.append(x)
         
-        output = torch.stack(outputs, dim=1)
-        return self.dropout(output)
+        # y[t] = C @ x[t] + D * u[t]
+        x_stacked = torch.stack(outputs, dim=1)  # [batch, length, d_state]
+        y = torch.einsum('ij,blj->bli', self.C.T, x_stacked) + self.D * u
+        
+        return self.dropout(y)
 
 
 class WindowedAttention(nn.Module):
@@ -367,16 +428,19 @@ class WindowedAttention(nn.Module):
         return self.proj(out)
     
     def _create_window_mask(self, seq_len: int, device: torch.device) -> torch.Tensor:
-        """Create causal mask with window constraint"""
-        # Causal mask
-        mask = torch.triu(torch.ones(seq_len, seq_len, device=device), diagonal=1)
+        """Create causal mask with window constraint (Vectorized)"""
+        # Causal part (upper triangle)
+        mask = torch.triu(torch.ones(seq_len, seq_len, device=device), diagonal=1).bool()
         
-        # Window constraint
-        for i in range(seq_len):
-            start = max(0, i - self.window_size)
-            mask[i, :start] = 1
+        # Window part (far past)
+        cols = torch.arange(seq_len, device=device).view(1, -1)
+        rows = torch.arange(seq_len, device=device).view(-1, 1)
+        window_mask = (rows - cols) >= self.window_size
         
-        return mask == 0
+        # Combine: mask if in future OR far past
+        full_mask = mask | window_mask
+        
+        return ~full_mask
 
 
 class PositionalEncoding(nn.Module):
@@ -451,21 +515,18 @@ def validate_observer_emergence(
     
     with torch.no_grad():
         # Test 1: Normal performance
-        logits_normal, _ = model(test_input)
+        logits_normal, _ = model(test_input, reset_observer=True)
         loss_normal = F.cross_entropy(
             logits_normal.reshape(-1, logits_normal.size(-1)),
             test_target.reshape(-1)
         )
         
-        # Test 2: Ablated performance (zero observer)
-        obs_backup = model.observer_state.clone()
-        model.observer_state.zero_()
-        logits_ablated, _ = model(test_input, reset_observer=False)
+        # Test 2: Ablated performance (observer decoupled)
+        logits_ablated, _ = model(test_input, reset_observer=True, ablate_observer=True)
         loss_ablated = F.cross_entropy(
             logits_ablated.reshape(-1, logits_ablated.size(-1)),
             test_target.reshape(-1)
         )
-        model.observer_state = obs_backup
         
         # Test 3: Observer statistics
         obs_stats = model.get_observer_stats()
@@ -575,9 +636,9 @@ def quick_poc_experiment():
         observer_changes.append(metrics['observer_change'])
         
         # Log
-        if (step + 1) % 100 == 0:
-            avg_loss = sum(losses[-100:]) / 100
-            avg_obs_change = sum(observer_changes[-100:]) / 100
+        if (step + 1) % 10 == 0:
+            avg_loss = sum(losses[-10:]) / 10
+            avg_obs_change = sum(observer_changes[-10:]) / 10
             obs_stats = model.get_observer_stats()
             
             print(f"Step {step+1:4d} | "
@@ -616,6 +677,245 @@ def quick_poc_experiment():
     return model, results
 
 
+# ============================================================================
+# Phase 1: Linearized Dynamics Analysis
+# ============================================================================
+
+def compute_jacobian_spectrum(
+    model: RSSA,
+    test_input: torch.Tensor,
+    n_samples: int = 10
+) -> dict:
+    """
+    Compute Jacobian spectrum of observer update function using finite differences
+    
+    Measures ∂O_{t+1}/∂O_t to analyze linearized dynamics
+    """
+    model.eval()
+    
+    eigenvalues_real = []
+    eigenvalues_imag = []
+    
+    eps = 1e-4  # Finite difference epsilon
+    
+    with torch.no_grad():
+        for _ in range(n_samples):
+            # Get baseline observer state
+            model.observer_state = torch.randn_like(model.observer_state) * 0.1
+            obs_0 = model.observer_state.clone()
+            
+            # Forward pass to get updated observer
+            _, _ = model(test_input)
+            obs_1_baseline = model.observer_state.clone()
+            
+            # Compute Jacobian via finite differences
+            d_obs = model.d_observer
+            jacobian = torch.zeros(d_obs, d_obs)
+            
+            for i in range(d_obs):
+                # Perturb i-th dimension
+                obs_perturbed = obs_0.clone()
+                obs_perturbed[0, 0, i] += eps
+                
+                # Forward pass with perturbation
+                model.observer_state = obs_perturbed
+                _, _ = model(test_input)
+                obs_1_perturbed = model.observer_state.clone()
+                
+                # Finite difference: (f(x+eps) - f(x)) / eps
+                jacobian[:, i] = (obs_1_perturbed[0, 0] - obs_1_baseline[0, 0]) / eps
+            
+            # Compute eigenvalues
+            try:
+                eigvals = torch.linalg.eigvals(jacobian)
+                eigenvalues_real.append(eigvals.real.cpu().numpy())
+                eigenvalues_imag.append(eigvals.imag.cpu().numpy())
+            except:
+                pass
+    
+    if len(eigenvalues_real) == 0:
+        return {
+            'eigenvalues_real': [],
+            'eigenvalues_imag': [],
+            'max_eigenvalue': 0.0,
+            'spectral_radius': 0.0,
+            'is_contractive': False
+        }
+    
+    eigenvalues_real = np.concatenate(eigenvalues_real)
+    eigenvalues_imag = np.concatenate(eigenvalues_imag)
+    
+    # Compute spectral radius (max |λ|)
+    spectral_radius = np.max(np.abs(eigenvalues_real + 1j * eigenvalues_imag))
+    max_eigenvalue = np.max(np.abs(eigenvalues_real))
+    
+    return {
+        'eigenvalues_real': eigenvalues_real,
+        'eigenvalues_imag': eigenvalues_imag,
+        'max_eigenvalue': float(max_eigenvalue),
+        'spectral_radius': float(spectral_radius),
+        'is_contractive': spectral_radius < 1.0
+    }
+
+
+def measure_contraction_rate(
+    model: RSSA,
+    test_input: torch.Tensor,
+    n_steps: int = 50,
+    perturbation_scale: float = 0.1
+) -> dict:
+    """
+    Measure contraction rate under perturbation
+    
+    Perturbs observer and measures convergence rate
+    """
+    model.eval()
+    
+    # Get baseline observer state
+    with torch.no_grad():
+        _, _ = model(test_input)
+        baseline_obs = model.observer_state.clone()
+    
+    # Perturb observer
+    perturbation = torch.randn_like(baseline_obs) * perturbation_scale
+    model.observer_state = baseline_obs + perturbation
+    
+    distances = []
+    
+    with torch.no_grad():
+        for step in range(n_steps):
+            # Forward pass
+            _, _ = model(test_input)
+            
+            # Measure distance to baseline
+            dist = torch.norm(model.observer_state - baseline_obs).item()
+            distances.append(dist)
+    
+    # Fit exponential decay: d(t) = d(0) * exp(-λt)
+    distances = np.array(distances)
+    if distances[0] > 0:
+        log_distances = np.log(distances + 1e-10)
+        
+        # Linear fit in log space
+        t = np.arange(len(distances))
+        coeffs = np.polyfit(t, log_distances, 1)
+        contraction_rate = -coeffs[0]
+    else:
+        contraction_rate = 0.0
+    
+    return {
+        'distances': distances.tolist(),
+        'contraction_rate': float(contraction_rate),
+        'initial_distance': float(distances[0]),
+        'final_distance': float(distances[-1]),
+        'converged': distances[-1] < 0.01
+    }
+
+
+def return_to_manifold_experiment(
+    model: RSSA,
+    test_input: torch.Tensor,
+    n_perturbations: int = 10,
+    perturbation_scales: list = [0.1, 0.5, 1.0]
+) -> dict:
+    """
+    Return-to-manifold experiment
+    
+    Randomly perturbs trained observer and measures return time
+    """
+    model.eval()
+    
+    # Get trained observer manifold
+    with torch.no_grad():
+        _, _ = model(test_input)
+        manifold_obs = model.observer_state.clone()
+    
+    results = {scale: [] for scale in perturbation_scales}
+    
+    for scale in perturbation_scales:
+        for _ in range(n_perturbations):
+            # Random perturbation
+            perturbation = torch.randn_like(manifold_obs) * scale
+            model.observer_state = manifold_obs + perturbation
+            
+            # Measure return time
+            return_time = None
+            threshold = 0.05 * scale  # 5% of perturbation scale
+            
+            with torch.no_grad():
+                for step in range(100):
+                    _, _ = model(test_input)
+                    
+                    dist = torch.norm(model.observer_state - manifold_obs).item()
+                    
+                    if dist < threshold and return_time is None:
+                        return_time = step
+                        break
+            
+            if return_time is None:
+                return_time = 100  # Did not converge
+            
+            results[scale].append(return_time)
+    
+    # Compute statistics
+    summary = {}
+    for scale in perturbation_scales:
+        times = results[scale]
+        summary[f'scale_{scale}'] = {
+            'mean_return_time': float(np.mean(times)),
+            'std_return_time': float(np.std(times)),
+            'max_return_time': int(np.max(times)),
+            'convergence_rate': float(np.sum(np.array(times) < 100) / len(times))
+        }
+    
+    return summary
+
+
+def analyze_observer_dynamics(model: RSSA, test_input: torch.Tensor) -> dict:
+    """
+    Comprehensive linearized dynamics analysis
+    """
+    print("\n" + "="*70)
+    print("Phase 1: Linearized Dynamics Analysis")
+    print("="*70)
+    
+    # 1. Jacobian spectrum
+    print("\n1. Computing Jacobian spectrum...")
+    jacobian_results = compute_jacobian_spectrum(model, test_input, n_samples=5)
+    
+    print(f"   Spectral radius: {jacobian_results['spectral_radius']:.4f}")
+    print(f"   Max eigenvalue: {jacobian_results['max_eigenvalue']:.4f}")
+    print(f"   Is contractive: {jacobian_results['is_contractive']}")
+    
+    # 2. Contraction rate
+    print("\n2. Measuring contraction rate...")
+    contraction_results = measure_contraction_rate(model, test_input, n_steps=50)
+    
+    print(f"   Contraction rate: {contraction_results['contraction_rate']:.4f}")
+    print(f"   Initial distance: {contraction_results['initial_distance']:.4f}")
+    print(f"   Final distance: {contraction_results['final_distance']:.4f}")
+    print(f"   Converged: {contraction_results['converged']}")
+    
+    # 3. Return to manifold
+    print("\n3. Running return-to-manifold experiment...")
+    manifold_results = return_to_manifold_experiment(
+        model, test_input, n_perturbations=10
+    )
+    
+    for scale_key, stats in manifold_results.items():
+        scale = scale_key.replace('scale_', '')
+        print(f"   Perturbation scale {scale}:")
+        print(f"     Mean return time: {stats['mean_return_time']:.1f} steps")
+        print(f"     Convergence rate: {stats['convergence_rate']*100:.0f}%")
+    
+    return {
+        'jacobian': jacobian_results,
+        'contraction': contraction_results,
+        'manifold': manifold_results
+    }
+
+
 if __name__ == "__main__":
     # Run 1-hour PoC
     model, results = quick_poc_experiment()
+
